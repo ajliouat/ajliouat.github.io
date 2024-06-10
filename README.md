@@ -4,9 +4,9 @@
 
 ## 🚀 Featured Projects
 
-### RAG-Based Recommendation System with Phi-3 Mini-4K-Instruct
+### LLMRec: RAG-Based Recommendation System 
 
-📖 [Repository](https://github.com/ajliouat/LLM-based-Recommendation-System) | 🌐 [Live Demo](https://ajliouat.github.io/LLM-based-Recommendation-System)
+📖 [Repository](https://github.com/ajliouat/LLMRec) | 🌐 [Live Demo](https://ajliouat.github.io/LLMRec)
 
 This state-of-the-art recommendation system harnesses the power of the Phi-3 Mini-4K-Instruct model and retrieval-augmented generation (RAG) techniques to deliver highly personalized and context-aware product recommendations. By capturing the user's evolving intent through an iterative process, the system continuously refines its recommendations, ensuring a truly adaptive and engaging user experience.
 
