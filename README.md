@@ -40,15 +40,15 @@ Technologies Used:
 
 
 ## Professional Highlights
-### Lead AI Engineer, Serve the City, NGO (2023-Present)
+#### Lead AI Engineer, Serve the City, NGO (2023-Present)
 - Developed a scalable Retrieval Search System using LLama2 and FAISS for efficient volunteer-project matching
 - Optimized model inference performance through quantization and hardware acceleration
 
-### Lead Data Scientist, Merci Jack, Tech Startup (2020-2023)
+#### Lead Data Scientist, Merci Jack, Tech Startup (2020-2023)
 - Developed an IoT-Based Predictive Maintenance System for critical restaurant equipment
 - Engineered a Multimodal Text and Image Classifier using transformers (BERT, RoBERTa) and CNNs (ResNet, EfficientNet)
 
-### Lead Data Scientist, Société Générale, Banking (2014-2020)
+#### Lead Data Scientist, Société Générale, Banking (2014-2020)
 - Led a team to deploy AI solutions for churn prediction, personalized recommendations, and workflow automation
 - Implemented a real-time Voice-to-Text Call Categorization system using Google Cloud Speech-to-Text API and fine-tuned BERT models
 
