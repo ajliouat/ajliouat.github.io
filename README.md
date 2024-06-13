@@ -1,5 +1,5 @@
 # Abdeljalil Jliouat's Portfolio
-Welcome to my portfolio. I'm Abdeljalil Jliouat, an experienced and dedicated ML engineer specializing in building cutting-edge AI systems and leveraging large language models (LLMs) to create exceptional user experiences. With a strong foundation in machine learning, deep learning, and natural language processing (NLP), I consistently develop innovative solutions that push the boundaries of AI.
+Welcome to my portfolio. I'm Abdeljalil Jliouat, an experienced and dedicated ML engineer specializing in building cutting-edge AI systems and leveraging large language models (LLMs) to create exceptional user experiences. With a strong foundation in machine learning, deep learning, natural language processing (NLP), and computer vision, I consistently develop innovative solutions that push the boundaries of AI.
 
 ## Featured Projects
 ### LLMRec: RAG-Based Recommendation System 
