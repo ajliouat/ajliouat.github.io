@@ -51,7 +51,7 @@
   t['about.gdg_title'] = 'Member, Google Developer Group'
   t['about.gdg_meta'] =
     'Participating in Google Developer Group events and discussions around AI and developer tooling.'
-  t['about.mentor_title'] = 'NLP Mentor, DeepLearning.AI'
+  t['about.mentor_title'] = 'Mentor, DeepLearning.AI'
   t['about.mentor_meta'] =
     'Mentoring learners in natural language processing as part of DeepLearning.AI programs led by Andrew Ng.'
   t['about.horse_title'] = 'Horse rider, Bayard UCPA Vincennes'
