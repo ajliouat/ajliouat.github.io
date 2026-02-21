@@ -20,7 +20,7 @@
 
   t['about.academic_title'] = 'Academic background'
   t['about.academic_ds_title'] =
-    'Engineering degree in Data Science — Ensai, Rennes'
+    'Engineering degree in Data Science — ENSAI'
   t['about.academic_ds_meta'] =
     'Ensai, Rennes, France (2012–2014). Focus on efficient architectures for multi-modal learning and large-scale training.'
   t['about.academic_cs_title'] =
