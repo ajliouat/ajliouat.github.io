@@ -268,6 +268,46 @@
       color: var(--accent);
     }
 
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .site-footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .site-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .site-footer-brand {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 12px;
+    }
+
+    .site-footer-right a {
+      color: var(--accent);
+    }
+
     @media (max-width: 720px) {
       .nav-inner {
         padding-inline: 1rem;
@@ -290,6 +330,12 @@
       .card-grid {
         grid-template-columns: minmax(0, 1fr);
       }
+
+      .site-footer-inner {
+        padding-inline: 1.25rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -297,9 +343,9 @@
   <div id="site-nav-root"></div>
   <main class="page">
     <section class="section-header">
-      <div class="section-badge">AI systems engineering</div>
-      <h1 class="section-title">Deep systems across LLM, robotics, quantum AI, and GPU compute</h1>
-      <p class="section-subtitle">
+      <div class="section-badge" data-i18n="home.hero_badge">AI systems engineering</div>
+      <h1 class="section-title" data-i18n="home.hero_title">Deep systems across LLM, robotics, quantum AI, and GPU compute</h1>
+      <p class="section-subtitle" data-i18n="home.hero_subtitle">
         Building reproducible, benchmarked projects at the intersection of large language models, robotic manipulation,
         brain–computer interfaces, quantum optimization, and energy systems.
       </p>
@@ -307,8 +353,8 @@
 
     <section class="section-block">
       <div class="section-heading">
-        <h2>Focus areas</h2>
-        <p>Building at the intersection of six domains.</p>
+        <h2 data-i18n="home.focus_title">Focus areas</h2>
+        <p data-i18n="home.focus_subtitle">Building at the intersection of six domains.</p>
       </div>
       <div class="pill-grid">
         <span class="pill">Large language models</span>
@@ -325,8 +371,8 @@
 
     <section class="section-block">
       <div class="section-heading">
-        <h2>Flagship projects</h2>
-        <p>Deep, reproducible systems at the intersection of LLM, robotics, quantum AI, BCI, and GPU compute.</p>
+        <h2 data-i18n="home.projects_title">Flagship projects</h2>
+        <p data-i18n="home.projects_subtitle">Deep, reproducible systems at the intersection of LLM, robotics, quantum AI, BCI, and GPU compute.</p>
       </div>
       <div class="card-grid">
         <article class="card">
@@ -389,12 +435,12 @@
 
     <section class="section-block">
       <div class="section-heading">
-        <h2>Experience</h2>
-        <p>Leading applied ML and AI systems in startups, NGOs, and banking.</p>
+        <h2 data-i18n="home.experience_title">Experience</h2>
+        <p data-i18n="home.experience_subtitle">Leading applied ML and AI systems in startups, NGOs, and banking.</p>
       </div>
       <ul class="experience-list">
         <li>
-          <div class="experience-role">Chief AI Scientist, Akiodu AI, Paris</div>
+          <div class="experience-role">Chief AI Scientist, AKIOUD AI, Paris</div>
           <div class="experience-meta">AI runtime, tooling, and safety for regulated and high-stakes systems.</div>
         </li>
         <li>
@@ -410,8 +456,8 @@
 
     <section class="section-block">
       <div class="section-heading">
-        <h2>Contact</h2>
-        <p>Available for collaborations, advisory work, and technical leadership roles.</p>
+        <h2 data-i18n="home.contact_title">Contact</h2>
+        <p data-i18n="home.contact_subtitle">Available for collaborations, advisory work, and technical leadership roles.</p>
       </div>
       <div class="contact-inline">
         <span>Email: <a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a></span>
@@ -420,6 +466,23 @@
       </div>
     </section>
   </main>
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-left">
+        <span class="site-footer-brand">Abdeljalil Jliouat</span>
+        <span>Building production AI systems across LLMs, robotics, quantum, and energy.</span>
+      </div>
+      <div class="site-footer-right">
+        <span>Based in Paris · Available across Europe and remote</span>
+        <a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/i18n/runtime.js"></script>
+  <script src="/i18n/nav.en.js"></script>
+  <script src="/i18n/nav.fr.js"></script>
+  <script src="/i18n/home.en.js"></script>
+  <script src="/i18n/home.fr.js"></script>
   <script src="/nav.js"></script>
 </body>
 </html>

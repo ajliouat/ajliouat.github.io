@@ -202,6 +202,46 @@
       color: var(--accent);
     }
 
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .site-footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .site-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .site-footer-brand {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 12px;
+    }
+
+    .site-footer-right a {
+      color: var(--accent);
+    }
+
     .grid-two {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
@@ -230,6 +270,12 @@
 
       .grid-two {
         grid-template-columns: minmax(0, 1fr);
+      }
+
+      .site-footer-inner {
+        padding-inline: 1.25rem;
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -289,6 +335,18 @@
       </aside>
     </section>
   </main>
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-left">
+        <span class="site-footer-brand">Abdeljalil Jliouat</span>
+        <span>Building production AI systems across LLMs, robotics, quantum, and energy.</span>
+      </div>
+      <div class="site-footer-right">
+        <span>Based in Paris · Available across Europe and remote</span>
+        <a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a>
+      </div>
+    </div>
+  </footer>
   <script src="/nav.js"></script>
 </body>
 </html>

@@ -44,6 +44,34 @@
     }
   }
 
+  function getStoredLang() {
+    try {
+      return window.localStorage.getItem('lang')
+    } catch (e) {
+      return null
+    }
+  }
+
+  function storeLang(lang) {
+    try {
+      window.localStorage.setItem('lang', lang)
+    } catch (e) {}
+  }
+
+  function getPreferredLang() {
+    var stored = getStoredLang()
+    if (stored === 'en' || stored === 'fr') return stored
+    if (typeof window.__getLanguage === 'function') return window.__getLanguage()
+    return 'en'
+  }
+
+  function updateLangToggle(lang) {
+    var btn = placeholder.querySelector('.lang-toggle')
+    if (!btn) return
+    var label = btn.querySelector('.lang-toggle-label')
+    if (label) label.textContent = (lang || 'en').toUpperCase()
+  }
+
   fetch('/nav.html')
     .then(function (res) {
       if (!res.ok) throw new Error('Failed to load nav include')
@@ -79,13 +107,35 @@
       applyTheme(currentTheme)
       updateToggle(currentTheme)
 
-      var toggle = placeholder.querySelector('.theme-toggle')
-      if (toggle) {
-        toggle.addEventListener('click', function () {
+      var themeToggle = placeholder.querySelector('.theme-toggle')
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
           var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
           applyTheme(next)
           storeTheme(next)
           updateToggle(next)
+        })
+      }
+
+      var currentLang = getPreferredLang()
+      if (typeof window.__setLanguage === 'function') {
+        window.__setLanguage(currentLang)
+      } else if (typeof window.__applyLanguage === 'function') {
+        window.__applyLanguage()
+      }
+      updateLangToggle(currentLang)
+
+      var langToggle = placeholder.querySelector('.lang-toggle')
+      if (langToggle) {
+        langToggle.addEventListener('click', function () {
+          var next = getPreferredLang() === 'en' ? 'fr' : 'en'
+          storeLang(next)
+          if (typeof window.__setLanguage === 'function') {
+            window.__setLanguage(next)
+          } else {
+            document.documentElement.setAttribute('lang', next)
+          }
+          updateLangToggle(next)
         })
       }
     })
