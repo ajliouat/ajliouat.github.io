@@ -1,4 +1,6 @@
 ;(function () {
+  var MERMAID_CDN = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js'
+
   function loadScript(src, onLoad) {
     var script = document.createElement('script')
     script.src = src
@@ -9,57 +11,20 @@
 
   function getCurrentTheme() {
     var root = document.documentElement
-    var t = root.getAttribute('data-theme')
-    if (t === 'light' || t === 'dark') return t
+    var attr = root.getAttribute('data-theme')
+    if (attr === 'dark' || attr === 'light') return attr
     return 'dark'
   }
 
   function getConfig(theme) {
-    if (theme === 'light') {
-      return {
-        startOnLoad: true,
-        securityLevel: 'loose',
-        theme: 'default',
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, system-ui, -system-ui, sans-serif',
-        themeVariables: {
-          primaryColor: '#eff6ff',
-          primaryBorderColor: '#1d4ed8',
-          primaryTextColor: '#111827',
-          lineColor: '#0ea5e9',
-          secondaryColor: '#f9fafb',
-          tertiaryColor: '#e5e7eb',
-          textColor: '#111827',
-          fontSize: '13px',
-        },
-        flowchart: {
-          curve: 'basis',
-          htmlLabels: true,
-          padding: 12,
-          useMaxWidth: true,
-        },
-        sequence: {
-          useMaxWidth: true,
-          actorFontSize: 13,
-          messageFontSize: 13,
-        },
-      }
-    }
+    var isDark = theme === 'dark'
 
-    return {
-      startOnLoad: true,
+    var base = {
+      startOnLoad: false,
       securityLevel: 'loose',
-      theme: 'dark',
       fontFamily:
         '-apple-system, BlinkMacSystemFont, system-ui, -system-ui, sans-serif',
       themeVariables: {
-        primaryColor: '#0b1120',
-        primaryBorderColor: '#1d4ed8',
-        primaryTextColor: '#e5e7eb',
-        lineColor: '#38bdf8',
-        secondaryColor: '#020617',
-        tertiaryColor: '#111827',
-        textColor: '#e5e7eb',
         fontSize: '13px',
       },
       flowchart: {
@@ -74,53 +39,74 @@
         messageFontSize: 13,
       },
     }
+
+    if (isDark) {
+      base.theme = 'dark'
+      base.themeVariables.primaryColor = '#0b1120'
+      base.themeVariables.primaryBorderColor = '#1d4ed8'
+      base.themeVariables.primaryTextColor = '#e5e7eb'
+      base.themeVariables.lineColor = '#38bdf8'
+      base.themeVariables.secondaryColor = '#020617'
+      base.themeVariables.tertiaryColor = '#111827'
+      base.themeVariables.textColor = '#e5e7eb'
+    } else {
+      base.theme = 'default'
+      base.themeVariables.primaryColor = '#eff6ff'
+      base.themeVariables.primaryBorderColor = '#1d4ed8'
+      base.themeVariables.primaryTextColor = '#0f172a'
+      base.themeVariables.lineColor = '#1d4ed8'
+      base.themeVariables.secondaryColor = '#ffffff'
+      base.themeVariables.tertiaryColor = '#e5e7eb'
+      base.themeVariables.textColor = '#111827'
+    }
+
+    return base
   }
 
-  function applyMermaidTheme(theme) {
+  function render(theme) {
     if (!window.mermaid) return
-    window.mermaid.initialize(getConfig(theme))
+    var currentTheme = theme || getCurrentTheme()
+    var config = getConfig(currentTheme)
+
+    window.mermaid.initialize(config)
     if (typeof window.mermaid.run === 'function') {
-      window.mermaid.run()
-    } else if (typeof window.mermaid.contentLoaded === 'function') {
-      window.mermaid.contentLoaded()
+      window.mermaid.run({ querySelector: '.mermaid' })
     }
   }
 
-  function initMermaid() {
-    if (!window.mermaid) return
-
-    applyMermaidTheme(getCurrentTheme())
-
+  function observeTheme() {
     var root = document.documentElement
-    var lastTheme = getCurrentTheme()
+    if (!window.MutationObserver || !root) return
 
     var observer = new MutationObserver(function (mutations) {
-      var changed = false
       for (var i = 0; i < mutations.length; i++) {
-        if (
-          mutations[i].type === 'attributes' &&
-          mutations[i].attributeName === 'data-theme'
-        ) {
-          changed = true
+        var m = mutations[i]
+        if (m.type === 'attributes' && m.attributeName === 'data-theme') {
+          render(root.getAttribute('data-theme'))
           break
         }
       }
-      if (!changed) return
-      var next = getCurrentTheme()
-      if (next === lastTheme) return
-      lastTheme = next
-      applyMermaidTheme(next)
     })
 
     observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] })
   }
 
-  if (window.mermaid) {
-    initMermaid()
+  function init() {
+    if (!window.mermaid) {
+      loadScript(MERMAID_CDN, function () {
+        render()
+        observeTheme()
+      })
+      return
+    }
+
+    render()
+    observeTheme()
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init)
   } else {
-    loadScript(
-      'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js',
-      initMermaid
-    )
+    init()
   }
 })()
