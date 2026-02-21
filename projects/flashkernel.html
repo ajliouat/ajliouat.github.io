@@ -11,8 +11,8 @@
       --border: #e5e7eb;
       --text: #0f172a;
       --muted: #6b7280;
-      --accent: #059669;
-      --accent-soft: #ecfdf5;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
       --code-bg: #0b1120;
       --code-border: #1f2937;
       --code-text: #e5e7eb;
@@ -38,16 +38,16 @@
     .badge {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 4px 9px; border-radius: 999px;
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      background: rgba(16, 185, 129, 0.05);
-      color: #047857; font-size: 11px; font-weight: 500;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      background: rgba(37, 99, 235, 0.05);
+      color: #1d4ed8; font-size: 11px; font-weight: 500;
       letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px;
     }
 
     .badge-dot {
       width: 6px; height: 6px; border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #bbf7d0, #16a34a);
-      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.45);
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #2563eb);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
     }
 
     .title {
@@ -236,6 +236,19 @@
       .footer-actions { flex-direction: column; align-items: stretch; }
       .back-link, .github-link { justify-content: center; width: 100%; }
     }
+
+    html[data-theme='dark'] .title { color: #e5e7eb; }
+    html[data-theme='dark'] .badge { border-color: rgba(37, 99, 235, 0.4); background: rgba(37, 99, 235, 0.1); color: #60a5fa; }
+    html[data-theme='dark'] .badge-dot { background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.6); }
+    html[data-theme='dark'] .project-body { background: var(--surface); border-color: var(--border); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4); }
+    html[data-theme='dark'] .toc { background: var(--surface); border-color: var(--border); box-shadow: none; }
+    html[data-theme='dark'] .toc-link:hover { background: rgba(148, 163, 184, 0.1); }
+    html[data-theme='dark'] .tech-pill { color: #e5e7eb; border-color: rgba(148, 163, 184, 0.7); background: rgba(15, 23, 42, 0.7); }
+    html[data-theme='dark'] .benchmark-table th { background: rgba(148, 163, 184, 0.06); }
+    html[data-theme='dark'] .benchmark-table th, html[data-theme='dark'] .benchmark-table td { border-color: var(--border); }
+    html[data-theme='dark'] .back-link { border-color: var(--border); background: var(--surface); color: var(--muted); }
+    html[data-theme='dark'] .back-link:hover { background: rgba(148, 163, 184, 0.08); }
+    html[data-theme='dark'] .code-block { border-color: #1e293b; }
   </style>
 </head>
 <body>
@@ -274,27 +287,14 @@
           <code>torch.compile</code>, and cuBLAS baselines on a T4 GPU.
         </div>
 
-        <section class="section">
-          <h3 class="section-title">Research domains</h3>
-          <div class="tech-stack">
-            <span class="tech-pill">Large language models</span>
-            <span class="tech-pill">CUDA / GPU compute</span>
-            <span class="tech-pill">Transformer architectures</span>
-            <span class="tech-pill">MLOps & deployment</span>
-          </div>
-        </section>
-
-        <section class="section">
-          <h3 class="section-title">Core stack</h3>
-          <div class="tech-stack">
-            <span class="tech-pill">CUDA C++</span>
-            <span class="tech-pill">Triton</span>
-            <span class="tech-pill">Nsight Compute</span>
-            <span class="tech-pill">PyTorch C++ Extensions</span>
-            <span class="tech-pill">CMake</span>
-            <span class="tech-pill">Docker</span>
-          </div>
-        </section>
+        <div class="tech-stack">
+          <span class="tech-pill">CUDA C++</span>
+          <span class="tech-pill">Triton</span>
+          <span class="tech-pill">Nsight Compute</span>
+          <span class="tech-pill">PyTorch C++ Extensions</span>
+          <span class="tech-pill">CMake</span>
+          <span class="tech-pill">Docker</span>
+        </div>
 
         <section class="section" id="kernels">
           <h2 class="section-title">Kernel inventory</h2>
@@ -392,10 +392,10 @@
   Fused --> Norm["LayerNorm + Residual"]
   Norm --> Next["Next layer / Output"]
 
-  style Embed fill:#ecfdf5,stroke:#059669,color:#064e3b
-  style Attn fill:#ecfdf5,stroke:#059669,color:#064e3b
-  style KV fill:#ecfdf5,stroke:#059669,color:#064e3b
-  style Fused fill:#ecfdf5,stroke:#059669,color:#064e3b</div>
+  style Embed fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style Attn fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style KV fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style Fused fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
           </div>
         </section>
 

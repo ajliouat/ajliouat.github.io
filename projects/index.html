@@ -43,12 +43,12 @@
       gap: 0.35rem;
       padding: 0.15rem 0.75rem;
       border-radius: 999px;
-      border: 1px solid rgba(5, 150, 105, 0.25);
+      border: 1px solid rgba(37, 99, 235, 0.25);
       font-size: 11px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #047857;
-      background-color: rgba(16, 185, 129, 0.05);
+      color: #1d4ed8;
+      background-color: rgba(37, 99, 235, 0.05);
     }
 
     .section-badge::before {
@@ -56,8 +56,8 @@
       width: 6px;
       height: 6px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #bbf7d0, #16a34a);
-      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.45);
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #2563eb);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
     }
 
     .section-title {
@@ -96,7 +96,7 @@
       font-size: 10px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #047857;
+      color: #1d4ed8;
       margin-bottom: 0.5rem;
     }
 
@@ -104,7 +104,7 @@
       width: 5px;
       height: 5px;
       border-radius: 999px;
-      background: #16a34a;
+      background: #2563eb;
     }
 
     .card-title {
@@ -187,6 +187,11 @@
       background: rgba(15, 23, 42, 0.9);
       color: #e5e7eb;
     }
+
+    html[data-theme='dark'] .section-badge { border-color: rgba(37, 99, 235, 0.4); background: rgba(37, 99, 235, 0.1); color: #60a5fa; }
+    html[data-theme='dark'] .section-badge::before { background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.6); }
+    html[data-theme='dark'] .card-badge { color: #60a5fa; }
+    html[data-theme='dark'] .card-badge-dot { background: #3b82f6; }
 
     @media (max-width: 720px) {
       .page { padding-inline: 1.25rem; padding-top: 3rem; }

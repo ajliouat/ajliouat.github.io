@@ -4,7 +4,7 @@
   var t = window.I18N.en
 
   t['about.badge'] = 'Profile'
-  t['about.title'] = 'Deep learning engineer and AI founder'
+  t['about.title'] = 'Machine learning engineer and AI founder'
   t['about.subtitle'] =
     'Working at the intersection of model design, optimization, and deployment to take research-grade ideas into production.'
 
@@ -19,7 +19,7 @@
     'Applied AI, robotics, quantum AI, energy systems, brain–computer interfaces, and compute hardware.'
 
   t['about.profile_name'] = 'Abdeljalil Jliouat'
-  t['about.profile_role'] = 'Deep Learning Engineer & AI Founder'
+  t['about.profile_role'] = 'Machine Learning Engineer & AI Founder'
 
   t['about.stack_python'] = 'Python'
   t['about.stack_pytorch'] = 'PyTorch'

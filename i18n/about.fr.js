@@ -56,10 +56,10 @@
     "Pilotage de la recherche et du produit sur une couche runtime et de contrôle vendor‑neutral qui rend l'IA agentique gouvernable, observable et opérable en production."
 
   t['about.previous_title'] = 'Expérience précédente'
-  t['about.prev_merci_title'] = 'Lead Data Scientist, Merci Jack'
+  t['about.prev_merci_title'] = 'Lead Data Scientist, Merci Jack, Paris'
   t['about.prev_merci_meta'] =
     'Modèles multimodaux et déploiement en périphérie (edge) sur le terrain.'
-  t['about.prev_sg_title'] = 'Lead Data Scientist, Société Générale'
+  t['about.prev_sg_title'] = 'Lead Data Scientist, Société Générale, Paris'
   t['about.prev_sg_meta'] =
     'Fraude, churn et automatisation de flux de travail à grande échelle.'
 
