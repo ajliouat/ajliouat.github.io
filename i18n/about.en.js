@@ -29,14 +29,14 @@
     'FSTT (2007–2012). Focused on optimization, distributed systems, and full-stack software development.'
 
   t['about.current_title'] = 'Current roles'
-  t['about.current_role_title'] = 'Chief AI Scientist, AKIOUD AI'
+  t['about.current_role_title'] = 'Chief AI Scientist, AKIOUD AI, Paris'
   t['about.current_role_meta'] =
     'Leading research and product on vendor-neutral runtime and control layers that make agentic AI governable, observable, and operable in production.'
 
   t['about.previous_title'] = 'Previous experience'
-  t['about.prev_merci_title'] = 'Lead Data Scientist, Merci Jack'
+  t['about.prev_merci_title'] = 'Lead Data Scientist, Merci Jack, Paris'
   t['about.prev_merci_meta'] = 'Multimodal models and edge deployment.'
-  t['about.prev_sg_title'] = 'Lead Data Scientist, Société Générale'
+  t['about.prev_sg_title'] = 'Lead Data Scientist, Société Générale, Paris'
   t['about.prev_sg_meta'] = 'Fraud, churn, and workflow automation at scale.'
 
   t['about.patents_title'] = 'Patents (filed)'
