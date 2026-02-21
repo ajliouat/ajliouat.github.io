@@ -12,6 +12,27 @@
   t['home.focus_title'] = 'Axes de travail'
   t['home.focus_subtitle'] = "Construire à l'intersection de six domaines."
 
+  t['home.stack_title'] = 'Stack technique'
+  t['home.stack_subtitle'] = 'Langages, frameworks et outils pour tous les projets.'
+  t['home.stack_python'] = 'Python'
+  t['home.stack_pytorch'] = 'PyTorch'
+  t['home.stack_cuda'] = 'CUDA C++'
+  t['home.stack_triton'] = 'Triton'
+  t['home.stack_jax'] = 'JAX'
+  t['home.stack_mujoco'] = 'MuJoCo'
+  t['home.stack_pennylane'] = 'PennyLane'
+  t['home.stack_mne'] = 'MNE-Python'
+  t['home.stack_huggingface'] = 'Hugging Face'
+  t['home.stack_deepspeed'] = 'DeepSpeed'
+  t['home.stack_flashattention'] = 'FlashAttention'
+  t['home.stack_vllm'] = 'vLLM'
+  t['home.stack_nsight'] = 'Nsight Compute'
+  t['home.stack_docker'] = 'Docker'
+  t['home.stack_aws'] = 'AWS'
+  t['home.stack_wandb'] = 'wandb'
+  t['home.stack_mlflow'] = 'MLflow'
+  t['home.stack_fastapi'] = 'FastAPI'
+
   t['home.projects_title'] = 'Projets phares'
   t['home.projects_subtitle'] =
     "Des systèmes profonds et reproductibles à l'intersection des LLM, de la robotique, de l'IA quantique, des BCI et du calcul GPU."
