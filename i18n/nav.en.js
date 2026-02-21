@@ -8,5 +8,10 @@
   t['nav.projects'] = 'Projects'
   t['nav.blog'] = 'Blog'
   t['nav.contact'] = 'Contact'
+
+  t['footer.brand'] = 'Abdeljalil Jliouat'
+  t['footer.tagline'] = 'Building production AI systems across LLMs, robotics, quantum, and energy.'
+  t['footer.location'] = 'Based in Paris · Available across Europe and remote'
+  t['footer.email'] = 'contact@ajliouat.com'
 })()
 

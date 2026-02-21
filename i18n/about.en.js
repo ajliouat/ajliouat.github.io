@@ -40,12 +40,14 @@
   t['about.prev_sg_meta'] = 'Fraud, churn, and workflow automation at scale.'
 
   t['about.patents_title'] = 'Patents (filed)'
-  t['about.patent1_title'] = 'Reconfigurable physically isolated AI orchestration system'
+  t['about.patent1_title'] =
+    'Reconfigurable physically isolated AI orchestration system with multi-layer conditional cryptographic deactivation'
   t['about.patent1_meta'] =
-    'Filed with OMPIC (Dec 2025, under examination): multi-layer cryptographic deactivation and physically isolated execution zones for high-security AI workloads.'
-  t['about.patent2_title'] = 'Legal-grade cryptographic proof for multi-agent AI systems'
+    'Filed with OMPIC (Dec 2025, under examination).'
+  t['about.patent2_title'] =
+    'Automatic generation of legally probative cryptographic proof for multi-agent AI systems'
   t['about.patent2_meta'] =
-    'Filed with INPI (Jan 2026, under examination): automatic generation of legally admissible cryptographic traces using state-backed digital identity and qualified timestamps.'
+    'Filed with INPI (Jan 2026, under examination).'
 
   t['about.community_title'] = 'Community & activities'
   t['about.gdg_title'] = 'Member, Google Developer Group'

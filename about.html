@@ -365,16 +365,18 @@
 
         <div class="section-block">
           <div class="section-heading">
-            <h2>Academic background</h2>
+            <h2 data-i18n="about.academic_title">Academic background</h2>
           </div>
-          <p class="body-text">
-            Engineering degree in Data Science (ENSAI, 2012–2014), with a focus on efficient architectures for multi‑modal
-            learning and large-scale training.
-          </p>
-          <p class="body-text">
-            Engineering degree in Computer Science and Applied Mathematics (FSTT, 2007–2012), focused on optimization,
-            distributed systems, and full‑stack software development.
-          </p>
+          <ul class="timeline">
+            <li>
+              <div class="timeline-role" data-i18n="about.academic_ds_title"></div>
+              <div class="timeline-meta" data-i18n="about.academic_ds_meta"></div>
+            </li>
+            <li>
+              <div class="timeline-role" data-i18n="about.academic_cs_title"></div>
+              <div class="timeline-meta" data-i18n="about.academic_cs_meta"></div>
+            </li>
+          </ul>
         </div>
 
       </div>
@@ -413,11 +415,44 @@
 
         <div class="section-block">
           <div class="section-heading">
-            <h2>Patents (filed)</h2>
+            <h2 data-i18n="about.patents_title">Patents (filed)</h2>
           </div>
-          <p class="body-text">
-            Two patents filed with OMPIC (Dec 2025, under examination and not yet published): (1) SYSTÈME D'ORCHESTRATION D'INTELLIGENCE ARTIFICIELLE À ISOLATION PHYSIQUE RECONFIGURABLE PAR DÉSACTIVATION CRYPTOGRAPHIQUE CONDITIONNELLE MULTI-COUCHES, (2) Procédé et système de génération automatique de preuve cryptographique à valeur probante légale pour l'exécution d'un système multi-agents d'intelligence artificielle.
-          </p>
+          <ul class="timeline">
+            <li>
+              <div class="timeline-role" data-i18n="about.patent1_title"></div>
+              <div class="timeline-meta" data-i18n="about.patent1_meta"></div>
+            </li>
+            <li>
+              <div class="timeline-role" data-i18n="about.patent2_title"></div>
+              <div class="timeline-meta" data-i18n="about.patent2_meta"></div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <div class="section-heading">
+            <h2>Community &amp; activities</h2>
+          </div>
+          <ul class="timeline">
+            <li>
+              <div class="timeline-role">Member, Google Developer Group</div>
+              <div class="timeline-meta">
+                Participating in Google Developer Group events and discussions around AI and developer tooling.
+              </div>
+            </li>
+            <li>
+              <div class="timeline-role">Mentor, DeepLearning.AI</div>
+              <div class="timeline-meta">
+                Mentoring learners in natural language processing as part of DeepLearning.AI programs led by Andrew Ng.
+              </div>
+            </li>
+            <li>
+              <div class="timeline-role">Horse rider, Bayard UCPA Vincennes</div>
+              <div class="timeline-meta">
+                Regular equestrian practice at Bayard UCPA Vincennes.
+              </div>
+            </li>
+          </ul>
         </div>
 
         <div class="section-block">
@@ -437,6 +472,11 @@
       </aside>
     </section>
   </main>
+  <script src="/i18n/runtime.js"></script>
+  <script src="/i18n/nav.en.js"></script>
+  <script src="/i18n/nav.fr.js"></script>
+  <script src="/i18n/about.en.js"></script>
+  <script src="/i18n/about.fr.js"></script>
   <script src="/nav.js"></script>
 </body>
 </html>

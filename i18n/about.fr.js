@@ -43,13 +43,13 @@
 
   t['about.patents_title'] = 'Brevets (déposés)'
   t['about.patent1_title'] =
-    "Système d'orchestration d'IA à isolation physique reconfigurable"
+    "SYSTÈME D'ORCHESTRATION D'INTELLIGENCE ARTIFICIELLE À ISOLATION PHYSIQUE RECONFIGURABLE PAR DÉSACTIVATION CRYPTOGRAPHIQUE CONDITIONNELLE MULTI-COUCHES"
   t['about.patent1_meta'] =
-    "Brevet déposé auprès de l'OMPIC (déc. 2025, en instruction) : désactivation cryptographique multi‑couches et zones d'exécution physiquement isolées pour des charges d'IA à très haute sécurité."
+    "Brevet déposé auprès de l'OMPIC (déc. 2025, en instruction)."
   t['about.patent2_title'] =
-    "Preuve cryptographique à valeur probante légale pour systèmes d'IA multi‑agents"
+    "Procédé et système de génération automatique de preuve cryptographique à valeur probante légale pour l'exécution d'un système multi-agents d'intelligence artificielle"
   t['about.patent2_meta'] =
-    "Brevet déposé auprès de l'INPI (jan. 2026, en instruction) : génération automatique de traces cryptographiques légalement opposables à partir d'une identité numérique étatique et d'un horodatage électronique qualifié."
+    "Brevet déposé auprès de l'INPI (jan. 2026, en instruction)."
 
   t['about.community_title'] = 'Communauté et activités'
   t['about.gdg_title'] = 'Membre, Google Developer Group'
