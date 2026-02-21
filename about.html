@@ -289,52 +289,6 @@
       .profile-meta {
         align-items: flex-start;
       }
-
-      .site-footer-inner {
-        padding-inline: 1.25rem;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    .site-footer {
-      border-top: 1px solid var(--border);
-      margin-top: 3rem;
-    }
-
-    .site-footer-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 1.5rem 1.5rem 2.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .site-footer-left {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .site-footer-brand {
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .site-footer-right {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      font-size: 12px;
-    }
-
-    .site-footer-right a {
-      color: var(--accent);
     }
   </style>
 </head>
@@ -342,9 +296,9 @@
   <div id="site-nav-root"></div>
   <main class="page">
     <section class="section-header">
-      <div class="section-badge" data-i18n="about.badge">Profile</div>
-      <h1 class="section-title" data-i18n="about.title">Deep learning engineer and AI founder</h1>
-      <p class="section-subtitle" data-i18n="about.subtitle">
+      <div class="section-badge">Profile</div>
+      <h1 class="section-title">Deep learning engineer and AI founder</h1>
+      <p class="section-subtitle">
         Working at the intersection of model design, optimization, and deployment to take research-grade ideas into
         production.
       </p>
@@ -362,13 +316,13 @@
 
         <div class="section-block">
           <div class="section-heading">
-            <h2 data-i18n="about.short_title">Short bio</h2>
+            <h2>Short bio</h2>
           </div>
-          <p class="body-text" data-i18n="about.short_p1">
-            Machine learning engineer and AI founder with 10+ years building and scaling production AI across banking,
+          <p class="body-text">
+            Machine Learning engineer and AI founder with 10+ years building and scaling production AI across banking,
             tech startups, and NGOs. I work end to end, from strategy and productization to deployment at scale.
           </p>
-          <p class="body-text" data-i18n="about.short_p2">
+          <p class="body-text">
             My focus is on GPU-level systems work (CUDA, Triton), language-grounded robotics, brain–computer interfaces,
             quantum optimization for energy, and the infrastructure to deploy these systems reliably.
           </p>
@@ -376,10 +330,10 @@
 
         <div class="section-block">
           <div class="section-heading">
-            <h2 data-i18n="about.interests_title">Interests</h2>
+            <h2>Interests</h2>
           </div>
-          <p class="body-text" data-i18n="about.interests_body">
-            Applied AI, robotics, quantum AI, energy systems, brain–computer interfaces, and compute hardware.
+          <p class="body-text">
+            AI in robotics, quantum AI, energy systems, brain–computer interfaces, and hardware.
           </p>
         </div>
 
@@ -411,26 +365,16 @@
 
         <div class="section-block">
           <div class="section-heading">
-            <h2 data-i18n="about.academic_title">Academic background</h2>
+            <h2>Academic background</h2>
           </div>
-          <ul class="timeline">
-            <li>
-              <div class="timeline-role" data-i18n="about.academic_ds_title">
-                Engineering degree in Data Science — Ensai, Rennes
-              </div>
-              <div class="timeline-meta" data-i18n="about.academic_ds_meta">
-                Ensai, Rennes, France (2012–2014). Focus on efficient architectures for multi-modal learning and large-scale training.
-              </div>
-            </li>
-            <li>
-              <div class="timeline-role" data-i18n="about.academic_cs_title">
-                Engineering degree in Computer Science and Applied Mathematics — FSTT
-              </div>
-              <div class="timeline-meta" data-i18n="about.academic_cs_meta">
-                FSTT (2007–2012). Focused on optimization, distributed systems, and full-stack software development.
-              </div>
-            </li>
-          </ul>
+          <p class="body-text">
+            Engineering degree in Data Science (ENSAI, 2012–2014), with a focus on efficient architectures for multi‑modal
+            learning and large-scale training.
+          </p>
+          <p class="body-text">
+            Engineering degree in Computer Science and Applied Mathematics (FSTT, 2007–2012), focused on optimization,
+            distributed systems, and full‑stack software development.
+          </p>
         </div>
 
       </div>
@@ -438,12 +382,12 @@
       <aside>
         <div class="section-block">
           <div class="section-heading">
-            <h2 data-i18n="about.current_title">Current roles</h2>
+            <h2>Current roles</h2>
           </div>
           <ul class="timeline">
             <li>
-              <div class="timeline-role" data-i18n="about.current_role_title">Chief AI Scientist, AKIOUD AI</div>
-              <div class="timeline-meta" data-i18n="about.current_role_meta">
+              <div class="timeline-role">Chief AI Scientist, AKIOUD AI</div>
+              <div class="timeline-meta">
                 Leading research and product on vendor‑neutral runtime and control layers that make agentic AI
                 governable, observable, and operable in production.
               </div>
@@ -453,68 +397,32 @@
 
         <div class="section-block">
           <div class="section-heading">
-            <h2 data-i18n="about.previous_title">Previous experience</h2>
+            <h2>Previous experience</h2>
           </div>
           <ul class="timeline">
             <li>
-              <div class="timeline-role" data-i18n="about.prev_merci_title">Lead Data Scientist, Merci Jack</div>
-              <div class="timeline-meta" data-i18n="about.prev_merci_meta">Multimodal models and edge deployment.</div>
+              <div class="timeline-role">Lead Data Scientist, Merci Jack</div>
+              <div class="timeline-meta">Multimodal models and edge deployment.</div>
             </li>
             <li>
-              <div class="timeline-role" data-i18n="about.prev_sg_title">Lead Data Scientist, Société Générale</div>
-              <div class="timeline-meta" data-i18n="about.prev_sg_meta">Fraud, churn, and workflow automation at scale.</div>
+              <div class="timeline-role">Lead Data Scientist, Société Générale</div>
+              <div class="timeline-meta">Fraud, churn, and workflow automation at scale.</div>
             </li>
           </ul>
         </div>
 
         <div class="section-block">
           <div class="section-heading">
-            <h2 data-i18n="about.patents_title">Patents (filed)</h2>
+            <h2>Patents (filed)</h2>
           </div>
-          <ul class="timeline">
-            <li>
-              <div class="timeline-role" data-i18n="about.patent1_title">Reconfigurable physically isolated AI orchestration system</div>
-              <div class="timeline-meta" data-i18n="about.patent1_meta">
-                Filed with OMPIC (Dec 2025, under examination): multi-layer cryptographic deactivation and physically isolated execution zones for high-security AI workloads.
-              </div>
-            </li>
-            <li>
-              <div class="timeline-role" data-i18n="about.patent2_title">Legal-grade cryptographic proof for multi-agent AI systems</div>
-              <div class="timeline-meta" data-i18n="about.patent2_meta">
-                Filed with INPI (Jan 2026, under examination): automatic generation of legally admissible cryptographic traces using state-backed digital identity and qualified timestamps.
-              </div>
-            </li>
-          </ul>
+          <p class="body-text">
+            Two patents filed with OMPIC (Dec 2025, under examination and not yet published): (1) SYSTÈME D'ORCHESTRATION D'INTELLIGENCE ARTIFICIELLE À ISOLATION PHYSIQUE RECONFIGURABLE PAR DÉSACTIVATION CRYPTOGRAPHIQUE CONDITIONNELLE MULTI-COUCHES, (2) Procédé et système de génération automatique de preuve cryptographique à valeur probante légale pour l'exécution d'un système multi-agents d'intelligence artificielle.
+          </p>
         </div>
 
         <div class="section-block">
           <div class="section-heading">
-            <h2 data-i18n="about.community_title">Community &amp; activities</h2>
-          </div>
-          <ul class="timeline">
-            <li>
-              <div class="timeline-role" data-i18n="about.gdg_title">Member, Google Developer Group</div>
-              <div class="timeline-meta" data-i18n="about.gdg_meta">
-                Participating in Google Developer Group events and discussions around AI and developer tooling.
-              </div>
-            </li>
-            <li>
-              <div class="timeline-role" data-i18n="about.mentor_title">NLP Mentor, DeepLearning.AI</div>
-              <div class="timeline-meta" data-i18n="about.mentor_meta">
-                Mentoring learners in natural language processing as part of DeepLearning.AI programs led by Andrew Ng.
-              </div>
-            </li>
-            <li>
-              <div class="timeline-role" data-i18n="about.horse_title">Horse rider, Bayard UCPA Vincennes</div>
-              <div class="timeline-meta" data-i18n="about.horse_meta">
-                Regular equestrian practice at Bayard UCPA Vincennes.
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="section-block">
-          <div class="section-heading">
-            <h2 data-i18n="about.contact_title">Contact</h2>
+            <h2>Contact</h2>
           </div>
           <div class="social-inline">
             <a href="mailto:contact@ajliouat.com">Email</a>
@@ -522,30 +430,13 @@
             <a href="https://www.linkedin.com/in/a-jliouat/" target="_blank">LinkedIn</a>
             <a href="https://github.com/ajliouat" target="_blank">GitHub</a>
           </div>
-          <p class="contact-note" data-i18n="about.contact_note">
+          <p class="contact-note">
             For collaborations and advisory work, email is usually the fastest way to reach me.
           </p>
         </div>
       </aside>
     </section>
   </main>
-  <footer class="site-footer">
-    <div class="site-footer-inner">
-      <div class="site-footer-left">
-        <span class="site-footer-brand">Abdeljalil Jliouat</span>
-        <span>Building production AI systems across LLMs, robotics, quantum, and energy.</span>
-      </div>
-      <div class="site-footer-right">
-        <span>Based in Paris · Available across Europe and remote</span>
-        <a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a>
-      </div>
-    </div>
-  </footer>
-  <script src="/i18n/runtime.js"></script>
-  <script src="/i18n/nav.en.js"></script>
-  <script src="/i18n/nav.fr.js"></script>
-  <script src="/i18n/about.en.js"></script>
-  <script src="/i18n/about.fr.js"></script>
   <script src="/nav.js"></script>
 </body>
 </html>

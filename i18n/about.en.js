@@ -20,13 +20,13 @@
 
   t['about.academic_title'] = 'Academic background'
   t['about.academic_ds_title'] =
-    'Engineering degree in Data Science — ENSAI'
+    'Engineering degree in Data Science — ENSAI (2012–2014)'
   t['about.academic_ds_meta'] =
-    'Ensai, Rennes, France (2012–2014). Focus on efficient architectures for multi-modal learning and large-scale training.'
+    'Focus on efficient architectures for multi-modal learning and large-scale training.'
   t['about.academic_cs_title'] =
-    'Engineering degree in Computer Science and Applied Mathematics — FSTT'
+    'Engineering degree in Computer Science and Applied Mathematics — FSTT (2007–2012)'
   t['about.academic_cs_meta'] =
-    'FSTT (2007–2012). Focused on optimization, distributed systems, and full-stack software development.'
+    'Focused on optimization, distributed systems, and full-stack software development.'
 
   t['about.current_title'] = 'Current roles'
   t['about.current_role_title'] = 'Chief AI Scientist, AKIOUD AI, Paris'
