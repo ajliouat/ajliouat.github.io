@@ -18,6 +18,28 @@
   t['about.interests_body'] =
     "IA appliquée, robotique, IA quantique, systèmes énergétiques, interfaces cerveau–ordinateur et matériel de calcul."
 
+  t['about.profile_name'] = 'Abdeljalil Jliouat'
+  t['about.profile_role'] = "Ingénieur Deep Learning & fondateur dans l'IA"
+
+  t['about.stack_python'] = 'Python'
+  t['about.stack_pytorch'] = 'PyTorch'
+  t['about.stack_cuda'] = 'CUDA C++'
+  t['about.stack_triton'] = 'Triton'
+  t['about.stack_jax'] = 'JAX'
+  t['about.stack_mujoco'] = 'MuJoCo'
+  t['about.stack_pennylane'] = 'PennyLane'
+  t['about.stack_mne'] = 'MNE-Python'
+  t['about.stack_hf'] = 'Hugging Face'
+  t['about.stack_deepspeed'] = 'DeepSpeed'
+  t['about.stack_flashattn'] = 'FlashAttention'
+  t['about.stack_vllm'] = 'vLLM'
+  t['about.stack_nsight'] = 'Nsight Compute'
+  t['about.stack_docker'] = 'Docker'
+  t['about.stack_aws'] = 'AWS'
+  t['about.stack_wandb'] = 'wandb'
+  t['about.stack_mlflow'] = 'MLflow'
+  t['about.stack_fastapi'] = 'FastAPI'
+
   t['about.academic_title'] = 'Formation académique'
   t['about.academic_ds_title'] =
     "Diplôme d'ingénieur en Data Science — ENSAI (2012–2014)"
@@ -65,4 +87,9 @@
   t['about.contact_title'] = 'Contact'
   t['about.contact_note'] =
     'Pour les collaborations et missions de conseil, le courrier électronique reste le moyen le plus rapide pour me joindre.'
+
+  t['about.contact_email_label'] = 'E‑mail'
+  t['about.contact_x_label'] = 'X'
+  t['about.contact_linkedin_label'] = 'LinkedIn'
+  t['about.contact_github_label'] = 'GitHub'
 })()

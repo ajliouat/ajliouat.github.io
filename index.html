@@ -357,15 +357,15 @@
         <p data-i18n="home.focus_subtitle">Building at the intersection of six domains.</p>
       </div>
       <div class="pill-grid">
-        <span class="pill">Large language models</span>
-        <span class="pill">CUDA / GPU compute</span>
-        <span class="pill">Robotic manipulation</span>
-        <span class="pill">Reinforcement learning</span>
-        <span class="pill">Brain–computer interfaces</span>
-        <span class="pill">Quantum AI</span>
-        <span class="pill">Energy systems</span>
-        <span class="pill">Transformer architectures</span>
-        <span class="pill">MLOps &amp; deployment</span>
+        <span class="pill" data-i18n="home.focus_pill_llm">Large language models</span>
+        <span class="pill" data-i18n="home.focus_pill_cuda">CUDA / GPU compute</span>
+        <span class="pill" data-i18n="home.focus_pill_robotics">Robotic manipulation</span>
+        <span class="pill" data-i18n="home.focus_pill_rl">Reinforcement learning</span>
+        <span class="pill" data-i18n="home.focus_pill_bci">Brain–computer interfaces</span>
+        <span class="pill" data-i18n="home.focus_pill_quantum">Quantum AI</span>
+        <span class="pill" data-i18n="home.focus_pill_energy">Energy systems</span>
+        <span class="pill" data-i18n="home.focus_pill_transformers">Transformer architectures</span>
+        <span class="pill" data-i18n="home.focus_pill_mlopss">MLOps &amp; deployment</span>
       </div>
     </section>
 
@@ -376,59 +376,59 @@
       </div>
       <div class="card-grid">
         <article class="card">
-          <h3 class="card-title">FlashKernel</h3>
-          <p class="card-body">
+          <h3 class="card-title" data-i18n="home.flash_title">FlashKernel</h3>
+          <p class="card-body" data-i18n="home.flash_body">
             Custom CUDA C++ and Triton kernels for transformer inference — tiled FlashAttention,
             fused GeLU, RoPE, paged KV-cache — benchmarked with Nsight Compute on T4.
           </p>
           <div class="card-tags">
-            <span class="card-tag">CUDA C++</span>
-            <span class="card-tag">Triton</span>
-            <span class="card-tag">Nsight Compute</span>
+            <span class="card-tag" data-i18n="home.flash_tag_cuda">CUDA C++</span>
+            <span class="card-tag" data-i18n="home.flash_tag_triton">Triton</span>
+            <span class="card-tag" data-i18n="home.flash_tag_nsight">Nsight Compute</span>
           </div>
-          <a href="/projects/flashkernel.html" class="card-link">View details →</a>
+          <a href="/projects/flashkernel.html" class="card-link" data-i18n="home.card_link">View details →</a>
         </article>
 
         <article class="card">
-          <h3 class="card-title">RoboLLM</h3>
-          <p class="card-body">
+          <h3 class="card-title" data-i18n="home.robo_title">RoboLLM</h3>
+          <p class="card-body" data-i18n="home.robo_body">
             Language-grounded robotic manipulation — VLM planner decomposes instructions into sub-tasks,
             RL policies execute each step in MuJoCo simulation.
           </p>
           <div class="card-tags">
-            <span class="card-tag">MuJoCo</span>
-            <span class="card-tag">PaliGemma-3B</span>
-            <span class="card-tag">SAC</span>
+            <span class="card-tag" data-i18n="home.robo_tag_mujoco">MuJoCo</span>
+            <span class="card-tag" data-i18n="home.robo_tag_paligemma">PaliGemma-3B</span>
+            <span class="card-tag" data-i18n="home.robo_tag_sac">SAC</span>
           </div>
-          <a href="/projects/robollm.html" class="card-link">View details →</a>
+          <a href="/projects/robollm.html" class="card-link" data-i18n="home.card_link">View details →</a>
         </article>
 
         <article class="card">
-          <h3 class="card-title">NeuroLLM</h3>
-          <p class="card-body">
+          <h3 class="card-title" data-i18n="home.neuro_title">NeuroLLM</h3>
+          <p class="card-body" data-i18n="home.neuro_body">
             Foundation model for neural signal decoding — pre-train a transformer on large-scale EEG,
             fine-tune for motor imagery BCI with frequency-band attention.
           </p>
           <div class="card-tags">
-            <span class="card-tag">PyTorch</span>
-            <span class="card-tag">MNE-Python</span>
-            <span class="card-tag">EEG</span>
+            <span class="card-tag" data-i18n="home.neuro_tag_pytorch">PyTorch</span>
+            <span class="card-tag" data-i18n="home.neuro_tag_mne">MNE-Python</span>
+            <span class="card-tag" data-i18n="home.neuro_tag_eeg">EEG</span>
           </div>
-          <a href="/projects/neurollm.html" class="card-link">View details →</a>
+          <a href="/projects/neurollm.html" class="card-link" data-i18n="home.card_link">View details →</a>
         </article>
 
         <article class="card">
-          <h3 class="card-title">QuantumGrid</h3>
-          <p class="card-body">
+          <h3 class="card-title" data-i18n="home.quantum_title">QuantumGrid</h3>
+          <p class="card-body" data-i18n="home.quantum_body">
             Quantum-classical hybrid optimization for energy grids — QAOA and VQE applied to unit commitment
             on real ENTSO-E data, benchmarked against MILP solvers.
           </p>
           <div class="card-tags">
-            <span class="card-tag">PennyLane</span>
-            <span class="card-tag">QAOA/VQE</span>
-            <span class="card-tag">OR-Tools</span>
+            <span class="card-tag" data-i18n="home.quantum_tag_pennylane">PennyLane</span>
+            <span class="card-tag" data-i18n="home.quantum_tag_qaoa">QAOA/VQE</span>
+            <span class="card-tag" data-i18n="home.quantum_tag_ortools">OR-Tools</span>
           </div>
-          <a href="/projects/quantumgrid.html" class="card-link">View details →</a>
+          <a href="/projects/quantumgrid.html" class="card-link" data-i18n="home.card_link">View details →</a>
         </article>
       </div>
     </section>
@@ -440,16 +440,22 @@
       </div>
       <ul class="experience-list">
         <li>
-          <div class="experience-role">Chief AI Scientist, AKIOUD AI, Paris</div>
-          <div class="experience-meta">AI runtime, tooling, and safety for regulated and high-stakes systems.</div>
+          <div class="experience-role" data-i18n="home.exp1_role">Chief AI Scientist, AKIOUD AI, Paris</div>
+          <div class="experience-meta" data-i18n="home.exp1_meta">
+            AI runtime, tooling, and safety for regulated and high-stakes systems.
+          </div>
         </li>
         <li>
-          <div class="experience-role">Lead Data Scientist, Merci Jack, Paris</div>
-          <div class="experience-meta">Multimodal models and optimized inference on edge devices.</div>
+          <div class="experience-role" data-i18n="home.exp2_role">Lead Data Scientist, Merci Jack, Paris</div>
+          <div class="experience-meta" data-i18n="home.exp2_meta">
+            Multimodal models and optimized inference on edge devices.
+          </div>
         </li>
         <li>
-          <div class="experience-role">Lead Data Scientist, Société Générale, Paris</div>
-          <div class="experience-meta">End-to-end AI solutions for fraud detection, churn, and workflow automation.</div>
+          <div class="experience-role" data-i18n="home.exp3_role">Lead Data Scientist, Société Générale, Paris</div>
+          <div class="experience-meta" data-i18n="home.exp3_meta">
+            End-to-end AI solutions for fraud detection, churn, and workflow automation.
+          </div>
         </li>
       </ul>
     </section>
@@ -460,9 +466,24 @@
         <p data-i18n="home.contact_subtitle">Available for collaborations, advisory work, and technical leadership roles.</p>
       </div>
       <div class="contact-inline">
-        <span>Email: <a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a></span>
-        <span><a href="https://www.linkedin.com/in/a-jliouat/" target="_blank">LinkedIn</a></span>
-        <span><a href="https://github.com/ajliouat" target="_blank">GitHub</a></span>
+        <span>
+          <span data-i18n="home.contact_email_label">Email:</span>
+          <a href="mailto:contact@ajliouat.com" data-i18n="footer.email">contact@ajliouat.com</a>
+        </span>
+        <span>
+          <a
+            href="https://www.linkedin.com/in/a-jliouat/"
+            target="_blank"
+            data-i18n="home.contact_linkedin"
+          >
+            LinkedIn
+          </a>
+        </span>
+        <span>
+          <a href="https://github.com/ajliouat" target="_blank" data-i18n="home.contact_github">
+            GitHub
+          </a>
+        </span>
       </div>
     </section>
   </main>

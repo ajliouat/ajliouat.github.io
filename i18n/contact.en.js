@@ -19,5 +19,12 @@
   t['contact.help_title'] = 'Ways I can help'
   t['contact.help_body'] =
     'I work with teams at different stages of their AI journey, from early exploration to production systems.'
-})()
 
+  t['contact.link_email'] = 'Email'
+  t['contact.link_linkedin'] = 'LinkedIn'
+  t['contact.link_github'] = 'GitHub'
+
+  t['contact.help_item_systems'] = 'Designing and implementing ML systems and pipelines'
+  t['contact.help_item_opt'] = 'Optimizing training and inference for existing models'
+  t['contact.help_item_mlopss'] = 'Improving reliability, monitoring, and MLOps practices'
+})()

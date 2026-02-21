@@ -18,6 +18,28 @@
   t['about.interests_body'] =
     'Applied AI, robotics, quantum AI, energy systems, brain–computer interfaces, and compute hardware.'
 
+  t['about.profile_name'] = 'Abdeljalil Jliouat'
+  t['about.profile_role'] = 'Deep Learning Engineer & AI Founder'
+
+  t['about.stack_python'] = 'Python'
+  t['about.stack_pytorch'] = 'PyTorch'
+  t['about.stack_cuda'] = 'CUDA C++'
+  t['about.stack_triton'] = 'Triton'
+  t['about.stack_jax'] = 'JAX'
+  t['about.stack_mujoco'] = 'MuJoCo'
+  t['about.stack_pennylane'] = 'PennyLane'
+  t['about.stack_mne'] = 'MNE-Python'
+  t['about.stack_hf'] = 'Hugging Face'
+  t['about.stack_deepspeed'] = 'DeepSpeed'
+  t['about.stack_flashattn'] = 'FlashAttention'
+  t['about.stack_vllm'] = 'vLLM'
+  t['about.stack_nsight'] = 'Nsight Compute'
+  t['about.stack_docker'] = 'Docker'
+  t['about.stack_aws'] = 'AWS'
+  t['about.stack_wandb'] = 'wandb'
+  t['about.stack_mlflow'] = 'MLflow'
+  t['about.stack_fastapi'] = 'FastAPI'
+
   t['about.academic_title'] = 'Academic background'
   t['about.academic_ds_title'] =
     'Engineering degree in Data Science — ENSAI (2012–2014)'
@@ -63,4 +85,9 @@
   t['about.contact_title'] = 'Contact'
   t['about.contact_note'] =
     'For collaborations and advisory work, email is usually the fastest way to reach me.'
+
+  t['about.contact_email_label'] = 'Email'
+  t['about.contact_x_label'] = 'X'
+  t['about.contact_linkedin_label'] = 'LinkedIn'
+  t['about.contact_github_label'] = 'GitHub'
 })()
