@@ -19,10 +19,14 @@
     "IA appliquée, robotique, IA quantique, systèmes énergétiques, interfaces cerveau–ordinateur et matériel de calcul."
 
   t['about.academic_title'] = 'Formation académique'
-  t['about.academic_p1'] =
-    "Diplôme d'ingénieur en Data Science (Ensai, Rennes, France – 2012–2014), avec un focus sur les architectures efficaces pour l'apprentissage multi-modal et l'entraînement à grande échelle."
-  t['about.academic_p2'] =
-    "Diplôme d'ingénieur en Informatique et Mathématiques appliquées (FSTT, 2007–2012), avec une spécialisation en optimisation, systèmes distribués et développement logiciel full‑stack."
+  t['about.academic_ds_title'] =
+    "Diplôme d'ingénieur en Data Science — Ensai, Rennes"
+  t['about.academic_ds_meta'] =
+    "Ensai, Rennes, France (2012–2014). Focalisé sur les architectures efficaces pour l'apprentissage multi-modal et l'entraînement à grande échelle."
+  t['about.academic_cs_title'] =
+    "Diplôme d'ingénieur en Informatique et Mathématiques appliquées — FSTT"
+  t['about.academic_cs_meta'] =
+    "FSTT (2007–2012). Spécialisation en optimisation, systèmes distribués et développement logiciel full‑stack."
 
   t['about.current_title'] = 'Rôles actuels'
   t['about.current_role_title'] = 'Chief AI Scientist, AKIOUD AI'
@@ -47,8 +51,18 @@
   t['about.patent2_meta'] =
     "Brevet déposé auprès de l'INPI (jan. 2026, en instruction) : génération automatique de traces cryptographiques légalement opposables à partir d'une identité numérique étatique et d'un horodatage électronique qualifié."
 
+  t['about.community_title'] = 'Communauté et activités'
+  t['about.gdg_title'] = 'Membre, Google Developer Group'
+  t['about.gdg_meta'] =
+    "Participation aux événements Google Developer Group et échanges autour de l'IA et des outils pour développeurs."
+  t['about.mentor_title'] = 'Mentor NLP, DeepLearning.AI'
+  t['about.mentor_meta'] =
+    "Accompagnement d'apprenants en traitement du langage naturel dans le cadre des programmes DeepLearning.AI dirigés par Andrew Ng."
+  t['about.horse_title'] = 'Cavalier, Bayard UCPA Vincennes'
+  t['about.horse_meta'] =
+    'Pratique équestre régulière au sein de Bayard UCPA Vincennes.'
+
   t['about.contact_title'] = 'Contact'
   t['about.contact_note'] =
     'Pour les collaborations et missions de conseil, le courrier électronique reste le moyen le plus rapide pour me joindre.'
 })()
-

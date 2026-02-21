@@ -15,8 +15,9 @@
     }
     * { box-sizing: border-box; }
     body {
-      margin: 0; min-height: 100vh;
-      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -39,11 +40,30 @@
     .title { font-size: 30px; line-height: 1.15; letter-spacing: -0.03em; margin: 0 0 10px; color: #020617; }
     .subtitle { margin: 0 auto 12px; max-width: 640px; font-size: 15px; line-height: 1.6; color: var(--muted); }
     .meta { font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em; color: #9ca3af; }
-    .layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: flex-start; }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(220px, 260px);
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    .layout > .project-body {
+      order: 1;
+    }
+
+    .layout > .toc {
+      order: 2;
+      width: 100%;
+      max-width: 260px;
+    }
+
     .toc {
-      position: sticky; top: 84px; padding: 14px 14px 16px; border-radius: 14px;
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      background: radial-gradient(circle at top left, rgba(239, 246, 255, 0.9), #ffffff);
+      position: sticky;
+      top: 84px;
+      padding: 14px 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
       box-shadow: var(--shadow-sm);
     }
     .toc-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #9ca3af; margin-bottom: 8px; }
@@ -55,8 +75,11 @@
     }
     .toc-link:hover { background: rgba(226, 232, 240, 0.7); color: var(--text); transform: translateX(1px); }
     .project-body {
-      border-radius: 18px; background: radial-gradient(circle at top left, #f9fafb, #ffffff);
-      box-shadow: var(--shadow-md); border: 1px solid rgba(226, 232, 240, 0.95); padding: 22px 22px 20px;
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      padding: 22px 22px 20px;
     }
     .project-intro { margin-bottom: 18px; font-size: 14px; line-height: 1.7; color: var(--muted); }
     .tech-stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
@@ -71,7 +94,13 @@
     .section li + li { margin-top: 2px; }
     .benchmark-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; color: var(--muted); }
     .benchmark-table th, .benchmark-table td { padding: 6px 8px; border: 1px solid var(--border); text-align: left; }
-    .benchmark-table th { background: #f8fafc; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; }
+    .benchmark-table th {
+      background: rgba(148, 163, 184, 0.08);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 10px;
+    }
     .code-block {
       margin-top: 14px; border-radius: 14px;
       background: radial-gradient(circle at top left, #020617, #020617 40%, #020617 100%);
@@ -84,17 +113,40 @@
     .code-lang { text-transform: uppercase; letter-spacing: 0.14em; }
     pre { margin: 0; white-space: pre; }
     .mermaid-block {
-      margin-top: 14px; border-radius: 14px; border: 1px dashed rgba(148, 163, 184, 0.9);
-      background: radial-gradient(circle at 0% 0%, #f0f9ff, #eff6ff, #ffffff); padding: 14px; overflow-x: auto;
+      margin-top: 14px;
+      border-radius: 14px;
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      padding: 14px;
+      overflow-x: auto;
     }
-    .footer-actions { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; }
+    .footer-actions {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+    }
+
     .back-link {
-      text-decoration: none; color: #4b5563; padding: 6px 10px; border-radius: 999px;
-      border: 1px solid rgba(209, 213, 219, 0.9); background: #f9fafb;
-      display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
     }
-    .back-link:hover { background: #f3f4f6; transform: translateX(-1px); box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12); }
+
+    .back-link:hover {
+      background: rgba(148, 163, 184, 0.08);
+      transform: translateX(-1px);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+    }
     .github-link {
       text-decoration: none; color: #ffffff; background: linear-gradient(135deg, #111827, #020617);
       padding: 7px 13px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px;
@@ -232,10 +284,10 @@ def qaoa_circuit(gammas, betas, cost_h, n_layers):
   MILP --> Compare
   SA --> Compare
 
-  style QAOA fill:#ecfdf5,stroke:#059669
-  style VQE fill:#ecfdf5,stroke:#059669
-  style MILP fill:#eff6ff,stroke:#2563eb
-  style SA fill:#eff6ff,stroke:#2563eb</div>
+  style QAOA fill:#ecfdf5,stroke:#059669,color:#064e3b
+  style VQE fill:#ecfdf5,stroke:#059669,color:#064e3b
+  style MILP fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style SA fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
           </div>
         </section>
 

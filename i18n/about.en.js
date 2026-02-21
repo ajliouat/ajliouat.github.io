@@ -19,10 +19,14 @@
     'Applied AI, robotics, quantum AI, energy systems, brain–computer interfaces, and compute hardware.'
 
   t['about.academic_title'] = 'Academic background'
-  t['about.academic_p1'] =
-    'Engineering degree in Data Science (Ensai, Rennes, France - 2012–2014), with a focus on efficient architectures for multi-modal learning and large-scale training.'
-  t['about.academic_p2'] =
-    'Engineering degree in Computer Science and Applied Mathematics (FSTT, 2007–2012), focused on optimization, distributed systems, and full-stack software development.'
+  t['about.academic_ds_title'] =
+    'Engineering degree in Data Science — Ensai, Rennes'
+  t['about.academic_ds_meta'] =
+    'Ensai, Rennes, France (2012–2014). Focus on efficient architectures for multi-modal learning and large-scale training.'
+  t['about.academic_cs_title'] =
+    'Engineering degree in Computer Science and Applied Mathematics — FSTT'
+  t['about.academic_cs_meta'] =
+    'FSTT (2007–2012). Focused on optimization, distributed systems, and full-stack software development.'
 
   t['about.current_title'] = 'Current roles'
   t['about.current_role_title'] = 'Chief AI Scientist, AKIOUD AI'
@@ -43,8 +47,18 @@
   t['about.patent2_meta'] =
     'Filed with INPI (Jan 2026, under examination): automatic generation of legally admissible cryptographic traces using state-backed digital identity and qualified timestamps.'
 
+  t['about.community_title'] = 'Community & activities'
+  t['about.gdg_title'] = 'Member, Google Developer Group'
+  t['about.gdg_meta'] =
+    'Participating in Google Developer Group events and discussions around AI and developer tooling.'
+  t['about.mentor_title'] = 'NLP Mentor, DeepLearning.AI'
+  t['about.mentor_meta'] =
+    'Mentoring learners in natural language processing as part of DeepLearning.AI programs led by Andrew Ng.'
+  t['about.horse_title'] = 'Horse rider, Bayard UCPA Vincennes'
+  t['about.horse_meta'] =
+    'Regular equestrian practice at Bayard UCPA Vincennes.'
+
   t['about.contact_title'] = 'Contact'
   t['about.contact_note'] =
     'For collaborations and advisory work, email is usually the fastest way to reach me.'
 })()
-
