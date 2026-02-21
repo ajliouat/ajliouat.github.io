@@ -61,7 +61,7 @@
   t['about.prev_sg_title'] = 'Lead Data Scientist, Société Générale, Paris'
   t['about.prev_sg_meta'] = 'Fraud, churn, and workflow automation at scale.'
 
-  t['about.patents_title'] = 'Patents (filed)'
+  t['about.patents_title'] = 'Patents'
   t['about.patent1_title'] =
     'Reconfigurable physically isolated AI orchestration system with multi-layer conditional cryptographic deactivation'
   t['about.patent1_meta'] =

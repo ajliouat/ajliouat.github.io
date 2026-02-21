@@ -4,11 +4,11 @@
   var t = window.I18N.fr
 
   t['about.badge'] = 'Profil'
-  t['about.title'] = "Ingénieur deep learning et fondateur en IA"
+  t['about.title'] = "Ingénieur machine learning et Fondateur en IA"
   t['about.subtitle'] =
     "Travail à l'intersection de la conception de modèles, de l'optimisation et du déploiement pour transformer des idées de recherche en systèmes mis en production."
 
-  t['about.short_title'] = 'Bio courte'
+  t['about.short_title'] = 'Bio'
   t['about.short_p1'] =
     "Ingénieur en apprentissage automatique et fondateur en IA avec plus de 10 ans d'expérience dans la construction et la mise à l'échelle de systèmes d'IA en production pour la banque, les startups tech et les ONG. J'interviens de bout en bout, de la stratégie et la productisation jusqu'au déploiement à grande échelle."
   t['about.short_p2'] =
