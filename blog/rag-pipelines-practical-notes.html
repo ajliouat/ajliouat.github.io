@@ -1,0 +1,381 @@
+<!-- _includes/head.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical notes on RAG pipelines</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: inherit;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+      border-radius: 0.75rem;
+      background-color: #0b1120;
+      padding: 0.75rem;
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+  <main class="page">
+    <section class="section-header">
+      <div class="section-badge">RAG</div>
+      <h1 class="section-title">Practical notes on RAG pipelines</h1>
+      <p class="section-subtitle">
+        Retrieval-augmented generation is not a single pattern but a family of systems. The details of indexing,
+        scoring, and orchestration matter more than the buzzword.
+      </p>
+      <div class="post-meta">2025 · RAG · retrieval · routing</div>
+    </section>
+
+    <section class="toc">
+      <div class="toc-title">On this page</div>
+      <ul>
+        <li><a href="#retrieval-objective">Retrieval as an explicit objective</a></li>
+        <li><a href="#index-design">Index and chunking design</a></li>
+        <li><a href="#scoring-math">Scoring: a tiny bit of math</a></li>
+        <li><a href="#pipeline-pseudocode">Pipeline pseudocode</a></li>
+        <li><a href="#rag-mermaid">RAG mermaid schema</a></li>
+      </ul>
+    </section>
+
+    <section class="post-body">
+      <h2 id="retrieval-objective">Retrieval as an explicit objective</h2>
+      <p>
+        A useful way to think about RAG is as an optimisation problem, not just “attach a vector store”. For a query
+        q and document d, we want a retrieval function R that maximises the probability that the context actually
+        contains information needed to answer q.
+      </p>
+      <p>
+        A simple scoring function is
+      </p>
+      <pre><code>score(q, d) = sim(f(q), g(d))</code></pre>
+      <p>
+        where f and g are encoders and sim is usually cosine similarity. Production systems often blend multiple
+        signals (BM25, recency, metadata filters) instead of relying on a single score.
+      </p>
+
+      <h2 id="index-design">Index and chunking design</h2>
+      <p>
+        Index design is where most practical failures come from:
+      </p>
+      <ul>
+        <li>Chunking too small: the model sees fragments with no narrative structure.</li>
+        <li>Chunking too large: retrieval is cheap but the context window fills with mostly irrelevant text.</li>
+        <li>No separation between “reference” and “examples”: explanations and logs pollute the knowledge base.</li>
+      </ul>
+
+      <h2 id="scoring-math">Scoring: a tiny bit of math</h2>
+      <p>
+        Given a query embedding v and a set of document embeddings d₁,…,dₙ, cosine similarity is:
+      </p>
+      <pre><code>cos(v, dᵢ) = (v · dᵢ) / (∥v∥₂ ∥dᵢ∥₂)</code></pre>
+      <p>
+        In practice we pre-normalise vectors, so ranking reduces to a dot product. This is what FAISS and similar
+        libraries optimise.
+      </p>
+
+      <h2 id="pipeline-pseudocode">Pipeline pseudocode</h2>
+      <p>
+        A minimal but production-oriented RAG pipeline can be sketched as:
+      </p>
+      <div class="code-label">python</div>
+      <pre><code class="language-python">def answer(query, k=8):
+    q_vec = encode_query(query)
+    doc_ids, scores = vector_index.search(q_vec, top_k=k)
+    docs = fetch_documents(doc_ids)
+
+    prompt = build_prompt(query=query, documents=docs)
+    raw_answer = llm.generate(prompt)
+
+    grounded = verify_against_docs(raw_answer, docs)
+    return grounded</code></pre>
+
+      <h2 id="rag-mermaid">RAG mermaid schema</h2>
+      <p>
+        The structure of the system, independent of vendor choices, can be written as:
+      </p>
+    </section>
+      <div class="mermaid-block">
+        <div class="code-label">mermaid</div>
+        <div class="mermaid">flowchart LR
+  User["User query"] --> Encode["Query encoder"]
+  Encode --> Search["Vector index search"]
+  Search --> Docs["Retrieved documents"]
+  Docs --> Prompt["Prompt builder"]
+  User --> Prompt
+
+  Prompt --> LLM["LLM"]
+  LLM --> Answer["Grounded answer"]
+
+  Answer --> Checker["Verification and scoring"]
+  Checker --> Logs["Evaluations and logs"]</div>
+      </div>
+    </section>
+  </main>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>

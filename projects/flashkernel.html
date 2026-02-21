@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlashKernel — Custom CUDA Kernels for Transformer Inference</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #059669;
+      --accent-soft: #ecfdf5;
+      --code-bg: #0b1120;
+      --code-border: #1f2937;
+      --code-text: #e5e7eb;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page { max-width: 960px; margin: 0 auto; padding: 0 20px 64px; }
+
+    .header { text-align: center; padding-top: 40px; padding-bottom: 32px; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 9px; border-radius: 999px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.05);
+      color: #047857; font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bbf7d0, #16a34a);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.45);
+    }
+
+    .title {
+      font-size: 30px; line-height: 1.15; letter-spacing: -0.03em;
+      margin: 0 0 10px; color: #020617;
+    }
+
+    .subtitle {
+      margin: 0 auto 12px; max-width: 640px;
+      font-size: 15px; line-height: 1.6; color: var(--muted);
+    }
+
+    .meta {
+      font-size: 12px; text-transform: uppercase;
+      letter-spacing: 0.16em; color: #9ca3af;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 28px; align-items: flex-start;
+    }
+
+    .toc {
+      position: sticky; top: 84px; padding: 14px 14px 16px;
+      border-radius: 14px; border: 1px solid rgba(226, 232, 240, 0.9);
+      background: radial-gradient(circle at top left, rgba(239, 246, 255, 0.9), #ffffff);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .toc-title {
+      font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.14em; color: #9ca3af; margin-bottom: 8px;
+    }
+
+    .toc-list { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+    .toc-item + .toc-item { margin-top: 4px; }
+
+    .toc-link {
+      text-decoration: none; color: var(--muted); padding: 4px 6px;
+      border-radius: 6px; display: block;
+      transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+    }
+
+    .toc-link:hover {
+      background: rgba(226, 232, 240, 0.7); color: var(--text);
+      transform: translateX(1px);
+    }
+
+    .project-body {
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, #f9fafb, #ffffff);
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      padding: 22px 22px 20px;
+    }
+
+    .project-intro {
+      margin-bottom: 18px; font-size: 14px; line-height: 1.7; color: var(--muted);
+    }
+
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+
+    .tech-pill {
+      font-size: 11px; border-radius: 999px; padding: 3px 9px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(248, 250, 252, 0.8); color: #4b5563;
+    }
+
+    .section { margin-top: 14px; }
+
+    .section-title {
+      font-size: 13px; text-transform: uppercase;
+      letter-spacing: 0.16em; color: #9ca3af; margin: 0 0 6px;
+    }
+
+    .section p { margin: 0 0 8px; font-size: 14px; line-height: 1.7; color: var(--muted); }
+    .section ul { margin: 4px 0 6px 18px; padding: 0; font-size: 14px; color: var(--muted); }
+    .section li + li { margin-top: 2px; }
+
+    .benchmark-table {
+      width: 100%; border-collapse: collapse; margin: 8px 0;
+      font-size: 12px; color: var(--muted);
+    }
+
+    .benchmark-table th, .benchmark-table td {
+      padding: 6px 8px; border: 1px solid var(--border); text-align: left;
+    }
+
+    .benchmark-table th {
+      background: #f8fafc; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px;
+    }
+
+    .code-block {
+      margin-top: 14px; border-radius: 14px;
+      background: radial-gradient(circle at top left, #020617, #020617 40%, #020617 100%);
+      border: 1px solid var(--code-border); padding: 14px 14px 12px;
+      color: var(--code-text);
+      font-family: SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px; line-height: 1.7; overflow-x: auto;
+    }
+
+    .code-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 8px; color: #6b7280; font-size: 11px;
+    }
+
+    .code-lang { text-transform: uppercase; letter-spacing: 0.14em; }
+    pre { margin: 0; white-space: pre; }
+
+    .mermaid-block {
+      margin-top: 14px; border-radius: 14px;
+      border: 1px dashed rgba(148, 163, 184, 0.9);
+      background: radial-gradient(circle at 0% 0%, #f0f9ff, #eff6ff, #ffffff);
+      padding: 14px; overflow-x: auto;
+    }
+
+    .footer-actions {
+      margin-top: 20px; display: flex; justify-content: space-between;
+      align-items: center; gap: 12px; font-size: 13px;
+    }
+
+    .back-link {
+      text-decoration: none; color: #4b5563; padding: 6px 10px;
+      border-radius: 999px; border: 1px solid rgba(209, 213, 219, 0.9);
+      background: #f9fafb; display: inline-flex; align-items: center; gap: 6px;
+      transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .back-link:hover {
+      background: #f3f4f6; transform: translateX(-1px);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+    }
+
+    .github-link {
+      text-decoration: none; color: #ffffff;
+      background: linear-gradient(135deg, #111827, #020617);
+      padding: 7px 13px; border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.55);
+      font-size: 13px; font-weight: 500;
+      border: 1px solid rgba(15, 23, 42, 1);
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .github-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.75);
+    }
+
+    @media (max-width: 840px) {
+      .layout { grid-template-columns: minmax(0, 1fr); }
+      .toc { position: static; order: -1; }
+      .header { padding-top: 28px; padding-bottom: 22px; }
+    }
+
+    @media (max-width: 640px) {
+      .title { font-size: 24px; }
+      .footer-actions { flex-direction: column; align-items: stretch; }
+      .back-link, .github-link { justify-content: center; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+
+  <main class="page">
+    <header class="header">
+      <div class="badge"><span class="badge-dot"></span> Hardware/GPU × LLM</div>
+      <h1 class="title">FlashKernel</h1>
+      <p class="subtitle">
+        Custom CUDA C++ and Triton kernels for transformer inference, targeting the critical path
+        of attention computation, activation fusion, and KV-cache management — benchmarked with
+        Nsight Compute profiling on NVIDIA T4.
+      </p>
+      <div class="meta">CUDA · Triton · Nsight Compute · PyTorch</div>
+    </header>
+
+    <section class="layout">
+      <aside class="toc">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list">
+          <li class="toc-item"><a class="toc-link" href="#overview">Overview</a></li>
+          <li class="toc-item"><a class="toc-link" href="#kernels">Kernel inventory</a></li>
+          <li class="toc-item"><a class="toc-link" href="#approach">Technical approach</a></li>
+          <li class="toc-item"><a class="toc-link" href="#benchmarks">Benchmarks</a></li>
+          <li class="toc-item"><a class="toc-link" href="#architecture">Architecture diagram</a></li>
+        </ul>
+      </aside>
+
+      <article class="project-body">
+        <div class="project-intro" id="overview">
+          CUDA kernel engineering is the scarcest skill in ML infrastructure. This project implements
+          the core kernels of transformer inference from scratch — tiled attention with online softmax,
+          fused activations, rotary embeddings, and paged KV-cache — in both CUDA C++ and Triton.
+          Every kernel is profiled with NVIDIA Nsight Compute and benchmarked against PyTorch eager,
+          <code>torch.compile</code>, and cuBLAS baselines on a T4 GPU.
+        </div>
+
+        <div class="tech-stack">
+          <span class="tech-pill">CUDA C++</span>
+          <span class="tech-pill">Triton</span>
+          <span class="tech-pill">Nsight Compute</span>
+          <span class="tech-pill">PyTorch C++ Extensions</span>
+          <span class="tech-pill">CMake</span>
+          <span class="tech-pill">Docker</span>
+        </div>
+
+        <section class="section" id="kernels">
+          <h2 class="section-title">Kernel inventory</h2>
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>Kernel</th>
+                <th>CUDA C++</th>
+                <th>Triton</th>
+                <th>Key technique</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tiled FlashAttention</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>Online softmax, shared memory tiling</td>
+              </tr>
+              <tr>
+                <td>Fused GeLU + Linear</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>Eliminates HBM round-trip</td>
+              </tr>
+              <tr>
+                <td>RoPE Embedding</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>Precomputed sin/cos, fused with attention</td>
+              </tr>
+              <tr>
+                <td>Paged KV-Cache</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>Block-level virtual memory, page table</td>
+              </tr>
+              <tr>
+                <td>Parallel Reduction</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>Warp-level shuffle + shared memory tree</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="approach">
+          <h2 class="section-title">Technical approach</h2>
+          <ul>
+            <li><strong>Memory hierarchy mastery:</strong> Shared memory tiling sized for T4's 48 KB L1, bank conflict avoidance, register pressure tuning for SM 7.5.</li>
+            <li><strong>Warp-level programming:</strong> <code>__shfl_down_sync</code> reductions, cooperative groups for cross-warp synchronization.</li>
+            <li><strong>Kernel fusion:</strong> GeLU activation computed in-register between matmul and HBM write — eliminates one full memory round-trip.</li>
+            <li><strong>Profiling-driven:</strong> Every optimization guided by Nsight Compute metrics — occupancy, memory throughput, warp stall analysis, roofline position.</li>
+            <li><strong>End-to-end integration:</strong> Kernels plugged into GPT-2 (124M) via PyTorch C++ extensions, measuring real tokens/sec improvement.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="benchmarks">
+          <h2 class="section-title">Benchmarks</h2>
+          <p>
+            All measurements on NVIDIA T4 16 GB, CUDA 12.x, PyTorch 2.x.
+            Averaged over 100 warmup + 1000 timed iterations.
+          </p>
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>Kernel (seq=2048)</th>
+                <th>PyTorch Eager</th>
+                <th>torch.compile</th>
+                <th>Triton (ours)</th>
+                <th>CUDA C++ (ours)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>FlashAttention</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>Fused GeLU+Linear</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>RoPE</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>Paged KV-Cache</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size: 12px; color: #9ca3af; font-style: italic;">
+            Results will be populated from real benchmark runs. Nsight Compute profiles committed to repository.
+          </p>
+        </section>
+
+        <section class="section" id="architecture">
+          <h2 class="section-title">Architecture diagram</h2>
+          <div class="mermaid-block">
+            <div class="mermaid">flowchart TB
+  Input["Input tokens"] --> Embed["Token + RoPE embedding<br/><i>Custom CUDA kernel</i>"]
+  Embed --> Attn["Tiled FlashAttention<br/><i>Shared memory, online softmax</i>"]
+  Attn --> KV["Paged KV-Cache<br/><i>Block-level virtual memory</i>"]
+  KV --> Fused["Fused GeLU + Linear<br/><i>Single kernel, no HBM roundtrip</i>"]
+  Fused --> Norm["LayerNorm + Residual"]
+  Norm --> Next["Next layer / Output"]
+
+  style Embed fill:#ecfdf5,stroke:#059669
+  style Attn fill:#ecfdf5,stroke:#059669
+  style KV fill:#ecfdf5,stroke:#059669
+  style Fused fill:#ecfdf5,stroke:#059669</div>
+          </div>
+        </section>
+
+        <div class="footer-actions">
+          <a href="/projects/" class="back-link">
+            <span>←</span>
+            <span>Back to projects</span>
+          </a>
+          <a href="https://github.com/ajliouat/flashkernel" target="_blank" class="github-link">
+            <span>★</span>
+            <span>View on GitHub</span>
+          </a>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!-- _includes/head.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Observability for LLM systems beyond logs and metrics</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: inherit;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+      border-radius: 0.75rem;
+      background-color: #0b1120;
+      padding: 0.75rem;
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+  <main class="page">
+    <section class="section-header">
+      <div class="section-badge">Deep learning</div>
+      <h1 class="section-title">Observability for LLM systems beyond logs and metrics</h1>
+      <p class="section-subtitle">
+        Watching LLM systems means tracking behaviour, not just resources: evaluations, artefacts, and feedback loops
+        that make sense to humans.
+      </p>
+      <div class="post-meta">2025 · observability · evaluations</div>
+    </section>
+
+    <section class="toc">
+      <div class="toc-title">On this page</div>
+      <ul>
+        <li><a href="#from-telemetry">From telemetry to evidence</a></li>
+        <li><a href="#evaluations-signals">Evaluations as first-class signals</a></li>
+        <li><a href="#closing-loop">Closing the loop</a></li>
+        <li><a href="#observability-mermaid">Observability mermaid schema</a></li>
+      </ul>
+    </section>
+
+    <section class="post-body">
+      <p>
+        Traditional observability stacks were built for deterministic services. If latency goes up or error rates spike,
+        you know something is wrong and you can often trace it to a specific change.
+      </p>
+      <p>
+        LLM systems break this mental model. The core behaviour is stochastic, heavily data‑dependent, and often
+        mediated by orchestration layers, tools, and memory components. Looking only at logs and metrics is like
+        watching the engine temperature of a car without ever looking at the road.
+      </p>
+
+      <h2 id="from-telemetry">From telemetry to evidence</h2>
+      <p>
+        For LLM systems, the useful unit of observability is closer to “evidence” than raw telemetry. Each interaction
+        should leave behind artefacts that make it possible to answer simple questions:
+      </p>
+      <ul>
+        <li>What did the model see and in which context?</li>
+        <li>Which tools or retrieval steps did it use, and with what results?</li>
+        <li>How would this behaviour score against the evaluations we care about?</li>
+      </ul>
+
+      <h2 id="evaluations-signals">Evaluations as first‑class signals</h2>
+      <p>
+        Instead of manually reading samples, we can turn evaluations into structured signals that flow through the same
+        pipelines as metrics:
+      </p>
+      <ul>
+        <li>Task‑specific automatic checks (safety, hallucination, adherence to constraints).</li>
+        <li>Periodic human‑in‑the‑loop review, sampled from real traffic.</li>
+        <li>Scenario‑based test suites for changes to prompts, models, or tools.</li>
+      </ul>
+      <p>
+        These signals are what you actually want on dashboards and alerting rules, not just CPU or token counts.
+      </p>
+
+      <h2 id="closing-loop">Closing the loop</h2>
+      <p>
+        Observability is only useful if it drives action. In a mature LLM system, evidence and evaluations feed back
+        into:
+      </p>
+      <ul>
+        <li>Prompt and policy updates.</li>
+        <li>Model selection and routing decisions.</li>
+        <li>Retrieval and tool reliability improvements.</li>
+      </ul>
+      <p>
+        The long‑term goal is a control loop where behaviour is continuously measured and nudged toward the semantics
+        you care about, rather than manually patched after incidents.
+      </p>
+
+      <h2 id="observability-mermaid">Observability mermaid schema</h2>
+      <p>
+        A simple way to visualise the flow is as an evidence pipeline around the core model:
+      </p>
+      <div class="mermaid-block">
+        <div class="code-label">mermaid</div>
+        <div class="mermaid">flowchart LR
+  User["User request"] --> Orchestrator["LLM orchestrator"]
+  Orchestrator --> Model["LLM / tools"]
+  Model --> Output["Response"]
+
+  Orchestrator --> Evidence["Evidence collector"]
+  Evidence --> Eval["Automatic and human evaluations"]
+  Eval --> Metrics["Dashboards and alerts"]
+
+  Metrics --> Tuning["Prompt / policy / routing updates"]
+  Tuning --> Orchestrator</div>
+      </div>
+    </section>
+  </main>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>

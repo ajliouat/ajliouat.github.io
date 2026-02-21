@@ -1,0 +1,375 @@
+<!-- _includes/head.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foundations for deep learning in robotic systems</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: inherit;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+      border-radius: 0.75rem;
+      background-color: #0b1120;
+      padding: 0.75rem;
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+  <main class="page">
+    <section class="section-header">
+      <div class="section-badge">Robotics</div>
+      <h1 class="section-title">Foundations for deep learning in robotic systems</h1>
+      <p class="section-subtitle">
+        Robotics is where perception, control, and hardware meet. Deep learning gives us powerful building blocks, but
+        the system design still matters more than any single model.
+      </p>
+      <div class="post-meta">2025 · robotics · RL · vision‑language</div>
+    </section>
+
+    <section class="toc">
+      <div class="toc-title">On this page</div>
+      <ul>
+        <li><a href="#simulation-first">Simulation first</a></li>
+        <li><a href="#rl-with-vlm">Combining RL with vision-language models</a></li>
+        <li><a href="#hardware-constraint">Hardware as a constraint</a></li>
+        <li><a href="#robotics-mermaid">Robotics mermaid schema</a></li>
+      </ul>
+    </section>
+
+    <section class="post-body">
+      <p>
+        Most robotics stacks still separate perception and control: convolutional networks or transformers for vision,
+        plus a classical controller or planner downstream. End‑to‑end deep learning challenges that split, but it does
+        not remove the need for structure.
+      </p>
+      <p>
+        The interesting space is in the middle: systems where deep learning handles perception and representation, while
+        reinforcement learning and task‑specific controllers handle decision‑making.
+      </p>
+
+      <h2 id="simulation-first">Simulation first</h2>
+      <p>
+        High‑quality simulators are the backbone of most modern robotic learning setups. Tools like Isaac Gym make it
+        possible to run thousands of environments on a single GPU, which changes the economics of data collection and
+        experimentation.
+      </p>
+      <ul>
+        <li>Train policies on large numbers of variations instead of a single “canonical” environment.</li>
+        <li>Stress‑test policies under domain shifts before touching a real robot.</li>
+        <li>Treat sim‑to‑real as a deliberate part of the training curriculum, not a last step.</li>
+      </ul>
+
+      <h2 id="rl-with-vlm">Combining RL with vision‑language models</h2>
+      <p>
+        Vision‑language models and LLMs add a new interface for specifying tasks: natural language and examples instead
+        of low‑level reward engineering. They do not replace RL, but they can provide:
+      </p>
+      <ul>
+        <li>Richer goal descriptions and shaping signals.</li>
+        <li>Better state abstractions for high‑level planning.</li>
+        <li>Human‑understandable traces of what the system “thought” it was doing.</li>
+      </ul>
+
+      <h2 id="hardware-constraint">Hardware as a constraint, not an afterthought</h2>
+      <p>
+        The most elegant model is irrelevant if it cannot run on the target hardware. For robotic systems this means
+        designing networks, training loops, and runtime constraints together:
+      </p>
+      <ul>
+        <li>Latency and determinism budgets that reflect the real robot, not a desktop GPU.</li>
+        <li>Deployment paths that go through TensorRT, ONNX, or custom kernels early in the design.</li>
+        <li>Instrumentation that tells you how close you are to the physical limits of the platform.</li>
+      </ul>
+      <p>
+        A deep learning stack for robotics is as much about engineering discipline as it is about models. The reward is
+        a system that can move through the world with some measure of reliability, not just a benchmark score.
+      </p>
+
+      <h2 id="robotics-mermaid">Robotics mermaid schema</h2>
+      <p>
+        One way to structure perception, policy learning, and deployment is:
+      </p>
+      <div class="mermaid-block">
+        <div class="code-label">mermaid</div>
+        <div class="mermaid">flowchart LR
+  DataSim["Simulated environments"] --> Replay["Replay buffer"]
+  Sensors["Real robot sensors"] --> Replay
+
+  Replay --> Policy["Policy network"]
+  Policy --> Actions["Low-level actions"]
+
+  Policy --> Eval["Evaluation and safety"]
+  Eval --> Deployer["Deployment pipeline"]
+
+  Deployer --> Robot["Robotic platform"]</div>
+      </div>
+    </section>
+  </main>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>

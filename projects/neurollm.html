@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NeuroLLM — Neural Signal Decoding via Transformer Pre-training</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #ffffff; --border: #e5e7eb;
+      --text: #0f172a; --muted: #6b7280; --accent: #059669;
+      --accent-soft: #ecfdf5; --code-bg: #0b1120;
+      --code-border: #1f2937; --code-text: #e5e7eb;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page { max-width: 960px; margin: 0 auto; padding: 0 20px 64px; }
+    .header { text-align: center; padding-top: 40px; padding-bottom: 32px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 9px; border-radius: 999px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.05);
+      color: #047857; font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bbf7d0, #16a34a);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.45);
+    }
+    .title { font-size: 30px; line-height: 1.15; letter-spacing: -0.03em; margin: 0 0 10px; color: #020617; }
+    .subtitle { margin: 0 auto 12px; max-width: 640px; font-size: 15px; line-height: 1.6; color: var(--muted); }
+    .meta { font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em; color: #9ca3af; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: flex-start; }
+    .toc {
+      position: sticky; top: 84px; padding: 14px 14px 16px; border-radius: 14px;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      background: radial-gradient(circle at top left, rgba(239, 246, 255, 0.9), #ffffff);
+      box-shadow: var(--shadow-sm);
+    }
+    .toc-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #9ca3af; margin-bottom: 8px; }
+    .toc-list { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+    .toc-item + .toc-item { margin-top: 4px; }
+    .toc-link {
+      text-decoration: none; color: var(--muted); padding: 4px 6px; border-radius: 6px; display: block;
+      transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+    }
+    .toc-link:hover { background: rgba(226, 232, 240, 0.7); color: var(--text); transform: translateX(1px); }
+    .project-body {
+      border-radius: 18px; background: radial-gradient(circle at top left, #f9fafb, #ffffff);
+      box-shadow: var(--shadow-md); border: 1px solid rgba(226, 232, 240, 0.95); padding: 22px 22px 20px;
+    }
+    .project-intro { margin-bottom: 18px; font-size: 14px; line-height: 1.7; color: var(--muted); }
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+    .tech-pill {
+      font-size: 11px; border-radius: 999px; padding: 3px 9px;
+      border: 1px solid rgba(148, 163, 184, 0.6); background: rgba(248, 250, 252, 0.8); color: #4b5563;
+    }
+    .section { margin-top: 14px; }
+    .section-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.16em; color: #9ca3af; margin: 0 0 6px; }
+    .section p { margin: 0 0 8px; font-size: 14px; line-height: 1.7; color: var(--muted); }
+    .section ul { margin: 4px 0 6px 18px; padding: 0; font-size: 14px; color: var(--muted); }
+    .section li + li { margin-top: 2px; }
+    .benchmark-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; color: var(--muted); }
+    .benchmark-table th, .benchmark-table td { padding: 6px 8px; border: 1px solid var(--border); text-align: left; }
+    .benchmark-table th { background: #f8fafc; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; }
+    .mermaid-block {
+      margin-top: 14px; border-radius: 14px; border: 1px dashed rgba(148, 163, 184, 0.9);
+      background: radial-gradient(circle at 0% 0%, #f0f9ff, #eff6ff, #ffffff); padding: 14px; overflow-x: auto;
+    }
+    .footer-actions { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; }
+    .back-link {
+      text-decoration: none; color: #4b5563; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(209, 213, 219, 0.9); background: #f9fafb;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .back-link:hover { background: #f3f4f6; transform: translateX(-1px); box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12); }
+    .github-link {
+      text-decoration: none; color: #ffffff; background: linear-gradient(135deg, #111827, #020617);
+      padding: 7px 13px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.55); font-size: 13px; font-weight: 500;
+      border: 1px solid rgba(15, 23, 42, 1); transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+    .github-link:hover { transform: translateY(-1px); box-shadow: 0 18px 40px rgba(15, 23, 42, 0.75); }
+    @media (max-width: 840px) { .layout { grid-template-columns: minmax(0, 1fr); } .toc { position: static; order: -1; } }
+    @media (max-width: 640px) { .title { font-size: 24px; } .footer-actions { flex-direction: column; align-items: stretch; } .back-link, .github-link { justify-content: center; width: 100%; } }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+
+  <main class="page">
+    <header class="header">
+      <div class="badge"><span class="badge-dot"></span> BCI × LLM × GPU</div>
+      <h1 class="title">NeuroLLM</h1>
+      <p class="subtitle">
+        A foundation model approach to EEG decoding: pre-train a small transformer on large-scale clinical
+        EEG data, then fine-tune for motor imagery classification with a custom frequency-band attention kernel.
+      </p>
+      <div class="meta">PyTorch · MNE-Python · CUDA · EEG</div>
+    </header>
+
+    <section class="layout">
+      <aside class="toc">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list">
+          <li class="toc-item"><a class="toc-link" href="#overview">Overview</a></li>
+          <li class="toc-item"><a class="toc-link" href="#datasets">Datasets</a></li>
+          <li class="toc-item"><a class="toc-link" href="#approach">Technical approach</a></li>
+          <li class="toc-item"><a class="toc-link" href="#benchmarks">Benchmarks</a></li>
+          <li class="toc-item"><a class="toc-link" href="#architecture">Architecture diagram</a></li>
+        </ul>
+      </aside>
+
+      <article class="project-body">
+        <div class="project-intro" id="overview">
+          Brain-computer interfaces traditionally rely on hand-crafted features (CSP, band-power) fed into
+          classical classifiers. Foundation models for neural signals — pre-trained transformers that learn
+          general EEG representations — are an active research frontier (LaBraM, BrainBERT, NeurIPS 2023-2024).
+          NeuroLLM demonstrates that even a small model (~10M params) pre-trained on TUH EEG data can improve
+          over standard BCI baselines, with a custom CUDA kernel for EEG-specific frequency-band attention.
+        </div>
+
+        <div class="tech-stack">
+          <span class="tech-pill">PyTorch</span>
+          <span class="tech-pill">MNE-Python</span>
+          <span class="tech-pill">CUDA C++</span>
+          <span class="tech-pill">Triton</span>
+          <span class="tech-pill">EEG / BCI</span>
+          <span class="tech-pill">Transformers</span>
+        </div>
+
+        <section class="section" id="datasets">
+          <h2 class="section-title">Datasets</h2>
+          <table class="benchmark-table">
+            <thead><tr><th>Dataset</th><th>Use</th><th>Size</th><th>Details</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>TUH EEG Corpus</td>
+                <td>Pre-training</td>
+                <td>~25K sessions</td>
+                <td>Clinical EEG, self-supervised masked channel modeling</td>
+              </tr>
+              <tr>
+                <td>BCI Competition IV 2a</td>
+                <td>Fine-tuning + eval</td>
+                <td>9 subjects × 576 trials</td>
+                <td>4-class motor imagery (left/right hand, feet, tongue)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section" id="approach">
+          <h2 class="section-title">Technical approach</h2>
+          <ul>
+            <li><strong>Patch embedding:</strong> EEG channels split into 200ms temporal windows → tokens. Learnable channel + temporal position encodings capture electrode topology.</li>
+            <li><strong>Pre-training:</strong> Masked Channel Modeling — randomly mask 30% of channel-time patches, reconstruct from context. Self-supervised, no labels needed.</li>
+            <li><strong>Frequency-band attention:</strong> Custom attention mechanism that decomposes patches into frequency bands (delta, theta, alpha, beta, gamma) and applies band-specific attention biases. Implemented as a fused CUDA kernel.</li>
+            <li><strong>Fine-tuning:</strong> [CLS] token → MLP → 4-class softmax. Session 1 train, Session 2 test (standard BCI protocol).</li>
+            <li><strong>Baselines:</strong> CSP+SVM (hand-crafted features), EEGNet (compact CNN), vanilla transformer (same arch, no pre-training).</li>
+          </ul>
+        </section>
+
+        <section class="section" id="benchmarks">
+          <h2 class="section-title">Benchmarks</h2>
+          <p>Per-subject accuracy across 9 subjects. Session 1 → train, Session 2 → test.</p>
+          <table class="benchmark-table">
+            <thead><tr><th>Method</th><th>Avg Accuracy</th><th>Cohen's Kappa</th><th>Parameters</th></tr></thead>
+            <tbody>
+              <tr><td>CSP + SVM</td><td>~65-70% (lit.)</td><td>—</td><td>N/A</td></tr>
+              <tr><td>EEGNet</td><td>~70-75% (lit.)</td><td>—</td><td>2.6K</td></tr>
+              <tr><td>Vanilla Transformer</td><td>—</td><td>—</td><td>~10M</td></tr>
+              <tr><td><strong>NeuroLLM (ours)</strong></td><td><strong>—</strong></td><td><strong>—</strong></td><td><strong>~10M</strong></td></tr>
+            </tbody>
+          </table>
+          <p style="font-size: 12px; color: #9ca3af; font-style: italic;">
+            Results will be populated from real training runs. Attention heatmaps over electrode positions committed to repository.
+          </p>
+        </section>
+
+        <section class="section" id="architecture">
+          <h2 class="section-title">Architecture diagram</h2>
+          <div class="mermaid-block">
+            <div class="mermaid">flowchart TB
+  EEG["EEG Signal<br/><i>22 channels × 1000 samples</i>"] --> Patch["Patch Embedding<br/><i>Channel × time → tokens</i>"]
+  Patch --> Pos["Position + Channel Encoding<br/><i>Electrode topology</i>"]
+  Pos --> Pretrain{"Pre-trained?"}
+  Pretrain -->|Yes| Encoder["Transformer Encoder<br/><i>6 layers, freq-band attention</i><br/><i>Custom CUDA kernel</i>"]
+  Pretrain -->|No| Encoder
+  Encoder --> CLS["[CLS] Token"]
+  CLS --> Head["Classification Head<br/><i>MLP → 4 classes</i>"]
+  Head --> Output["Motor Imagery Class<br/><i>Left/Right/Feet/Tongue</i>"]
+
+  style Encoder fill:#ecfdf5,stroke:#059669
+  style Head fill:#ecfdf5,stroke:#059669</div>
+          </div>
+        </section>
+
+        <div class="footer-actions">
+          <a href="/projects/" class="back-link"><span>←</span><span>Back to projects</span></a>
+          <a href="https://github.com/ajliouat/neurollm" target="_blank" class="github-link"><span>★</span><span>View on GitHub</span></a>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>

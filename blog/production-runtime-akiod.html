@@ -1,0 +1,369 @@
+<!-- _includes/head.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Designing a runtime layer for governed, vendor‑neutral AI</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: inherit;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+      border-radius: 0.75rem;
+      background-color: #0b1120;
+      padding: 0.75rem;
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+  <main class="page">
+    <section class="section-header">
+      <div class="section-badge">Infrastructure</div>
+      <h1 class="section-title">Designing a runtime layer for governed, vendor‑neutral AI</h1>
+      <p class="section-subtitle">
+        Moving from “answers” to “actions” means treating governance, evidence, and cost semantics as first‑class
+        design constraints, not afterthoughts.
+      </p>
+      <div class="post-meta">2025 · runtime / control layer · AKIOUD AI</div>
+    </section>
+
+    <section class="toc">
+      <div class="toc-title">On this page</div>
+      <ul>
+        <li><a href="#why-runtime">Why a dedicated runtime layer</a></li>
+        <li><a href="#principles-runtime">Principles for a boundary runtime</a></li>
+        <li><a href="#eu-first">EU-first as a proving ground</a></li>
+        <li><a href="#runtime-mermaid">Runtime mermaid schema</a></li>
+      </ul>
+    </section>
+
+    <section class="post-body">
+      <p>
+        Once models are good enough, the bottleneck in AI systems is no longer capability. It is execution: how you
+        decide which actions are allowed, how you produce evidence for those actions, and how you keep costs and
+        failure modes predictable in production.
+      </p>
+      <p>
+        At AKIOUD AI the focus is on this runtime layer – the control surface that sits between models and the
+        real world. It is where governance, observability, and vendor choice actually play out.
+      </p>
+
+      <h2 id="why-runtime">Why a dedicated runtime layer</h2>
+      <p>
+        In most stacks, “runtime” is an ad‑hoc mixture of API calls, bespoke business logic, and dashboards. This is
+        hard to reason about and even harder to standardize across teams or regulators.
+      </p>
+      <ul>
+        <li>Governance becomes a checklist instead of a programmable constraint system.</li>
+        <li>Evidence is scattered across logs, tickets, and screenshots.</li>
+        <li>Vendor strategy is dictated by the first model that ships, not long‑term control.</li>
+      </ul>
+
+      <h2 id="principles-runtime">Principles for a boundary runtime</h2>
+      <p>The runtime layer we work on is built around a few simple principles:</p>
+      <ul>
+        <li>Vendor‑neutral by design: the same abstraction must work across model providers and on‑prem models.</li>
+        <li>Governed actions, not raw prompts: every call is an action with policy, evidence, and rollback semantics.</li>
+        <li>Evidence as a product: artefacts that explain what happened, not only logs that something happened.</li>
+        <li>Runtime economics: cost and latency surfaces that can be reasoned about ahead of time.</li>
+      </ul>
+
+      <h2 id="eu-first">EU‑first as a proving ground</h2>
+      <p>
+        Europe, with its regulatory pressure and fragmented vendor landscape, is a useful proving ground. You cannot
+        ship AI systems here without a story for governance, safety, and reversibility. That pressure forces the
+        runtime to be more explicit, auditable, and portable.
+      </p>
+      <p>
+        The longer‑term goal is global by design: the same boundary infrastructure that works for a regulated European
+        bank should also serve a robotics lab or an industrial platform.
+      </p>
+
+      <h2 id="runtime-mermaid">Runtime mermaid schema</h2>
+      <p>
+        The high-level control surface can be sketched as a boundary between models and systems:
+      </p>
+      <div class="mermaid-block">
+        <div class="code-label">mermaid</div>
+        <div class="mermaid">flowchart LR
+  Client["Client applications"] --> Runtime["Runtime / control layer"]
+  Runtime --> Policy["Policy engine"]
+  Runtime --> Evidence["Evidence store"]
+  Runtime --> Router["Model and tool router"]
+
+  Router --> M1["LLM provider A"]
+  Router --> M2["LLM provider B"]
+  Router --> OnPrem["On-prem models"]
+
+  Policy -->|allow / deny| Runtime
+  Runtime --> Logs["Metrics and events"]</div>
+      </div>
+    </section>
+  </main>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>

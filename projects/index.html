@@ -1,516 +1,278 @@
-<!-- _includes/head.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Include Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     :root {
-      --primary-color: #2c3e50;
-      --text-color: #2c3e50;
-      --bg-color: #ffffff;
-      --border-color: #edf2f7;
-      --hover-color: #34495e;
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
     }
+
+    * { box-sizing: border-box; }
 
     body {
-      font-family: Arial, sans-serif;
-      color: var(--text-color);
-      line-height: 1.6;
-      background-color: var(--bg-color);
-      padding-top: 4rem;
-      font-size: 14px;
-      font-weight: 400;  /* Added base font weight */
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
     }
 
-    /* Base layout styles */
-    .navbar {
-      background-color: var(--bg-color);
-      border-bottom: 1px solid var(--border-color);
-      padding: 0.75rem 0;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    .nav-container {
-      max-width: 800px;
+    .page {
+      max-width: 960px;
       margin: 0 auto;
-      padding: 0 1.5rem;
+      padding: 3.5rem 1.5rem 4rem;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 2rem;
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
     }
 
-    .nav-link {
-      color: var(--text-color);
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(5, 150, 105, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #047857;
+      background-color: rgba(16, 185, 129, 0.05);
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bbf7d0, #16a34a);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 640px;
+      margin: 0.75rem auto 0;
       font-size: 14px;
-      text-decoration: none;
-      opacity: 0.8;
-      transition: opacity 0.2s ease;
-    }
-
-    .nav-link:hover {
-      opacity: 1;
-    }
-
-    .container {
-      max-width: 800px;
-      padding: 2rem 1.5rem;
-      margin: 0 auto;
-    }
-
-    /* Typography */
-    h1, h2, h3, h4 {
-      font-family: Arial, sans-serif;
-      font-weight: 600;
-      line-height: 1.3;
-    }
-
-    h1 {
-      font-size: 24px;
-      margin-bottom: 1.5rem;
-    }
-
-    h2 {
-      font-size: 20px;
-      margin: 2rem 0 1rem;
-    }
-
-    h3 {
-      font-size: 16px;
-      margin: 1.5rem 0 1rem;
-    }
-
-    h4 {
-      margin-bottom: 0.6rem;
-      font-size: 14px;
-      color: var(--text-color);
-      font-weight: 600;
-      line-height: 1.2;
-    }
-
-    p {
-      margin-bottom: 1rem;
       line-height: 1.7;
-      font-size: 14px;
-      font-weight: 400;  /* Added normal font weight for paragraphs */
+      color: var(--muted);
     }
 
-    .lead {
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      border-radius: 14px;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      background: radial-gradient(circle at top left, #f9fafb, #ffffff);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      padding: 1.25rem 1.35rem;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #047857;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-badge-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: #16a34a;
+    }
+
+    .card-title {
       font-size: 16px;
-      color: var(--text-color);
-      opacity: 0.9;
-      font-weight: 400;  /* Added normal font weight for lead text */
+      font-weight: 500;
+      margin: 0 0 0.4rem;
+      letter-spacing: -0.01em;
     }
 
-    /* Project & Card styles */
-    .project-card {
-      border: 1px solid var(--border-color);
-      padding: 1.25rem;
-      margin-bottom: 1.25rem;
-      transition: border-color 0.2s ease;
+    .card-body {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0 0 0.75rem;
     }
 
-    .project-card:hover {
-      border-color: var(--text-color);
-    }
-
-    .tech-stack {
+    .card-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0.75rem 0;
+      gap: 0.35rem;
+      margin-bottom: 0.75rem;
     }
 
-    .tech-tag {
-      background: var(--border-color);
-      padding: 0.25rem 0.5rem;
-      font-size: 12px;
-      border-radius: 2px;
+    .card-tag {
+      font-size: 11px;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(248, 250, 252, 0.8);
+      color: #4b5563;
     }
 
-    .btn-primary {
-      background-color: var(--text-color);
-      border: none;
-      padding: 0.5rem 0.75rem;
-      font-size: 14px;
-      border-radius: 2px;
-      transition: background-color 0.2s ease;
-    }
-
-    .btn-primary:hover {
-      background-color: var(--hover-color);
-    }
-
-    /* Contact & Social styles */
-    .contact-links {
+    .card-footer {
       display: flex;
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .contact-links a {
-      color: var(--text-color);
-      text-decoration: none;
-      font-size: 14px;
-      opacity: 0.8;
-      transition: opacity 0.2s ease;
-    }
-
-    .contact-links a:hover {
-      opacity: 1;
-    }
-
-    .social-icons {
-      margin-top: 20px; 
-      display: flex; 
-      gap: 15px; 
       align-items: center;
+      gap: 0.75rem;
     }
 
-    .social-icons i {
-      font-size: 20px;
-      color: var(--primary-color) !important;
-      transition: color 0.3s ease;
-    }
-
-    .social-icons i:hover {
-      color: var(--hover-color) !important;
-    }
-
-    .social-icons a {
-      text-decoration: none;
-    }
-
-    /* Publication styles */
-    .publication-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .publication-item {
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .publication-title {
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--accent);
       font-weight: 500;
-      font-size: 14px;
     }
 
-    .publication-authors {
-      font-size: 14px;
-      opacity: 0.8;
-      margin: 0.25rem 0;
+    .card-link:hover { text-decoration: none; opacity: 0.8; }
+
+    .card-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #9ca3af;
     }
 
-    .publication-venue {
-      font-size: 14px;
-      opacity: 0.7;
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
     }
 
-    /* Services styles */
-    .service-box {
-      padding: 1rem;
-      border-radius: 8px;
-      background: var(--bg-color);
-      margin-bottom: 1rem;
-    }
+    .status-building { background: #f59e0b; }
+    .status-planned { background: #94a3b8; }
 
-    .service-box ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .service-box ul li {
-      padding: 0.3rem 0;
-      font-size: 13px;
-      opacity: 0.9;
-      line-height: 1.4;
-    }
-
-    /* About page styles */
-    .profile-header {
-      display: flex; 
-      align-items: center; 
-      margin-bottom: 20px;
-    }
-
-    .profile-image {
-      width: 100px; 
-      height: auto; 
-      border-radius: 50%; 
-      margin-right: 20px;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
-
-      h1 {
-        font-size: 22px;
-      }
-
-      .nav-container {
-        padding: 0 1rem;
-      }
-
-      .nav-links {
-        gap: 1rem;
-      }
+    @media (max-width: 720px) {
+      .page { padding-inline: 1.25rem; padding-top: 3rem; }
+      .section-title { font-size: 24px; }
+      .card-grid { grid-template-columns: minmax(0, 1fr); }
     }
   </style>
 </head>
 <body>
-  <!-- _includes/header.html -->
-<nav class="navbar">
-  <div class="nav-container">
-    <div class="nav-links">
-      <a href="/" class="nav-link">Home</a>
-      <a href="/about" class="nav-link">About</a>
-      <a href="/projects" class="nav-link">Projects</a>
-      <a href="/contact" class="nav-link">Contact</a>
-    </div>
-  </div>
-</nav>
-  <div class="container">
-    <div class="container">
-  <h1>Projects</h1>
-  
-  <!-- Category headers with clean styling -->
-  <style>
-    .category-header {
-      margin-top: 2.5rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--border-color);
-      font-weight: 600;
-      color: var(--text-color);
-    }
-    
-    .project-description {
-      font-size: 14px;
-      margin-bottom: 1rem;
-      line-height: 1.5;
-    }
-  </style>
-  
-  <!-- Model Architecture & Development -->
-  <h2 class="category-header">Model Architecture &amp; Development</h2>
-  <div class="row">
-    <!-- Advanced Image Classification -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Advanced Image Classification</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">PyTorch</span>
-          <span class="tech-tag">Hugging Face</span>
-          <span class="tech-tag">TensorFlow</span>
-        </div>
-        <p class="project-description">Implementation of state-of-the-art image classification model using Vision Transformers (ViT) with high accuracy on benchmark datasets.</p>
-        <a href="/projects/project-1-advanced-image-classification" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-    <!-- Neural Architecture Search -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Neural Architecture Search</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">PyTorch</span>
-          <span class="tech-tag">Ray</span>
-          <span class="tech-tag">CUDA</span>
-        </div>
-        <p class="project-description">Automated machine learning framework for discovering optimal neural network architectures using reinforcement learning algorithms.</p>
-        <a href="/projects/project-13-neural-architecture" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-    <!-- Real-Time Object Detection -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Real-Time Object Detection</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">OpenCV</span>
-          <span class="tech-tag">YOLOv8</span>
-          <span class="tech-tag">TensorFlow</span>
-        </div>
-        <p class="project-description">Novel transformer architecture for real-time object detection with optimized inference pipeline for autonomous driving applications.</p>
-        <a href="/projects/project-2-real-time-detection" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-    <!-- LLM Fine-tuning -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>LLM Fine-tuning Optimization</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">PyTorch</span>
-          <span class="tech-tag">Transformers</span>
-          <span class="tech-tag">PEFT</span>
-        </div>
-        <p class="project-description">Efficient fine-tuning techniques for large language models using parameter-efficient methods like LoRA and QLoRA with minimal computational resources.</p>
-        <a href="/projects/project-3-llm-finetuning" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Performance Optimization -->
-  <h2 class="category-header">Performance Optimization</h2>
-  <div class="row">
-    <!-- CUDA Optimization -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>CUDA Optimization</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">CUDA</span>
-          <span class="tech-tag">C++</span>
-          <span class="tech-tag">Triton</span>
-        </div>
-        <p class="project-description">Custom CUDA kernels and optimization techniques for deep learning operations with significant performance improvements for training speed.</p>
-        <a href="/projects/project-6-cuda-optimization" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-    <!-- Transformer Inference -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Transformer Inference Engine</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">TensorRT</span>
-          <span class="tech-tag">CUDA</span>
-          <span class="tech-tag">C++</span>
-        </div>
-        <p class="project-description">High-performance inference engine optimized for transformer models in production with kernel fusion and dynamic batching.</p>
-        <a href="/projects/project-7-transformer-inference" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-    <!-- Distributed Training -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Distributed Training Framework</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">PyTorch</span>
-          <span class="tech-tag">DeepSpeed</span>
-          <span class="tech-tag">Horovod</span>
-        </div>
-        <p class="project-description">Scalable training framework with data and model parallelism support for efficiently training large models.</p>
-        <a href="/projects/project-8-distributed-training" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-    <!-- Stable Diffusion Optimization -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Optimized Stable Diffusion Pipeline</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">PyTorch</span>
-          <span class="tech-tag">diffusers</span>
-          <span class="tech-tag">xFormers</span>
-          <span class="tech-tag">CUDA</span>
-        </div>
-        <p class="project-description">High-performance Stable Diffusion implementation with custom attention mechanisms and memory optimizations for efficient training and inference.</p>
-        <a href="/projects/project-9-stable-diffusion-optimization" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-  </div>
-  
-  <!-- MLOps & Deployment -->
-  <h2 class="category-header">MLOps &amp; Deployment</h2>
-  <div class="row">
-    <!-- MLOps Platform -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>MLOps Platform</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">Kubernetes</span>
-          <span class="tech-tag">MLflow</span>
-          <span class="tech-tag">Kubeflow</span>
-        </div>
-        <p class="project-description">Production-grade MLOps infrastructure with automated training and deployment pipelines for the complete machine learning lifecycle.</p>
-        <a href="/projects/project-5-mlops-platform" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-    <!-- Mobile ML Pipeline -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Mobile-First ML Pipeline</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">TFLite</span>
-          <span class="tech-tag">CoreML</span>
-          <span class="tech-tag">ONNX</span>
-          <span class="tech-tag">Metal</span>
-        </div>
-        <p class="project-description">Efficient deployment of ML models on mobile devices with hardware-specific optimizations and battery-aware inference strategies.</p>
-        <a href="/projects/project-11-mobile-inference" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-    <!-- Video Understanding Pipeline -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Video Understanding Pipeline</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">TorchScript</span>
-          <span class="tech-tag">TensorRT</span>
-          <span class="tech-tag">OpenCV</span>
-        </div>
-        <p class="project-description">High-performance video processing system with real-time object tracking and action recognition optimized for edge devices.</p>
-        <a href="/projects/project-4-video-understanding" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Robotics & Reinforcement Learning -->
-  <h2 class="category-header">Robotics &amp; Reinforcement Learning</h2>
-  <div class="row">
-    <!-- RL for Robotics -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Deep RL for Robotic Manipulation</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">PyTorch</span>
-          <span class="tech-tag">Isaac Gym</span>
-          <span class="tech-tag">RLlib</span>
-          <span class="tech-tag">CUDA</span>
-        </div>
-        <p class="project-description">State-of-the-art reinforcement learning implementation for robotic manipulation tasks with GPU-accelerated physics simulation.</p>
-        <a href="/projects/project-10-rl-robotics" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-    
-    <!-- Multimodal Robot Learning -->
-    <div class="col-md-6">
-      <div class="project-card">
-        <h3>Multimodal Robot Learning</h3>
-        <div class="tech-stack">
-          <span class="tech-tag">PyTorch</span>
-          <span class="tech-tag">ROS2</span>
-          <span class="tech-tag">SAM</span>
-          <span class="tech-tag">LLMs</span>
-          <span class="tech-tag">Isaac Gym</span>
-        </div>
-        <p class="project-description">Advanced robotic system integrating vision-language models with RL for complex manipulation tasks with natural language control.</p>
-        <a href="/projects/project-12-multimodal-rl-robotics" class="btn btn-primary">Read More</a>
-      </div>
-    </div>
-    
-  </div>
-</div>
+  <div id="site-nav-root"></div>
+  <main class="page">
+    <section class="section-header">
+      <div class="section-badge">Flagship Projects</div>
+      <h1 class="section-title">Four deep systems across six interests</h1>
+      <p class="section-subtitle">
+        Each project spans 2–3 domains — LLM, robotics, quantum AI, energy systems, brain-computer interfaces, and GPU compute — with real benchmarks, profiling artifacts, and reproducible code.
+      </p>
+    </section>
 
-  </div>
+    <div class="card-grid">
+      <article class="card">
+        <div class="card-badge"><span class="card-badge-dot"></span> Hardware/GPU × LLM</div>
+        <h3 class="card-title">FlashKernel</h3>
+        <p class="card-body">
+          Custom CUDA C++ and Triton kernels for transformer inference — tiled FlashAttention,
+          fused GeLU+Linear, RoPE, paged KV-cache — benchmarked with Nsight Compute on NVIDIA T4.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">CUDA C++</span>
+          <span class="card-tag">Triton</span>
+          <span class="card-tag">Nsight Compute</span>
+          <span class="card-tag">PyTorch</span>
+        </div>
+        <div class="card-footer">
+          <a href="/projects/flashkernel.html" class="card-link">View details →</a>
+          <span class="card-status"><span class="status-dot status-building"></span> Building</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-badge"><span class="card-badge-dot"></span> LLM × Robotics × GPU</div>
+        <h3 class="card-title">RoboLLM</h3>
+        <p class="card-body">
+          Language-grounded robotic manipulation — a VLM planner decomposes natural language
+          instructions into sub-tasks, and RL-trained policies execute each step in MuJoCo simulation.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">MuJoCo</span>
+          <span class="card-tag">PaliGemma-3B</span>
+          <span class="card-tag">SAC/PPO</span>
+          <span class="card-tag">PyTorch</span>
+        </div>
+        <div class="card-footer">
+          <a href="/projects/robollm.html" class="card-link">View details →</a>
+          <span class="card-status"><span class="status-dot status-planned"></span> Planned</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-badge"><span class="card-badge-dot"></span> BCI × LLM × GPU</div>
+        <h3 class="card-title">NeuroLLM</h3>
+        <p class="card-body">
+          Foundation model for neural signal decoding — pre-train a transformer on large-scale EEG data,
+          fine-tune for motor imagery BCI with a custom frequency-band attention kernel.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">PyTorch</span>
+          <span class="card-tag">MNE-Python</span>
+          <span class="card-tag">CUDA</span>
+          <span class="card-tag">EEG</span>
+        </div>
+        <div class="card-footer">
+          <a href="/projects/neurollm.html" class="card-link">View details →</a>
+          <span class="card-status"><span class="status-dot status-planned"></span> Planned</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-badge"><span class="card-badge-dot"></span> Quantum AI × Energy</div>
+        <h3 class="card-title">QuantumGrid</h3>
+        <p class="card-body">
+          Quantum-classical hybrid optimization for energy grids — QAOA and VQE circuits applied to
+          unit commitment on real ENTSO-E data, benchmarked against classical MILP solvers.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">PennyLane</span>
+          <span class="card-tag">QAOA/VQE</span>
+          <span class="card-tag">OR-Tools</span>
+          <span class="card-tag">ENTSO-E</span>
+        </div>
+        <div class="card-footer">
+          <a href="/projects/quantumgrid.html" class="card-link">View details →</a>
+          <span class="card-status"><span class="status-dot status-planned"></span> Planned</span>
+        </div>
+      </article>
+    </div>
+  </main>
+  <script src="/nav.js"></script>
 </body>
 </html>

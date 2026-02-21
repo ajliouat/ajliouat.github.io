@@ -5,357 +5,290 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Include Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     :root {
-      --primary-color: #2c3e50;
-      --text-color: #2c3e50;
-      --bg-color: #ffffff;
-      --border-color: #edf2f7;
-      --hover-color: #34495e;
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      color: var(--text-color);
-      line-height: 1.6;
-      background-color: var(--bg-color);
-      padding-top: 4rem;
-      font-size: 14px;
-      font-weight: 400;  /* Added base font weight */
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
     }
 
-    /* Base layout styles */
-    .navbar {
-      background-color: var(--bg-color);
-      border-bottom: 1px solid var(--border-color);
-      padding: 0.75rem 0;
-      position: fixed;
-      width: 100%;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
     }
 
-    .nav-container {
-      max-width: 800px;
+    .nav-inner {
+      max-width: 960px;
       margin: 0 auto;
-      padding: 0 1.5rem;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
     .nav-links {
       display: flex;
-      gap: 2rem;
-    }
-
-    .nav-link {
-      color: var(--text-color);
-      font-size: 14px;
-      text-decoration: none;
-      opacity: 0.8;
-      transition: opacity 0.2s ease;
-    }
-
-    .nav-link:hover {
-      opacity: 1;
-    }
-
-    .container {
-      max-width: 800px;
-      padding: 2rem 1.5rem;
-      margin: 0 auto;
-    }
-
-    /* Typography */
-    h1, h2, h3, h4 {
-      font-family: Arial, sans-serif;
-      font-weight: 600;
-      line-height: 1.3;
-    }
-
-    h1 {
-      font-size: 24px;
-      margin-bottom: 1.5rem;
-    }
-
-    h2 {
-      font-size: 20px;
-      margin: 2rem 0 1rem;
-    }
-
-    h3 {
-      font-size: 16px;
-      margin: 1.5rem 0 1rem;
-    }
-
-    h4 {
-      margin-bottom: 0.6rem;
-      font-size: 14px;
-      color: var(--text-color);
-      font-weight: 600;
-      line-height: 1.2;
-    }
-
-    p {
-      margin-bottom: 1rem;
-      line-height: 1.7;
-      font-size: 14px;
-      font-weight: 400;  /* Added normal font weight for paragraphs */
-    }
-
-    .lead {
-      font-size: 16px;
-      color: var(--text-color);
-      opacity: 0.9;
-      font-weight: 400;  /* Added normal font weight for lead text */
-    }
-
-    /* Project & Card styles */
-    .project-card {
-      border: 1px solid var(--border-color);
-      padding: 1.25rem;
-      margin-bottom: 1.25rem;
-      transition: border-color 0.2s ease;
-    }
-
-    .project-card:hover {
-      border-color: var(--text-color);
-    }
-
-    .tech-stack {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0.75rem 0;
-    }
-
-    .tech-tag {
-      background: var(--border-color);
-      padding: 0.25rem 0.5rem;
-      font-size: 12px;
-      border-radius: 2px;
-    }
-
-    .btn-primary {
-      background-color: var(--text-color);
-      border: none;
-      padding: 0.5rem 0.75rem;
-      font-size: 14px;
-      border-radius: 2px;
-      transition: background-color 0.2s ease;
-    }
-
-    .btn-primary:hover {
-      background-color: var(--hover-color);
-    }
-
-    /* Contact & Social styles */
-    .contact-links {
-      display: flex;
       gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .contact-links a {
-      color: var(--text-color);
-      text-decoration: none;
-      font-size: 14px;
-      opacity: 0.8;
-      transition: opacity 0.2s ease;
-    }
-
-    .contact-links a:hover {
-      opacity: 1;
-    }
-
-    .social-icons {
-      margin-top: 20px; 
-      display: flex; 
-      gap: 15px; 
+      font-size: 13px;
       align-items: center;
     }
 
-    .social-icons i {
-      font-size: 20px;
-      color: var(--primary-color) !important;
-      transition: color 0.3s ease;
-    }
-
-    .social-icons i:hover {
-      color: var(--hover-color) !important;
-    }
-
-    .social-icons a {
+    .nav-link {
       text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
     }
 
-    /* Publication styles */
-    .publication-list {
-      list-style: none;
-      padding: 0;
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
     }
 
-    .publication-item {
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--border-color);
+    .nav-link:hover {
+      color: var(--text);
     }
 
-    .publication-title {
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
       font-weight: 500;
-      font-size: 14px;
     }
 
-    .publication-authors {
-      font-size: 14px;
-      opacity: 0.8;
-      margin: 0.25rem 0;
+    .nav-link-active::after {
+      transform: scaleX(1);
     }
 
-    .publication-venue {
-      font-size: 14px;
-      opacity: 0.7;
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
     }
 
-    /* Services styles */
-    .service-box {
-      padding: 1rem;
-      border-radius: 8px;
-      background: var(--bg-color);
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 640px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .section-block {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-heading {
       margin-bottom: 1rem;
     }
 
-    .service-box ul {
-      list-style: none;
-      padding: 0;
+    .section-heading h2 {
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
       margin: 0;
     }
 
-    .service-box ul li {
-      padding: 0.3rem 0;
+    .card {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 1.25rem 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 500;
+      margin: 0 0 0.4rem;
+    }
+
+    .card-body {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0 0 0.8rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
       font-size: 13px;
-      opacity: 0.9;
-      line-height: 1.4;
     }
 
-    /* About page styles */
-    .profile-header {
-      display: flex; 
-      align-items: center; 
-      margin-bottom: 20px;
+    .contact-links a {
+      color: var(--accent);
     }
 
-    .profile-image {
-      width: 100px; 
-      height: auto; 
-      border-radius: 50%; 
-      margin-right: 20px;
+    .grid-two {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: stretch;
     }
 
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
-
-      h1 {
-        font-size: 22px;
-      }
-
-      .nav-container {
-        padding: 0 1rem;
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
       }
 
       .nav-links {
         gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .grid-two {
+        grid-template-columns: minmax(0, 1fr);
       }
     }
   </style>
 </head>
 <body>
-  <!-- _includes/header.html -->
-<nav class="navbar">
-  <div class="nav-container">
-    <div class="nav-links">
-      <a href="/" class="nav-link">Home</a>
-      <a href="/about" class="nav-link">About</a>
-      <a href="/projects" class="nav-link">Projects</a>
-      <a href="/contact" class="nav-link">Contact</a>
-    </div>
-  </div>
-</nav>
-  <div class="container">
-    <div class="container">
-  <h1>Contact</h1>
-  <p class="lead">
-For AI/ML projects or consultations, reach out below.
-  </p>
+  <div id="site-nav-root"></div>
+  <main class="page">
+    <section class="section-header">
+      <div class="section-badge">Contact</div>
+      <h1 class="section-title">Get in touch</h1>
+      <p class="section-subtitle">
+        For AI/ML projects, collaboration, or advisory work, reach out using the channels below.
+      </p>
+    </section>
 
-  <style>
-    .contact-links a {
-      color: #2c3e50;
-      font-weight: 500;
-      text-decoration: none;
-      margin-right: 1.5rem;
-    }
-    
-    .contact-links a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <section class="grid-two">
+      <div>
+        <div class="section-block">
+          <div class="card">
+            <h2 class="card-title">Primary contact</h2>
+            <p class="card-body">
+              Email is the best way to reach me for new projects, technical discussions, and collaboration
+              opportunities.
+            </p>
+            <div class="contact-links">
+              <a href="mailto:contact@ajliouat.com">Email</a>
+              <a href="https://www.linkedin.com/in/a-jliouat/" target="_blank">LinkedIn</a>
+              <a href="https://github.com/ajliouat" target="_blank">GitHub</a>
+            </div>
+          </div>
+        </div>
 
-  <div class="project-card">
-    <h3>Get in Touch</h3>
-    <p>Available for ML engineering projects, consulting opportunities, and technical discussions.</p>
-    <div class="contact-links">
-      <a href="mailto:contact@ajliouat.com">Email</a>
-      <a href="https://www.linkedin.com/in/a-jliouat/" target="_blank">LinkedIn</a>
-      <a href="https://github.com/ajliouat" target="_blank">GitHub</a>
-    </div>
-  </div>
-
-  <div class="project-card mt-4">
-    <h3>Services</h3>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="service-box">
-          <h4>ML Development</h4>
-          <ul>
-            <li>Custom Models</li>
-            <li>Fine-tuning &amp; Optimization</li>
-            <li>MLOps Implementation</li>
-          </ul>
+        <div class="section-block">
+          <div class="card">
+            <h2 class="card-title">Location</h2>
+            <p class="card-body">
+              Based in Paris, available for onsite work across Europe and remote engagements worldwide.
+            </p>
+          </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="service-box">
-          <h4>Solutions Architecture</h4>
-          <ul>
-            <li>System Design</li>
-            <li>Performance Tuning</li>
-            <li>Scalability Solutions</li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-box">
-          <h4>Advisory</h4>
-          <ul>
-            <li>Technical Training</li>
-            <li>Code Reviews</li>
-            <li>Best Practices</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="project-card mt-4">
-    <h3>Location</h3>
-    <p>Based in Paris.<br />
-Available onsite throughout Europe and for remote work globally.</p>
-  </div>
-</div>
-
-  </div>
+      <aside>
+        <div class="section-block">
+          <div class="card">
+            <h2 class="card-title">Ways I can help</h2>
+            <p class="card-body">
+              I work with teams at different stages of their AI journey, from early exploration to production systems.
+            </p>
+            <ul style="margin: 0; padding-left: 1.1rem; font-size: 13px; color: var(--muted); line-height: 1.7;">
+              <li>Designing and implementing ML systems and pipelines</li>
+              <li>Optimizing training and inference for existing models</li>
+              <li>Improving reliability, monitoring, and MLOps practices</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <script src="/nav.js"></script>
 </body>
 </html>

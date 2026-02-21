@@ -1,0 +1,91 @@
+<header class="site-nav nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-brand">Abdeljalil Jliouat</a>
+    <nav class="nav-links">
+      <a href="/" class="nav-link" data-nav="home">Home</a>
+      <a href="/about.html" class="nav-link" data-nav="about">About</a>
+      <a href="/projects/" class="nav-link" data-nav="projects">Projects</a>
+      <a href="/blog/" class="nav-link" data-nav="blog">Blog</a>
+      <a href="/contact.html" class="nav-link" data-nav="contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">
+      <span class="theme-toggle-icon">☾</span>
+      <span class="theme-toggle-label">Dark</span>
+    </button>
+  </div>
+</header>
+<style>
+  .theme-toggle {
+    margin-left: 1.25rem;
+    padding: 4px 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    background: rgba(15, 23, 42, 0.02);
+    color: #6b7280;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .theme-toggle-icon {
+    font-size: 12px;
+  }
+
+  .theme-toggle:hover {
+    background: rgba(15, 23, 42, 0.06);
+    color: #111827;
+  }
+
+  html[data-theme='dark'] {
+    --bg: #020617;
+    --surface: #020617;
+    --border: #1f2937;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --accent: #38bdf8;
+  }
+
+  html[data-theme='dark'] body {
+    background: #020617;
+    color: var(--text);
+  }
+
+  html[data-theme='dark'] .site-nav {
+    background: rgba(15, 23, 42, 0.96);
+    border-bottom-color: #1f2937;
+  }
+
+  html[data-theme='dark'] .nav-brand {
+    color: #9ca3af;
+  }
+
+  html[data-theme='dark'] .nav-link {
+    color: #9ca3af;
+  }
+
+  html[data-theme='dark'] .nav-link:hover,
+  html[data-theme='dark'] .nav-link-active {
+    color: #e5e7eb;
+  }
+
+  html[data-theme='dark'] .theme-toggle {
+    border-color: rgba(148, 163, 184, 0.7);
+    background: rgba(15, 23, 42, 0.6);
+    color: #e5e7eb;
+  }
+
+  html[data-theme='dark'] .theme-toggle:hover {
+    background: rgba(15, 23, 42, 0.85);
+  }
+
+  html[data-theme='dark'] .tech-tag {
+    color: #e5e7eb;
+    border-color: rgba(148, 163, 184, 0.7);
+    background-color: rgba(15, 23, 42, 0.7);
+  }
+</style>

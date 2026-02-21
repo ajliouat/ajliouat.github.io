@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QuantumGrid — Quantum-Classical Hybrid for Energy Optimization</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #ffffff; --border: #e5e7eb;
+      --text: #0f172a; --muted: #6b7280; --accent: #059669;
+      --accent-soft: #ecfdf5; --code-bg: #0b1120;
+      --code-border: #1f2937; --code-text: #e5e7eb;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page { max-width: 960px; margin: 0 auto; padding: 0 20px 64px; }
+    .header { text-align: center; padding-top: 40px; padding-bottom: 32px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 9px; border-radius: 999px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.05);
+      color: #047857; font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bbf7d0, #16a34a);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.45);
+    }
+    .title { font-size: 30px; line-height: 1.15; letter-spacing: -0.03em; margin: 0 0 10px; color: #020617; }
+    .subtitle { margin: 0 auto 12px; max-width: 640px; font-size: 15px; line-height: 1.6; color: var(--muted); }
+    .meta { font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em; color: #9ca3af; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: flex-start; }
+    .toc {
+      position: sticky; top: 84px; padding: 14px 14px 16px; border-radius: 14px;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      background: radial-gradient(circle at top left, rgba(239, 246, 255, 0.9), #ffffff);
+      box-shadow: var(--shadow-sm);
+    }
+    .toc-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #9ca3af; margin-bottom: 8px; }
+    .toc-list { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+    .toc-item + .toc-item { margin-top: 4px; }
+    .toc-link {
+      text-decoration: none; color: var(--muted); padding: 4px 6px; border-radius: 6px; display: block;
+      transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+    }
+    .toc-link:hover { background: rgba(226, 232, 240, 0.7); color: var(--text); transform: translateX(1px); }
+    .project-body {
+      border-radius: 18px; background: radial-gradient(circle at top left, #f9fafb, #ffffff);
+      box-shadow: var(--shadow-md); border: 1px solid rgba(226, 232, 240, 0.95); padding: 22px 22px 20px;
+    }
+    .project-intro { margin-bottom: 18px; font-size: 14px; line-height: 1.7; color: var(--muted); }
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+    .tech-pill {
+      font-size: 11px; border-radius: 999px; padding: 3px 9px;
+      border: 1px solid rgba(148, 163, 184, 0.6); background: rgba(248, 250, 252, 0.8); color: #4b5563;
+    }
+    .section { margin-top: 14px; }
+    .section-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.16em; color: #9ca3af; margin: 0 0 6px; }
+    .section p { margin: 0 0 8px; font-size: 14px; line-height: 1.7; color: var(--muted); }
+    .section ul { margin: 4px 0 6px 18px; padding: 0; font-size: 14px; color: var(--muted); }
+    .section li + li { margin-top: 2px; }
+    .benchmark-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; color: var(--muted); }
+    .benchmark-table th, .benchmark-table td { padding: 6px 8px; border: 1px solid var(--border); text-align: left; }
+    .benchmark-table th { background: #f8fafc; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; }
+    .code-block {
+      margin-top: 14px; border-radius: 14px;
+      background: radial-gradient(circle at top left, #020617, #020617 40%, #020617 100%);
+      border: 1px solid var(--code-border); padding: 14px 14px 12px;
+      color: var(--code-text);
+      font-family: SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px; line-height: 1.7; overflow-x: auto;
+    }
+    .code-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; color: #6b7280; font-size: 11px; }
+    .code-lang { text-transform: uppercase; letter-spacing: 0.14em; }
+    pre { margin: 0; white-space: pre; }
+    .mermaid-block {
+      margin-top: 14px; border-radius: 14px; border: 1px dashed rgba(148, 163, 184, 0.9);
+      background: radial-gradient(circle at 0% 0%, #f0f9ff, #eff6ff, #ffffff); padding: 14px; overflow-x: auto;
+    }
+    .footer-actions { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; }
+    .back-link {
+      text-decoration: none; color: #4b5563; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(209, 213, 219, 0.9); background: #f9fafb;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .back-link:hover { background: #f3f4f6; transform: translateX(-1px); box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12); }
+    .github-link {
+      text-decoration: none; color: #ffffff; background: linear-gradient(135deg, #111827, #020617);
+      padding: 7px 13px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.55); font-size: 13px; font-weight: 500;
+      border: 1px solid rgba(15, 23, 42, 1); transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+    .github-link:hover { transform: translateY(-1px); box-shadow: 0 18px 40px rgba(15, 23, 42, 0.75); }
+    @media (max-width: 840px) { .layout { grid-template-columns: minmax(0, 1fr); } .toc { position: static; order: -1; } }
+    @media (max-width: 640px) { .title { font-size: 24px; } .footer-actions { flex-direction: column; align-items: stretch; } .back-link, .github-link { justify-content: center; width: 100%; } }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+
+  <main class="page">
+    <header class="header">
+      <div class="badge"><span class="badge-dot"></span> Quantum AI × Energy</div>
+      <h1 class="title">QuantumGrid</h1>
+      <p class="subtitle">
+        Quantum-classical hybrid optimization for energy grids — QAOA and VQE circuits applied to
+        unit commitment and optimal power flow on real European ENTSO-E data, with rigorous comparison
+        against classical MILP solvers.
+      </p>
+      <div class="meta">PennyLane · QAOA/VQE · OR-Tools · ENTSO-E</div>
+    </header>
+
+    <section class="layout">
+      <aside class="toc">
+        <div class="toc-title">On this page</div>
+        <ul class="toc-list">
+          <li class="toc-item"><a class="toc-link" href="#overview">Overview</a></li>
+          <li class="toc-item"><a class="toc-link" href="#questions">Key questions</a></li>
+          <li class="toc-item"><a class="toc-link" href="#approach">Technical approach</a></li>
+          <li class="toc-item"><a class="toc-link" href="#benchmarks">Scaling benchmarks</a></li>
+          <li class="toc-item"><a class="toc-link" href="#circuit">QAOA circuit</a></li>
+          <li class="toc-item"><a class="toc-link" href="#architecture">System diagram</a></li>
+        </ul>
+      </aside>
+
+      <article class="project-body">
+        <div class="project-intro" id="overview">
+          Unit commitment — scheduling power generators on/off to meet demand at minimum cost — is NP-hard
+          and central to grid operations. Quantum optimization (QAOA, VQE) offers a potential path for
+          combinatorial problems of this type. This project implements both quantum and classical solvers
+          on the same real-data instances, providing an honest assessment of where quantum approaches currently
+          stand and where they break down.
+        </div>
+
+        <div class="tech-stack">
+          <span class="tech-pill">PennyLane</span>
+          <span class="tech-pill">QAOA</span>
+          <span class="tech-pill">VQE</span>
+          <span class="tech-pill">Google OR-Tools</span>
+          <span class="tech-pill">ENTSO-E API</span>
+          <span class="tech-pill">PyTorch</span>
+        </div>
+
+        <section class="section" id="questions">
+          <h2 class="section-title">Key questions this project answers</h2>
+          <ul>
+            <li>At what problem size does QAOA/VQE match classical MILP quality?</li>
+            <li>How does solution quality degrade as generators exceed simulator qubit capacity?</li>
+            <li>What's the optimization landscape? (convergence, local minima)</li>
+            <li>How sensitive is QUBO performance to constraint penalty weights?</li>
+            <li>Can VQE capture continuous OPF better than discretized QAOA?</li>
+          </ul>
+        </section>
+
+        <section class="section" id="approach">
+          <h2 class="section-title">Technical approach</h2>
+          <ul>
+            <li><strong>Data:</strong> Real load and generation data from ENTSO-E Transparency Platform (France/Germany, hourly resolution, 1 year).</li>
+            <li><strong>QUBO encoding:</strong> Unit commitment binary decisions encoded as Ising Hamiltonian. Constraints embedded as quadratic penalty terms.</li>
+            <li><strong>QAOA:</strong> p-layer alternating cost/mixer unitaries optimized with COBYLA. PennyLane <code>default.qubit</code> simulator.</li>
+            <li><strong>VQE:</strong> Hardware-efficient ansatz with Ry/Rz rotations + CNOT entanglement for continuous OPF relaxation.</li>
+            <li><strong>Classical baselines:</strong> MILP via OR-Tools (exact), simulated annealing (heuristic), greedy priority list (fast heuristic).</li>
+            <li><strong>Scaling study:</strong> N = 4 to 20 generators, T = 6 to 48 hours, QAOA layers p = 1 to 5.</li>
+          </ul>
+        </section>
+
+        <section class="section" id="benchmarks">
+          <h2 class="section-title">Scaling benchmarks</h2>
+          <p>All solvers run on the same problem instances derived from ENTSO-E data.</p>
+          <table class="benchmark-table">
+            <thead><tr><th>Problem size</th><th>MILP (exact)</th><th>Sim. Annealing</th><th>QAOA</th><th>VQE</th></tr></thead>
+            <tbody>
+              <tr><td>4 gen, 6h</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>8 gen, 12h</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>12 gen, 24h</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>16 gen, 24h</td><td>—</td><td>—</td><td>—</td><td>N/A</td></tr>
+              <tr><td>20 gen, 48h</td><td>—</td><td>—</td><td>N/A</td><td>N/A</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size: 12px; color: #9ca3af; font-style: italic;">
+            Cost in $/MWh. N/A = exceeds simulator capacity. Results from real benchmark runs.
+          </p>
+        </section>
+
+        <section class="section" id="circuit">
+          <h2 class="section-title">QAOA circuit structure</h2>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Python · PennyLane</span>
+              <span>QAOA cost layer</span>
+            </div>
+            <pre>
+@qml.qnode(dev)
+def qaoa_circuit(gammas, betas, cost_h, n_layers):
+    # Equal superposition
+    for i in range(n_qubits):
+        qml.Hadamard(wires=i)
+
+    # Alternating cost + mixer layers
+    for p in range(n_layers):
+        qml.ApproxTimeEvolution(cost_h, gammas[p], 1)
+        for i in range(n_qubits):
+            qml.RX(2 * betas[p], wires=i)
+
+    return qml.expval(cost_h)</pre>
+          </div>
+        </section>
+
+        <section class="section" id="architecture">
+          <h2 class="section-title">System diagram</h2>
+          <div class="mermaid-block">
+            <div class="mermaid">flowchart TB
+  Data["ENTSO-E Grid Data<br/><i>Load, generation, costs</i>"] --> UC["Unit Commitment<br/><i>MILP formulation</i>"]
+  UC --> QUBO["QUBO Encoding<br/><i>Binary → Ising Hamiltonian</i>"]
+  QUBO --> QAOA["QAOA Solver<br/><i>PennyLane circuit</i>"]
+  QUBO --> VQE["VQE Solver<br/><i>Variational ansatz</i>"]
+  UC --> MILP["MILP Solver<br/><i>OR-Tools (exact)</i>"]
+  UC --> SA["Simulated Annealing<br/><i>Classical heuristic</i>"]
+  QAOA --> Compare["Benchmark<br/><i>Cost, time, quality</i>"]
+  VQE --> Compare
+  MILP --> Compare
+  SA --> Compare
+
+  style QAOA fill:#ecfdf5,stroke:#059669
+  style VQE fill:#ecfdf5,stroke:#059669
+  style MILP fill:#eff6ff,stroke:#2563eb
+  style SA fill:#eff6ff,stroke:#2563eb</div>
+          </div>
+        </section>
+
+        <div class="footer-actions">
+          <a href="/projects/" class="back-link"><span>←</span><span>Back to projects</span></a>
+          <a href="https://github.com/ajliouat/quantumgrid" target="_blank" class="github-link"><span>★</span><span>View on GitHub</span></a>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>
