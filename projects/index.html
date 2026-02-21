@@ -87,12 +87,6 @@
       background: radial-gradient(circle at top left, #f9fafb, #ffffff);
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
       padding: 1.25rem 1.35rem;
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
-    }
-
-    .card:hover {
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
-      transform: translateY(-2px);
     }
 
     .card-badge {
@@ -118,6 +112,7 @@
       font-weight: 500;
       margin: 0 0 0.4rem;
       letter-spacing: -0.01em;
+      color: var(--accent);
     }
 
     .card-body {
@@ -176,6 +171,22 @@
 
     .status-building { background: #f59e0b; }
     .status-planned { background: #94a3b8; }
+
+    html[data-theme='dark'] .card {
+      border-color: #1f2937;
+      background: radial-gradient(circle at top left, #020617, #020617);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.6);
+    }
+
+    html[data-theme='dark'] .card-body {
+      color: var(--muted);
+    }
+
+    html[data-theme='dark'] .card-tag {
+      border-color: rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+    }
 
     @media (max-width: 720px) {
       .page { padding-inline: 1.25rem; padding-top: 3rem; }
