@@ -8,7 +8,7 @@
   t['about.subtitle'] =
     'Working at the intersection of model design, optimization, and deployment to take research-grade ideas into production.'
 
-  t['about.short_title'] = 'Short bio'
+  t['about.short_title'] = 'Bio'
   t['about.short_p1'] =
     'Machine learning engineer and AI founder with 10+ years building and scaling production AI across banking, tech startups, and NGOs. I work end to end, from strategy and productization to deployment at scale.'
   t['about.short_p2'] =
