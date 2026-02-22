@@ -16,6 +16,7 @@
       <button class="lang-toggle" type="button" aria-label="Change language">
         <span class="lang-toggle-label">EN</span>
       </button>
+      <a href="https://vault-app-gamma.vercel.app" class="vault-link" aria-label="Private vault" title="Vault">🔒</a>
     </div>
   </div>
 </header>
@@ -207,6 +208,25 @@
   .lang-toggle:hover {
     background: rgba(15, 23, 42, 0.06);
     color: #111827;
+  }
+
+  .vault-link {
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: rgba(15, 23, 42, 0.02);
+    font-size: 11px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.18s ease;
+  }
+
+  .vault-link:hover {
+    opacity: 1;
+    background: rgba(15, 23, 42, 0.06);
   }
 
   @media (max-width: 640px) {
