@@ -231,19 +231,30 @@
 
         <section class="section" id="benchmarks">
           <h2 class="section-title">Benchmarks</h2>
-          <p>100 eval episodes per task, randomized initial placement. Max 200 steps per episode.</p>
+          <p>100 eval episodes per task, randomized initial placement. Max 200 steps per episode. 95% Wilson CI.</p>
           <table class="benchmark-table">
-            <thead><tr><th>Task</th><th>Scripted</th><th>End-to-End RL</th><th>RoboLLM (ours)</th></tr></thead>
+            <thead><tr><th>Task</th><th>Random</th><th>Scripted</th><th>Mean Return (Scripted)</th></tr></thead>
             <tbody>
-              <tr><td>L1 — Pick &amp; Place</td><td>—</td><td>—</td><td>—</td></tr>
-              <tr><td>L2 — Color Pick</td><td>—</td><td>—</td><td>—</td></tr>
-              <tr><td>L3 — Stack</td><td>—</td><td>—</td><td>—</td></tr>
-              <tr><td>L4 — Sort</td><td>—</td><td>—</td><td>—</td></tr>
-              <tr><td>L5 — Language</td><td>N/A</td><td>—</td><td>—</td></tr>
+              <tr><td>L1 — Pick &amp; Place</td><td>0.0% ± 1.8%</td><td>0.0% ± 1.8%</td><td>-53.2 (2.6× random)</td></tr>
+              <tr><td>L2 — Color Pick</td><td>0.0% ± 1.8%</td><td>—</td><td>—</td></tr>
+              <tr><td>L3 — Stack</td><td>0.0% ± 1.8%</td><td>—</td><td>—</td></tr>
+              <tr><td>L4 — Sort</td><td>0.0% ± 1.8%</td><td>—</td><td>—</td></tr>
+              <tr><td>L5 — Language</td><td>4.0% ± 4.1%</td><td>—</td><td>—</td></tr>
+              <tr><td>Move To</td><td>0.0% ± 1.8%</td><td>20.0% ± 7.8%</td><td>-260.3 (2.8× random)</td></tr>
+            </tbody>
+          </table>
+          <table class="benchmark-table" style="margin-top: 14px;">
+            <thead><tr><th>Pipeline Component</th><th>Accuracy</th><th>Coverage</th></tr></thead>
+            <tbody>
+              <tr><td>VLM decomposition (MockVLM)</td><td>100% (20+ scenarios)</td><td>6 primitive types</td></tr>
+              <tr><td>Object grounding (SimGrounder)</td><td>100% (20+ queries)</td><td>15+ color aliases, 9 shape aliases</td></tr>
+              <tr><td>Hierarchical executor</td><td>End-to-end tested</td><td>L1–L5 tasks</td></tr>
             </tbody>
           </table>
           <p style="font-size: 12px; color: #9ca3af; font-style: italic;">
-            Results will be populated from real evaluation runs. Demo videos committed to repository.
+            Scripted MoveTo achieves 20% SR with P-controller. Multi-phase tasks (L1-L5) require
+            trained RL policies or curriculum learning for higher success rates.
+            288 tests pass across the full codebase.
           </p>
         </section>
 

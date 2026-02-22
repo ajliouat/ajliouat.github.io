@@ -20,7 +20,7 @@
     var stored = getStoredTheme()
     if (stored === 'light' || stored === 'dark') return stored
 
-    return 'dark'
+    return 'light'
   }
 
   function applyTheme(theme) {
