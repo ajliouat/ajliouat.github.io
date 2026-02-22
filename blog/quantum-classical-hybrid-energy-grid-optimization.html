@@ -1,0 +1,712 @@
+<!-- _includes/head.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum-classical hybrid optimisation for energy grids</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    .post-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 12px;
+    }
+
+    .post-body th, .post-body td {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .post-body th {
+      background: rgba(148, 163, 184, 0.08);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 11px;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+      border-radius: 0.75rem;
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .site-footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .site-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .site-footer-brand {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 12px;
+    }
+
+    .site-footer-right a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+  <main class="page">
+    <section class="section-header">
+      <div class="section-badge">Quantum AI &times; Energy</div>
+      <h1 class="section-title">Quantum-classical hybrid optimisation for energy grids</h1>
+      <p class="section-subtitle">
+        Notes on building QuantumGrid: formulating unit commitment as a QUBO, mapping it to an Ising
+        Hamiltonian, and solving it with QAOA and VQE on a PennyLane statevector simulator &mdash;
+        benchmarked against classical MILP, simulated annealing, and greedy dispatch.
+      </p>
+      <div class="post-meta">2026 &middot; Quantum &middot; QAOA &middot; VQE &middot; PennyLane &middot; unit commitment</div>
+    </section>
+
+    <section class="toc">
+      <div class="toc-title">On this page</div>
+      <ul>
+        <li><a href="#why">Why quantum for energy grids</a></li>
+        <li><a href="#unit-commitment">The unit commitment problem</a></li>
+        <li><a href="#qubo">From MILP to QUBO to Ising</a></li>
+        <li><a href="#qaoa">QAOA: quantum approximate optimisation</a></li>
+        <li><a href="#vqe">VQE: variational quantum eigensolver</a></li>
+        <li><a href="#classical">Classical baselines</a></li>
+        <li><a href="#penalty">Penalty tuning</a></li>
+        <li><a href="#scaling">Scaling analysis</a></li>
+        <li><a href="#pipeline">Architecture diagram</a></li>
+        <li><a href="#takeaways">Key takeaways</a></li>
+      </ul>
+    </section>
+
+    <section class="post-body">
+      <h2 id="why">Why quantum for energy grids</h2>
+      <p>
+        Power grid operation requires solving combinatorial optimisation problems daily: which generators to
+        commit, at what output, over what time horizon, to meet demand at minimum cost while respecting ramp
+        rates, minimum up/down times, and reserve requirements. This is the <strong>unit commitment</strong>
+        (UC) problem &mdash; NP-hard in its general form.
+      </p>
+      <p>
+        Classical solvers (MILP via OR-Tools, Gurobi, CPLEX) handle moderate-size instances well, but the
+        binary decision space grows exponentially: G generators over T time steps produce G&times;T binary
+        variables. For large grids (hundreds of generators, 24&ndash;48 hour horizons), even commercial
+        solvers hit practical limits or require aggressive relaxation.
+      </p>
+      <p>
+        Quantum computing offers a fundamentally different approach: encode the problem into a Hamiltonian
+        whose ground state is the optimal commitment schedule, then use variational quantum algorithms
+        (QAOA, VQE) to find low-energy states. QuantumGrid is a working implementation of this idea,
+        benchmarked honestly against classical alternatives.
+      </p>
+
+      <h2 id="unit-commitment">The unit commitment problem</h2>
+      <p>
+        Given a fleet of thermal generators, each with a capacity range [P<sub>min</sub>, P<sub>max</sub>],
+        a marginal cost, startup/shutdown costs, and minimum up/down time constraints, the UC problem
+        decides which generators to turn on (binary) at each hour to minimise total cost while meeting
+        forecast demand.
+      </p>
+      <p>
+        The classical formulation is a Mixed-Integer Linear Program:
+      </p>
+      <pre><code># Objective: minimise total cost
+min  &Sigma;_t &Sigma;_g [ c_g &middot; p_g,t + SU_g &middot; y_g,t + SD_g &middot; z_g,t ]
+
+# Subject to:
+&Sigma;_g p_g,t &ge; D_t                          # demand balance
+P_min_g &middot; u_g,t &le; p_g,t &le; P_max_g &middot; u_g,t  # capacity bounds
+u_g,t - u_g,t-1 &le; y_g,t                    # startup indicator
+u_g,t-1 - u_g,t &le; z_g,t                    # shutdown indicator
+u_g,t &isin; {0, 1}                             # binary commitment</code></pre>
+      <p>
+        QuantumGrid solves this with Google OR-Tools (SCIP backend) as the classical reference. For our
+        test instances (4 generators &times; 6 hours = 24 binary variables), MILP finds the proven optimum
+        in under a second.
+      </p>
+
+      <h2 id="qubo">From MILP to QUBO to Ising</h2>
+      <p>
+        Quantum annealers and variational circuits don&rsquo;t natively handle linear constraints and
+        continuous variables. The standard pipeline converts MILP &rarr; QUBO &rarr; Ising:
+      </p>
+      <ul>
+        <li><strong>Step 1:</strong> Discretise or fix continuous power outputs (e.g., generators run at
+          P<sub>max</sub> when committed). This makes all variables binary.</li>
+        <li><strong>Step 2:</strong> Move constraints into the objective as penalty terms:
+          <code>H = H_cost + &lambda; &middot; H_penalty</code>. Each violated constraint adds a quadratic
+          penalty proportional to &lambda;.</li>
+        <li><strong>Step 3:</strong> Express the resulting quadratic binary objective as a QUBO matrix Q
+          where <code>x<sup>T</sup>Qx</code> is to be minimised.</li>
+        <li><strong>Step 4:</strong> Map QUBO to Ising via the substitution <code>x_i = (1 - z_i) / 2</code>
+          where z<sub>i</sub> &isin; {&minus;1, +1}. This gives a Hamiltonian
+          <code>H = &Sigma;_ij J_ij &middot; z_i &middot; z_j + &Sigma;_i h_i &middot; z_i + c</code>.</li>
+      </ul>
+      <div class="code-label">python &mdash; QUBO encoding (simplified)</div>
+      <pre><code>def build_qubo(fleet, demand, horizon, penalty_lambda):
+    n = len(fleet) * horizon  # number of binary variables
+    Q = np.zeros((n, n))
+
+    # Cost terms (diagonal)
+    for g, gen in enumerate(fleet):
+        for t in range(horizon):
+            idx = g * horizon + t
+            Q[idx, idx] += gen.marginal_cost * gen.p_max
+
+    # Demand penalty (off-diagonal quadratic)
+    for t in range(horizon):
+        gen_indices = [g * horizon + t for g in range(len(fleet))]
+        for i in gen_indices:
+            Q[i, i] += penalty_lambda * (gen.p_max**2 - 2 * demand[t] * gen.p_max)
+            for j in gen_indices:
+                if i != j:
+                    Q[i, j] += penalty_lambda * gen_i.p_max * gen_j.p_max
+
+    return Q</code></pre>
+      <p>
+        The Ising mapping then converts Q into PennyLane observables: a sum of <code>PauliZ &otimes; PauliZ</code>
+        coupling terms and single-qubit <code>PauliZ</code> fields.
+      </p>
+
+      <h2 id="qaoa">QAOA: quantum approximate optimisation</h2>
+      <p>
+        The Quantum Approximate Optimisation Algorithm (Farhi et al., 2014) alternates between a cost
+        unitary (encoding the problem Hamiltonian) and a mixer unitary (enabling exploration of the
+        solution space). For depth p, the circuit has 2p variational parameters (&gamma;<sub>1</sub>, &hellip;,
+        &gamma;<sub>p</sub>, &beta;<sub>1</sub>, &hellip;, &beta;<sub>p</sub>).
+      </p>
+      <div class="mermaid-block">
+        <div class="code-label">circuit</div>
+        <div class="mermaid">flowchart LR
+  Init["|+&rang;<sup>&otimes;n</sup><br/><i>Hadamard on all qubits</i>"] --> Cost1["e<sup>-i&gamma;₁H_C</sup><br/><i>Cost unitary</i>"]
+  Cost1 --> Mix1["e<sup>-i&beta;₁H_M</sup><br/><i>X-mixer</i>"]
+  Mix1 --> Cost2["e<sup>-i&gamma;₂H_C</sup>"]
+  Cost2 --> Mix2["e<sup>-i&beta;₂H_M</sup>"]
+  Mix2 --> Measure["Measure<br/><i>Z-basis</i>"]
+
+  style Init fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style Cost1 fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style Mix1 fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style Measure fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
+      </div>
+      <p>
+        QuantumGrid implements QAOA using PennyLane&rsquo;s <code>ApproxTimeEvolution</code> template for the
+        cost unitary and RX gates for the X-mixer. The variational loop uses SciPy&rsquo;s COBYLA optimiser
+        (gradient-free, works well for noisy quantum objectives).
+      </p>
+      <div class="code-label">python &mdash; QAOA circuit (PennyLane)</div>
+      <pre><code>import pennylane as qml
+
+dev = qml.device("default.qubit", wires=n_qubits)
+
+@qml.qnode(dev)
+def qaoa_circuit(gammas, betas, cost_hamiltonian):
+    # Initial superposition
+    for i in range(n_qubits):
+        qml.Hadamard(wires=i)
+
+    # p layers of cost + mixer
+    for layer in range(p):
+        qml.ApproxTimeEvolution(cost_hamiltonian, gammas[layer], 1)
+        for i in range(n_qubits):
+            qml.RX(2 * betas[layer], wires=i)
+
+    return qml.expval(cost_hamiltonian)
+
+# Optimise with COBYLA
+from scipy.optimize import minimize
+result = minimize(
+    lambda params: qaoa_circuit(params[:p], params[p:], H_cost),
+    x0=np.random.uniform(0, np.pi, 2 * p),
+    method="COBYLA",
+    options={"maxiter": 200}
+)</code></pre>
+      <p>
+        With p=1 on a 24-qubit instance (4 generators &times; 6 hours), QAOA completes in ~100 seconds on
+        CPU using the statevector simulator. Solution quality varies with random initialisation &mdash;
+        multiple restarts are essential.
+      </p>
+
+      <h2 id="vqe">VQE: variational quantum eigensolver</h2>
+      <p>
+        VQE (Peruzzo et al., 2014) uses a hardware-efficient ansatz instead of the problem-specific QAOA
+        structure. QuantumGrid implements an R<sub>y</sub>/R<sub>z</sub> + CNOT ladder ansatz with
+        configurable depth. Each qubit gets R<sub>y</sub> and R<sub>z</sub> rotations, followed by a
+        linear chain of CNOTs for entanglement.
+      </p>
+      <pre><code>@qml.qnode(dev)
+def vqe_circuit(params, cost_hamiltonian):
+    n_layers = params.shape[0] // (2 * n_qubits)
+    idx = 0
+    for layer in range(n_layers):
+        for i in range(n_qubits):
+            qml.RY(params[idx], wires=i); idx += 1
+            qml.RZ(params[idx], wires=i); idx += 1
+        for i in range(n_qubits - 1):
+            qml.CNOT(wires=[i, i + 1])
+    return qml.expval(cost_hamiltonian)</code></pre>
+      <p>
+        VQE is more expressive than QAOA but scales poorly: for 24 qubits with 1 layer, there are
+        48 parameters (vs 2 for QAOA p=1). The optimisation landscape is harder, and barren plateaus
+        become a concern for larger instances.
+      </p>
+
+      <h2 id="classical">Classical baselines</h2>
+      <p>
+        Honest benchmarking requires strong classical baselines. QuantumGrid implements three:
+      </p>
+      <table>
+        <thead>
+          <tr><th>Method</th><th>Description</th><th>Quality</th><th>Speed</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>MILP (OR-Tools SCIP)</td>
+            <td>Exact solver with branch-and-bound</td>
+            <td>Optimal (proven)</td>
+            <td>Sub-second for small instances</td>
+          </tr>
+          <tr>
+            <td>Simulated Annealing</td>
+            <td>Metropolis-Hastings with exponential cooling</td>
+            <td>Near-optimal for small instances</td>
+            <td>Configurable (100&ndash;10K steps)</td>
+          </tr>
+          <tr>
+            <td>Greedy Merit Order</td>
+            <td>Sort by marginal cost, commit cheapest first</td>
+            <td>Fast, ~10% gap on larger instances</td>
+            <td>Milliseconds</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        For the small instances where quantum solvers can run (6&ndash;24 qubits), MILP always finds the
+        optimal solution. The point of quantum isn&rsquo;t to beat MILP on 24 variables &mdash; it&rsquo;s
+        to demonstrate the formulation pipeline and study how variational algorithms behave as the problem
+        scales toward regimes where classical solvers struggle.
+      </p>
+
+      <h2 id="penalty">Penalty tuning</h2>
+      <p>
+        The QUBO formulation moves constraints into the objective via penalty weight &lambda;. If &lambda;
+        is too small, the solver finds low-cost but infeasible solutions (generators don&rsquo;t meet
+        demand). If &lambda; is too large, the penalty dominates and the solver can&rsquo;t distinguish
+        between feasible solutions of different cost &mdash; it effectively ignores the cost function.
+      </p>
+      <p>
+        QuantumGrid implements binary search for &lambda;: start with a range [&lambda;<sub>min</sub>,
+        &lambda;<sub>max</sub>], solve at the midpoint, check feasibility, and narrow the range. The
+        sensitivity sweep then evaluates solution quality across a grid of &lambda; values to find the
+        stable region.
+      </p>
+      <pre><code># Penalty tuning via binary search
+lambda_min, lambda_max = 0.1, 100.0
+for _ in range(20):
+    lam = (lambda_min + lambda_max) / 2
+    Q = build_qubo(fleet, demand, horizon, penalty_lambda=lam)
+    solution = solve_qaoa(Q, p=1)
+    if is_feasible(solution, demand):
+        lambda_max = lam       # try smaller penalty
+    else:
+        lambda_min = lam       # need stronger enforcement
+best_lambda = (lambda_min + lambda_max) / 2</code></pre>
+
+      <h2 id="scaling">Scaling analysis</h2>
+      <p>
+        How do quantum and classical solvers scale as the problem grows? QuantumGrid runs a systematic
+        sweep across problem sizes:
+      </p>
+      <table>
+        <thead>
+          <tr><th>Problem Size</th><th>Qubits</th><th>MILP</th><th>Greedy</th><th>SA</th><th>QAOA (p=1)</th><th>VQE</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2 gen &times; 3 h</td><td>6</td><td>Optimal</td><td>Exact</td><td>Near-optimal</td><td>Good</td><td>Good</td></tr>
+          <tr><td>3 gen &times; 4 h</td><td>12</td><td>Optimal</td><td>~5% gap</td><td>Good</td><td>Runs</td><td>Slow</td></tr>
+          <tr><td>4 gen &times; 6 h</td><td>24</td><td>Optimal</td><td>~10% gap</td><td>Good</td><td>Runs (~100s)</td><td>Very slow</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The statevector simulator&rsquo;s memory grows as 2<sup>n</sup>: 24 qubits requires 128 MB,
+        30 qubits would need 8 GB. Beyond ~26 qubits, you need either a tensor-network simulator or
+        real quantum hardware. MILP, by contrast, routinely handles hundreds of binary variables.
+      </p>
+      <p>
+        The honest conclusion: on instances that fit in a statevector simulator, classical solvers dominate.
+        The potential quantum advantage lies at scales where the exponential blowup of branch-and-bound
+        meets the (hoped-for) polynomial scaling of quantum optimisation &mdash; but we&rsquo;re not there yet.
+      </p>
+
+      <h2 id="pipeline">Architecture diagram</h2>
+      <p>
+        The full QuantumGrid pipeline from raw data to solved commitment schedule:
+      </p>
+      <div class="mermaid-block">
+        <div class="code-label">pipeline</div>
+        <div class="mermaid">flowchart TB
+  Data["Synthetic Load Data<br/><i>ENTSO-E format, hourly demand</i>"] --> Fleet["Generator Fleet<br/><i>4 thermal units, cost/capacity</i>"]
+  Fleet --> MILP["Classical MILP<br/><i>OR-Tools SCIP, exact optimum</i>"]
+  Fleet --> QUBO["QUBO Encoding<br/><i>Cost + penalty &lambda;</i>"]
+  QUBO --> Ising["Ising Mapping<br/><i>J_ij couplings + h_i fields</i>"]
+  Ising --> QAOA["QAOA Circuit<br/><i>PennyLane, p layers, COBYLA</i>"]
+  Ising --> VQE["VQE Circuit<br/><i>Ry/Rz + CNOT ansatz</i>"]
+  Fleet --> SA["Simulated Annealing<br/><i>Metropolis, exp cooling</i>"]
+  Fleet --> Greedy["Greedy Dispatch<br/><i>Merit-order, milliseconds</i>"]
+
+  MILP --> Compare["Benchmark<br/><i>Cost, feasibility, runtime</i>"]
+  QAOA --> Compare
+  VQE --> Compare
+  SA --> Compare
+  Greedy --> Compare
+
+  style QUBO fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style Ising fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style QAOA fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style VQE fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
+      </div>
+
+      <h2 id="takeaways">Key takeaways</h2>
+      <ul>
+        <li><strong>The QUBO pipeline is the real contribution.</strong> Converting a real-world MILP into
+          a quantum-compatible formulation is non-trivial. The encoding, penalty calibration, and Ising
+          mapping are where most of the engineering lives &mdash; the quantum circuit is the easy part.</li>
+        <li><strong>Penalty tuning is critical.</strong> A factor-of-2 error in &lambda; takes you from
+          feasible solutions to garbage. Binary search with feasibility checks is the minimum viable
+          approach; Lagrangian relaxation would be more principled.</li>
+        <li><strong>QAOA scales better than VQE for structured problems.</strong> QAOA with p=1 has only
+          2 parameters regardless of qubit count. VQE&rsquo;s hardware-efficient ansatz grows linearly
+          with qubits, making optimisation harder and more prone to barren plateaus.</li>
+        <li><strong>Classical solvers are still faster.</strong> For any problem size that fits on a
+          statevector simulator (~26 qubits), MILP solves it optimally in milliseconds. The quantum
+          advantage regime, if it exists, is at scales we can&rsquo;t yet simulate classically.</li>
+        <li><strong>Honest benchmarking matters.</strong> It&rsquo;s easy to publish a QAOA paper that
+          shows &ldquo;competitive results&rdquo; by choosing problem instances where all solvers do well.
+          QuantumGrid benchmarks all 5 solvers on the same instances with the same metrics.</li>
+        <li><strong>Energy grids are a natural quantum target.</strong> The unit commitment problem has
+          the right structure: binary decisions, quadratic objectives, constraints that map to penalty
+          terms. Whether quantum hardware will deliver a practical speedup depends on error rates and
+          qubit counts that don&rsquo;t yet exist &mdash; but the formulation pipeline is ready.</li>
+      </ul>
+      <p>
+        Full source, 130+ tests across 10 releases, and benchmark pipeline at
+        <a href="https://github.com/ajliouat/quantumgrid" style="color: var(--accent);">github.com/ajliouat/quantumgrid</a>.
+      </p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-left">
+        <span class="site-footer-brand">Abdeljalil Jliouat</span>
+        <span>Building production AI systems across LLMs, robotics, quantum, and energy.</span>
+      </div>
+      <div class="site-footer-right">
+        <span>Based in Paris &middot; Available across Europe and remote</span>
+        <a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>
