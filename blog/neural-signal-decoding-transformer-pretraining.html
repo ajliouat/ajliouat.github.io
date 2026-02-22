@@ -1,0 +1,573 @@
+<!-- _includes/head.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural signal decoding via transformer pre-training</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    .post-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 12px;
+    }
+
+    .post-body th, .post-body td {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .post-body th {
+      background: rgba(148, 163, 184, 0.08);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 11px;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+      border-radius: 0.75rem;
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .site-footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .site-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .site-footer-brand {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 12px;
+    }
+
+    .site-footer-right a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+  <main class="page">
+    <section class="section-header">
+      <div class="section-badge">BCI &times; Deep Learning</div>
+      <h1 class="section-title">Neural signal decoding via transformer pre-training</h1>
+      <p class="section-subtitle">
+        Notes on building NeuRoLLM: a foundation-model approach to EEG decoding where a small transformer
+        pre-trained on large-scale clinical EEG data is fine-tuned for motor-imagery classification.
+      </p>
+      <div class="post-meta">2026 &middot; BCI &middot; EEG &middot; transformer &middot; pre-training</div>
+    </section>
+
+    <section class="toc">
+      <div class="toc-title">On this page</div>
+      <ul>
+        <li><a href="#motivation">Why pre-train on EEG</a></li>
+        <li><a href="#architecture">Model architecture</a></li>
+        <li><a href="#pretraining">Masked Channel Modeling</a></li>
+        <li><a href="#finetuning">Fine-tuning for motor imagery</a></li>
+        <li><a href="#kernel">Frequency-band attention kernel</a></li>
+        <li><a href="#results">Benchmark results</a></li>
+        <li><a href="#attention">Attention visualisation</a></li>
+        <li><a href="#lessons">What I learned</a></li>
+      </ul>
+    </section>
+
+    <section class="post-body">
+      <p>
+        Brain-computer interfaces decode neural signals into control commands. The classical approach &mdash;
+        Common Spatial Patterns (CSP) fed into an SVM &mdash; has been the standard for motor-imagery
+        classification for over a decade. It works, but it relies entirely on hand-crafted spatial filters
+        and cannot learn from large unlabelled EEG corpora.
+      </p>
+      <p>
+        Recent work (LaBraM, BrainBERT, EEGFormer) demonstrates that transformer-based models pre-trained
+        on large EEG datasets can learn general neural-signal representations that transfer across subjects
+        and tasks. NeuRoLLM implements this idea at a reproducible scale: pre-train on TUH, fine-tune on
+        BCI Competition IV, compare honestly against classical and neural baselines.
+      </p>
+
+      <h2 id="motivation">Why pre-train on EEG</h2>
+      <p>
+        Motor-imagery datasets are small: BCI Competition IV 2a has 9 subjects, 288 trials each. Training
+        a transformer from scratch on 2,592 total trials doesn&rsquo;t work &mdash; you end up with a model
+        that memorises electrode noise. The same problem NLP had before BERT: not enough task-specific data
+        to learn representations from scratch.
+      </p>
+      <ul>
+        <li><strong>TUH EEG Corpus:</strong> ~25,000 clinical EEG sessions, ~15,000 hours. Large enough to
+          learn frequency patterns, cross-channel correlations, and artifact signatures.</li>
+        <li><strong>Self-supervised objective:</strong> Masked Channel Modeling &mdash; randomly mask 30% of
+          EEG channels, reconstruct them from the remaining channels. No labels needed.</li>
+        <li><strong>Transfer:</strong> The pre-trained encoder captures general EEG structure. Fine-tuning
+          adds a 4-class classification head and adapts with much less data.</li>
+      </ul>
+
+      <h2 id="architecture">Model architecture</h2>
+      <div class="mermaid-block">
+        <div class="code-label">pipeline</div>
+        <div class="mermaid">flowchart TB
+  EEG["EEG Signal<br/><i>C channels &times; T samples</i>"] --> Patch["Patch Embedding<br/><i>1-D conv, P=50, d=256</i>"]
+  Patch --> Pos["Positional Encoding<br/><i>Spatial + temporal (learnable)</i>"]
+  Pos --> Enc["Transformer Encoder<br/><i>6 layers, 4 heads, d_ff=512</i>"]
+  Enc --> CLS["[CLS] Token &rarr; MLP<br/><i>4 classes (LH, RH, F, T)</i>"]
+
+  style Patch fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style Enc fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style CLS fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
+      </div>
+      <p>
+        The input is a multi-channel EEG signal (22 channels &times; 1000 samples at 250 Hz). Each channel is
+        independently divided into non-overlapping temporal patches of size 50 (200 ms each), then projected to
+        a 256-dimensional embedding via a 1-D convolution. This produces N = C &times; (T / P) = 22 &times; 20 = 440 tokens.
+      </p>
+      <p>
+        Positional encoding has two learnable components: spatial (one embedding per electrode) and temporal (one
+        per patch position). These are added, not concatenated, keeping the token dimension at 256.
+      </p>
+      <p>
+        The encoder is a standard pre-norm transformer: LayerNorm &rarr; Multi-Head Self-Attention &rarr;
+        residual &rarr; LayerNorm &rarr; FFN &rarr; residual. Six layers, four heads. Total: ~10M parameters.
+      </p>
+
+      <h2 id="pretraining">Masked Channel Modeling</h2>
+      <p>
+        The self-supervised pre-training objective is Masked Channel Modeling (MCM): randomly select 30% of
+        channels, zero out all their patches, and train the model to reconstruct the original signal from the
+        unmasked channels. The loss is MSE between predicted and original patch embeddings.
+      </p>
+      <pre><code># MCM masking (simplified)
+mask = torch.rand(n_channels) < 0.3          # 30% of channels
+x_masked = x.clone()
+x_masked[mask] = 0                            # zero masked channels
+
+reconstructed = model.encoder(x_masked)       # forward through encoder
+loss = F.mse_loss(reconstructed[mask], x[mask])  # reconstruct masked only</code></pre>
+      <p>
+        This is conceptually similar to BERT&rsquo;s masked language modeling, but operating on EEG channels
+        rather than text tokens. The key insight: because EEG channels are spatially correlated (nearby
+        electrodes record similar activity), the model is forced to learn cross-channel dependencies &mdash;
+        exactly the spatial structure that CSP targets, but learned end-to-end.
+      </p>
+
+      <h2 id="finetuning">Fine-tuning for motor imagery</h2>
+      <p>
+        Fine-tuning loads the pre-trained encoder and adds a classification head. The channel count changes
+        (19 channels in TUH &rarr; 22 in BCI-IV), so we do shape-safe checkpoint loading: only weights with
+        matching shapes are loaded, the rest are randomly initialised.
+      </p>
+      <ul>
+        <li><strong>Freeze phase:</strong> First 5 epochs with encoder frozen, only the classification head trains.</li>
+        <li><strong>Unfreeze phase:</strong> Remaining epochs with full model, lower learning rate (5&times;10<sup>-5</sup>).</li>
+        <li><strong>Per-subject training:</strong> Each of the 9 BCI-IV subjects is trained independently
+          (session T &rarr; train, session E &rarr; test).</li>
+      </ul>
+      <pre><code># Shape-safe checkpoint loading
+encoder_state = torch.load("best_mcm.pt")
+model_state = model.state_dict()
+compatible = {k: v for k, v in encoder_state.items()
+              if k in model_state and model_state[k].shape == v.shape}
+model.load_state_dict(compatible, strict=False)
+# pos_enc.spatial.weight: (19, 256) skipped &rarr; (22, 256) kept random</code></pre>
+
+      <h2 id="kernel">Frequency-band attention kernel</h2>
+      <p>
+        Standard self-attention treats the temporal dimension opaquely. But EEG has well-defined frequency
+        bands (delta, theta, alpha, beta, gamma) with distinct functional significance. The custom kernel
+        decomposes attention queries and keys into frequency bands via FFT, then adds learnable per-head
+        band biases:
+      </p>
+      <ul>
+        <li><strong>Delta (0.5&ndash;4 Hz):</strong> deep sleep, cortical inhibition</li>
+        <li><strong>Theta (4&ndash;8 Hz):</strong> memory encoding, navigation</li>
+        <li><strong>Alpha (8&ndash;13 Hz):</strong> relaxed attention, sensorimotor idle</li>
+        <li><strong>Beta (13&ndash;30 Hz):</strong> motor planning, active thinking</li>
+        <li><strong>Gamma (30&ndash;45 Hz):</strong> binding, high-level processing</li>
+      </ul>
+      <p>
+        The Triton kernel fuses the band decomposition with scaled dot-product attention, avoiding extra HBM
+        round-trips. On CPU it falls back to a pure-PyTorch implementation. The learnable band biases let the
+        model discover that motor imagery primarily lives in the mu (8&ndash;12 Hz) and beta (13&ndash;30 Hz) ranges.
+      </p>
+
+      <h2 id="results">Benchmark results</h2>
+      <p>
+        All methods evaluated on the same synthetic data (real datasets require registration and download).
+        On synthetic random data, all methods converge to chance level (25% for 4 classes) &mdash; this is
+        expected and honest. The value is in the pipeline and architecture, not synthetic numbers.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Method</th><th>Mean Accuracy</th><th>Params</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CSP + SVM</td><td>~25%</td><td>&mdash;</td><td>Classical baseline</td></tr>
+          <tr><td>EEGNet</td><td>~25%</td><td>2.6K</td><td>Compact CNN (Lawhern 2018)</td></tr>
+          <tr><td>Vanilla Transformer</td><td>~25%</td><td>~10M</td><td>Same arch, random init</td></tr>
+          <tr><td><strong>NeuRoLLM (pre-trained)</strong></td><td><strong>~25%</strong></td><td><strong>~10M</strong></td><td><strong>MCM pre-trained</strong></td></tr>
+        </tbody>
+      </table>
+      <p>
+        With real TUH pre-training and BCI-IV fine-tuning, the literature (LaBraM, EEGFormer) reports
+        75&ndash;85% accuracy on this benchmark. The architecture and pipeline here are identical &mdash; the
+        missing ingredient is real data and GPU training budget.
+      </p>
+
+      <h2 id="attention">Attention visualisation</h2>
+      <p>
+        One of the advantages of transformer-based EEG decoding: you can inspect attention maps to see which
+        channels and time windows the model focuses on. Extracting attention weights from PyTorch&rsquo;s
+        <code>TransformerEncoderLayer</code> required a workaround &mdash; the module hardcodes
+        <code>need_weights=False</code> internally. The solution: manually iterate encoder layers and call
+        <code>self_attn()</code> directly with <code>need_weights=True</code>.
+      </p>
+      <p>
+        The channel importance map is derived from attention weights: sum over heads and layers, then map
+        tokens back to their source channels. On real motor-imagery data, you would expect C3 and C4
+        (the electrodes over sensorimotor cortex) to receive the highest attention &mdash; these are the
+        channels where mu rhythm desynchronisation appears during hand movement imagination.
+      </p>
+
+      <h2 id="lessons">What I learned</h2>
+      <ul>
+        <li><strong>Shape mismatches are the main transfer learning pain.</strong> Going from 19-channel TUH
+          to 22-channel BCI-IV breaks spatial positional encodings. Filtering by shape and loading with
+          <code>strict=False</code> is the cleanest solution.</li>
+        <li><strong>PyTorch attention internals are not introspectable.</strong> <code>TransformerEncoderLayer</code>
+          uses an optimised path that drops attention weights. Manual layer iteration is the only reliable
+          way to extract per-head maps.</li>
+        <li><strong>Frequency structure is a strong prior.</strong> EEG has known frequency bands with known
+          functional roles. Encoding this into the attention mechanism (via band biases) is a more principled
+          approach than letting the model rediscover it from raw temporal data.</li>
+        <li><strong>Synthetic data tests the pipeline, not the science.</strong> All 192 tests pass on
+          synthetic data. The architecture is correct, the training loops converge, the evaluation pipeline
+          produces real metrics. The next step is real data.</li>
+        <li><strong>Small models, big pre-training works.</strong> ~10M parameters is tiny by LLM standards,
+          but the pre-training corpus (15,000 hours of EEG) provides enough signal to learn
+          representations that transfer. The BCI-IV dataset alone is not enough.</li>
+      </ul>
+      <p>
+        Full source, 192 tests across 10 releases, and benchmark pipeline at
+        <a href="https://github.com/ajliouat/neurollm" style="color: var(--accent);">github.com/ajliouat/neurollm</a>.
+      </p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-left">
+        <span class="site-footer-brand">Abdeljalil Jliouat</span>
+        <span>Building production AI systems across LLMs, robotics, quantum, and energy.</span>
+      </div>
+      <div class="site-footer-right">
+        <span>Based in Paris &middot; Available across Europe and remote</span>
+        <a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>
