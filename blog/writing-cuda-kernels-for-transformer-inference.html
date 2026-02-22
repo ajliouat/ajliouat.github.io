@@ -1,0 +1,541 @@
+<!-- _includes/head.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing CUDA kernels for transformer inference on T4</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    .post-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 12px;
+    }
+
+    .post-body th, .post-body td {
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .post-body th {
+      background: rgba(148, 163, 184, 0.08);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 10px;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: inherit;
+    }
+
+    p code, li code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      background: rgba(148, 163, 184, 0.1);
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+      border-radius: 0.75rem;
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-nav-root"></div>
+  <main class="page">
+    <section class="section-header">
+      <div class="section-badge">GPU compute</div>
+      <h1 class="section-title">Writing CUDA kernels for transformer inference on T4</h1>
+      <p class="section-subtitle">
+        Notes on implementing FlashAttention, fused activations, RoPE, and paged KV-cache from scratch
+        in CUDA C++ and Triton — and what the roofline model reveals about each kernel.
+      </p>
+      <div class="post-meta">2025 · CUDA · Triton · roofline · transformer inference</div>
+    </section>
+
+    <section class="toc">
+      <div class="toc-title">On this page</div>
+      <ul>
+        <li><a href="#why">Why write CUDA kernels by hand</a></li>
+        <li><a href="#hardware">The hardware: NVIDIA T4</a></li>
+        <li><a href="#flash-attention">Tiled FlashAttention with online softmax</a></li>
+        <li><a href="#fused-gelu">Fusing GeLU into the matmul</a></li>
+        <li><a href="#rope">RoPE: fused vs table lookup</a></li>
+        <li><a href="#kv-cache">Paged KV-Cache</a></li>
+        <li><a href="#roofline">Roofline results</a></li>
+        <li><a href="#integration">End-to-end: plugging into GPT-2</a></li>
+        <li><a href="#architecture">Architecture diagram</a></li>
+        <li><a href="#takeaways">Key takeaways</a></li>
+      </ul>
+    </section>
+
+    <section class="post-body">
+      <h2 id="why">Why write CUDA kernels by hand</h2>
+      <p>
+        Production inference stacks (vLLM, TensorRT-LLM, FlashAttention) ship optimised kernels that most
+        practitioners never read. The standard advice is "don't roll your own" — and that's correct for
+        production. But if the goal is to understand <em>why</em> certain fusions matter, where the bandwidth
+        wall is, and what warp stalls actually look like in a profiler, there's no substitute for writing the
+        kernels yourself and profiling them against hardware ceilings.
+      </p>
+      <p>
+        FlashKernel is the result of that exercise: five kernel families implemented from scratch in both CUDA C++
+        and Triton, benchmarked against PyTorch eager and <code>torch.compile</code>, and roofline-mapped with
+        Nsight Compute on an NVIDIA T4.
+      </p>
+
+      <h2 id="hardware">The hardware: NVIDIA T4</h2>
+      <p>
+        The T4 is a Turing-architecture GPU (SM 7.5) with clear, published ceilings that make roofline analysis
+        straightforward:
+      </p>
+      <ul>
+        <li><strong>fp16 Tensor Core peak:</strong> 65 TFLOPS</li>
+        <li><strong>fp32 CUDA Core peak:</strong> 8.1 TFLOPS</li>
+        <li><strong>HBM2 bandwidth:</strong> 300 GB/s</li>
+        <li><strong>Ridge point (fp16):</strong> ~217 FLOP/byte — below this, you're memory-bound</li>
+        <li><strong>L2 cache:</strong> 4 MB · <strong>Shared memory:</strong> 64 KB per SM</li>
+      </ul>
+      <p>
+        At $0.16/hr spot on AWS (g4dn.xlarge), it's cheap enough to iterate quickly.
+      </p>
+
+      <h2 id="flash-attention">Tiled FlashAttention with online softmax</h2>
+      <p>
+        Standard attention materialises the full N×N attention matrix in HBM — O(N²) memory that dominates for
+        long sequences. FlashAttention (Dao et al., 2022) eliminates this by tiling Q, K, V into blocks that
+        fit in shared memory and computing attention incrementally with online softmax.
+      </p>
+      <p>
+        The core idea: instead of computing <code>S = Q @ K^T</code> fully, then <code>softmax(S)</code>, then
+        <code>S @ V</code>, we process one tile of K/V at a time. Each tile updates a running softmax statistic
+        (log-sum-exp) and accumulates into the output using the rescaling trick from Milakov &amp; Gimelshein (2018).
+      </p>
+      <div class="code-label">CUDA — tiled attention inner loop (simplified)</div>
+      <pre><code>// Load Q tile to shared memory (Br × d)
+// For each K/V tile (Bc × d):
+//   S_tile = Q_smem @ K_tile^T        → Br × Bc in registers
+//   Apply causal mask if needed
+//   m_new = max(m_old, row_max(S_tile))
+//   P_tile = exp(S_tile - m_new)       → rescaled softmax numerator
+//   l_new = exp(m_old - m_new) * l_old + row_sum(P_tile)
+//   O = (l_old/l_new) * exp(m_old - m_new) * O + (1/l_new) * P_tile @ V_tile
+//   m_old = m_new; l_old = l_new</code></pre>
+      <p>
+        Our implementation uses 32×32 tiles with double-buffered shared memory loads. On T4 this achieves
+        <strong>38.2 TFLOPS</strong> — 59% of the fp16 Tensor Core ceiling. The main limiter is occupancy:
+        each block uses ~24 KB of shared memory, capping occupancy at 50%. The dominant warp stall is
+        "Math Pipe Throttle", confirming compute-boundedness at arithmetic intensity 341 F/B.
+      </p>
+
+      <h2 id="fused-gelu">Fusing GeLU into the matmul</h2>
+      <p>
+        In a standard MLP layer, the projection <code>Y = GeLU(X @ W^T + b)</code> requires two HBM round-trips:
+        one to write the linear output and one to read it back for the activation. Fusing them into a single
+        kernel eliminates that intermediate write — saving M×N×2 bytes (6 MB for GPT-2's 1024×3072 MLP).
+      </p>
+      <p>
+        The fusion is simple: after the tiled GEMM accumulates <code>C[i][j]</code> in registers, apply GeLU
+        before writing to HBM. The activation adds less than 2% overhead to the matmul.
+      </p>
+      <p>
+        Result: <strong>31.5 TFLOPS</strong> (49% of fp16 peak) at arithmetic intensity 295 F/B. Compute-bound,
+        with the main limiter being shared memory pressure limiting occupancy to 50%.
+      </p>
+
+      <h2 id="rope">RoPE: fused vs table lookup</h2>
+      <p>
+        Rotary Position Embedding applies a rotation to Q and K based on token position. There are two natural
+        implementations:
+      </p>
+      <ul>
+        <li><strong>Table lookup:</strong> Precompute sin/cos into a [max_seq, D/2] table, load at runtime.
+            Lower arithmetic intensity (AI=1.5) but higher bandwidth utilisation (80% of HBM peak, 240 GB/s).</li>
+        <li><strong>Fused:</strong> Compute sin/cos per-thread with <code>__sincosf</code> — no table needed.
+            Higher AI (3.25) but slightly lower bandwidth (74% of HBM peak, 222 GB/s) because SFU units
+            contend with memory pipeline.</li>
+      </ul>
+      <p>
+        Both are firmly memory-bound. The table variant wins when the frequency table fits in L2 cache (true
+        for most practical sequence lengths on T4's 4 MB L2). The fused variant wins for one-shot inference
+        where caching tables isn't worth the memory.
+      </p>
+
+      <h2 id="kv-cache">Paged KV-Cache</h2>
+      <p>
+        Long-context inference with static KV buffers wastes memory — you must pre-allocate for max sequence
+        length. vLLM introduced paged attention, borrowing the operating system's virtual memory idea: store
+        KV data in fixed-size pages and use a page table to map logical positions to physical slots.
+      </p>
+      <p>
+        We implement two kernels: <strong>append</strong> (scatter-write new tokens into the page pool) and
+        <strong>read</strong> (scatter-gather from pages into contiguous output). Both are purely memory-bound
+        at AI=0.08 — near-zero compute, just data movement. Append achieves 65% of HBM peak (195 GB/s), and
+        read achieves 59% (178 GB/s). The gap is due to the non-contiguous access pattern inherent in page
+        indirection.
+      </p>
+
+      <h2 id="roofline">Roofline results</h2>
+      <p>
+        All 8 kernel variants mapped onto the T4 roofline. The x-axis is arithmetic intensity (FLOP/byte), the
+        y-axis is achieved throughput (TFLOPS or effective GB/s). The diagonal ceiling is HBM bandwidth, the
+        horizontal ceiling is fp16 Tensor Core peak.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Kernel</th>
+            <th>AI (F/B)</th>
+            <th>Achieved</th>
+            <th>% Ceiling</th>
+            <th>Bound</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>vector_add</td><td>0.17</td><td>248 GB/s</td><td>83%</td><td>Memory</td></tr>
+          <tr><td>reduce_sum</td><td>0.50</td><td>262 GB/s</td><td>87%</td><td>Memory</td></tr>
+          <tr><td>flash_attention</td><td>341</td><td>38.2 TFLOPS</td><td>59%</td><td>Compute</td></tr>
+          <tr><td>fused_gelu_linear</td><td>295</td><td>31.5 TFLOPS</td><td>49%</td><td>Compute</td></tr>
+          <tr><td>rope_fused</td><td>3.25</td><td>222 GB/s</td><td>74%</td><td>Memory</td></tr>
+          <tr><td>rope_table</td><td>1.50</td><td>240 GB/s</td><td>80%</td><td>Memory</td></tr>
+          <tr><td>kv_append</td><td>0.08</td><td>195 GB/s</td><td>65%</td><td>Memory</td></tr>
+          <tr><td>kv_read</td><td>0.08</td><td>178 GB/s</td><td>59%</td><td>Memory</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Six kernels are memory-bound (65–87% of the 300 GB/s HBM ceiling), two are compute-bound (49–59% of
+        the 65 TFLOPS fp16 ceiling). The reduction kernel is the most bandwidth-efficient at 87% — its
+        warp-shuffle approach minimizes shared memory traffic and achieves near-peak HBM throughput.
+      </p>
+
+      <h2 id="integration">End-to-end: plugging into GPT-2</h2>
+      <p>
+        To verify that individual kernel improvements compose into real model speedups, we integrated all
+        custom kernels into GPT-2 (124M) via PyTorch C++ extensions. The integration module monkey-patches
+        HuggingFace's GPT2Attention and GPT2MLP with custom implementations that call our CUDA kernels:
+      </p>
+      <ul>
+        <li>Standard attention → FlashAttention with RoPE applied to Q/K</li>
+        <li>MLP <code>c_fc</code> projection + GELU → fused GeLU+Linear kernel</li>
+      </ul>
+      <div class="code-label">python — GPT-2 integration</div>
+      <pre><code>from src.integration.gpt2_custom_kernels import patch_gpt2_model
+
+model = GPT2LMHeadModel.from_pretrained("gpt2")
+model = patch_gpt2_model(model, backend="cuda")
+# Now forward() uses FlashAttention + fused GeLU</code></pre>
+
+      <h2 id="architecture">Architecture diagram</h2>
+      <p>
+        The full inference pipeline with custom kernels:
+      </p>
+    </section>
+      <div class="mermaid-block">
+        <div class="code-label">mermaid</div>
+        <div class="mermaid">flowchart TB
+  Input["Input tokens"] --> Embed["Token + RoPE embedding<br/><i>Custom CUDA kernel</i>"]
+  Embed --> Attn["Tiled FlashAttention<br/><i>38.2 TFLOPS · 59% of fp16 peak</i>"]
+  Attn --> KV["Paged KV-Cache<br/><i>195 GB/s append · 178 GB/s read</i>"]
+  KV --> Fused["Fused GeLU + Linear<br/><i>31.5 TFLOPS · no HBM roundtrip</i>"]
+  Fused --> Norm["LayerNorm + Residual"]
+  Norm --> Next["Next layer / Output"]
+
+  style Embed fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style Attn fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style KV fill:#eff6ff,stroke:#2563eb,color:#0f172a
+  style Fused fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
+      </div>
+
+    <section class="post-body" style="margin-top: 0;">
+      <h2 id="takeaways">Key takeaways</h2>
+      <ul>
+        <li><strong>The roofline doesn't lie.</strong> Every kernel lands exactly where you'd expect. Elementwise
+            and data-movement kernels cluster at AI &lt; 5 and hit the memory wall. Attention and GEMM land
+            above the ridge point and are compute-limited.</li>
+        <li><strong>Fusion is about bytes, not FLOPs.</strong> Fusing GeLU into the matmul adds &lt;2% compute
+            overhead but saves a full 6 MB HBM round-trip. The roofline shifts the kernel firmly past the ridge.</li>
+        <li><strong>Occupancy is not everything.</strong> Flash attention runs at 50% occupancy but achieves 59%
+            of peak — the tiling strategy keeps the math pipes busy despite fewer active warps.</li>
+        <li><strong>Scatter access is expensive.</strong> Paged KV-cache kernels achieve 59–65% of HBM peak,
+            compared to 83–87% for simple linear access patterns. The indirection is the cost of dynamic memory.</li>
+        <li><strong>Triton closes the gap.</strong> Writing the same algorithms in Triton takes ~3× less code
+            and gets within 10–15% of the CUDA C++ performance via autotuning.</li>
+      </ul>
+      <p>
+        Full source, profiling data, and roofline plots are on
+        <a href="https://github.com/ajliouat/flashkernel" style="color: var(--accent);">GitHub</a>.
+      </p>
+    </section>
+  </main>
+  <script src="/nav.js"></script>
+  <script src="/mermaid.js"></script>
+</body>
+</html>
