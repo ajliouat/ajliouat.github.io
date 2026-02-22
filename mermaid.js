@@ -13,7 +13,7 @@
     var root = document.documentElement
     var attr = root.getAttribute('data-theme')
     if (attr === 'dark' || attr === 'light') return attr
-    return 'dark'
+    return 'light'
   }
 
   function getConfig(theme) {
