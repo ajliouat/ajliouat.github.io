@@ -497,7 +497,6 @@ model = patch_gpt2_model(model, backend="cuda")
       <p>
         The full inference pipeline with custom kernels:
       </p>
-    </section>
       <div class="mermaid-block">
         <div class="code-label">mermaid</div>
         <div class="mermaid">flowchart TB
@@ -514,7 +513,6 @@ model = patch_gpt2_model(model, backend="cuda")
   style Fused fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
       </div>
 
-    <section class="post-body" style="margin-top: 0;">
       <h2 id="takeaways">Key takeaways</h2>
       <ul>
         <li><strong>The roofline doesn't lie.</strong> Every kernel lands exactly where you'd expect. Elementwise
@@ -532,6 +530,8 @@ model = patch_gpt2_model(model, backend="cuda")
       <p>
         Full source, profiling data, and roofline plots are on
         <a href="https://github.com/ajliouat/flashkernel" style="color: var(--accent);">GitHub</a>.
+        See the <a href="/projects/flashkernel.html" style="color: var(--accent);">project page</a> for
+        the complete kernel inventory and architecture overview.
       </p>
     </section>
   </main>

@@ -271,10 +271,14 @@
         <div class="toc-title">On this page</div>
         <ul class="toc-list">
           <li class="toc-item"><a class="toc-link" href="#overview">Overview</a></li>
+          <li class="toc-item"><a class="toc-link" href="#motivation">Why this project</a></li>
           <li class="toc-item"><a class="toc-link" href="#kernels">Kernel inventory</a></li>
           <li class="toc-item"><a class="toc-link" href="#approach">Technical approach</a></li>
+          <li class="toc-item"><a class="toc-link" href="#code">Core algorithm</a></li>
           <li class="toc-item"><a class="toc-link" href="#benchmarks">Roofline benchmarks</a></li>
+          <li class="toc-item"><a class="toc-link" href="#e2e">End-to-end results</a></li>
           <li class="toc-item"><a class="toc-link" href="#architecture">Architecture diagram</a></li>
+          <li class="toc-item"><a class="toc-link" href="#reproduce">Reproduce</a></li>
         </ul>
       </aside>
 
@@ -295,6 +299,15 @@
           <span class="tech-pill">CMake</span>
           <span class="tech-pill">Docker</span>
         </div>
+
+        <section class="section" id="motivation">
+          <h2 class="section-title">Why this project</h2>
+          <ul>
+            <li><strong>Scarcest skill in ML infrastructure:</strong> CUDA kernel engineering sits at the intersection of hardware and model architecture — production systems (vLLM, TensorRT-LLM, FlashAttention) ship hand-tuned kernels most practitioners never read.</li>
+            <li><strong>Profiling-driven development:</strong> Every optimization guided by Nsight Compute metrics — not intuition. Occupancy, warp stalls, memory throughput, and roofline position drive each design decision.</li>
+            <li><strong>Real verification:</strong> Kernels are not benchmarked in isolation. They're integrated into GPT-2 (124M) to show that micro-kernel gains compose into real model-level speedups.</li>
+          </ul>
+        </section>
 
         <section class="section" id="kernels">
           <h2 class="section-title">Kernel inventory</h2>
@@ -354,6 +367,22 @@
           </ul>
         </section>
 
+        <div class="code-block" id="code">
+          <div class="code-header">
+            <span class="code-lang">CUDA — FlashAttention tiled inner loop</span>
+          </div>
+          <pre>// Load Q tile to shared memory (Br × d)
+// For each K/V tile (Bc × d):
+//   S_tile = Q_smem @ K_tile^T        → Br × Bc in registers
+//   Apply causal mask if needed
+//   m_new = max(m_old, row_max(S_tile))
+//   P_tile = exp(S_tile - m_new)       → rescaled softmax numerator
+//   l_new = exp(m_old - m_new) * l_old + row_sum(P_tile)
+//   O = (l_old/l_new) * exp(m_old - m_new) * O
+//       + (1/l_new) * P_tile @ V_tile
+//   m_old = m_new; l_old = l_new</pre>
+        </div>
+
         <section class="section" id="benchmarks">
           <h2 class="section-title">Roofline Benchmarks</h2>
           <p>
@@ -387,6 +416,23 @@
           </p>
         </section>
 
+        <section class="section" id="e2e">
+          <h2 class="section-title">End-to-end results</h2>
+          <p>
+            All custom kernels integrated into GPT-2 (124M) via PyTorch C++ extensions.
+            The integration module monkey-patches HuggingFace's GPT2Attention and GPT2MLP:
+          </p>
+          <ul>
+            <li>Standard attention → FlashAttention with RoPE applied to Q/K</li>
+            <li>MLP <code>c_fc</code> projection + GELU → fused GeLU+Linear kernel</li>
+          </ul>
+          <p>
+            Individual kernel gains compose into real model-level speedups — flash attention alone
+            eliminates the O(N²) HBM materialization, and the GeLU fusion saves a 6 MB round-trip
+            per MLP layer.
+          </p>
+        </section>
+
         <section class="section" id="architecture">
           <h2 class="section-title">Architecture diagram</h2>
           <div class="mermaid-block">
@@ -404,6 +450,27 @@
   style Fused fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
           </div>
         </section>
+
+        </section>
+
+        <section class="section" id="reproduce">
+          <h2 class="section-title">Reproduce</h2>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Shell</span>
+            </div>
+            <pre>docker build -t flashkernel .
+docker run --gpus all flashkernel pytest tests/ -v
+docker run --gpus all flashkernel python profiling/roofline/generate_roofline.py</pre>
+          </div>
+        </section>
+
+        <div style="margin-top: 18px; font-size: 13px;">
+          <a href="/blog/writing-cuda-kernels-for-transformer-inference.html"
+             style="color: var(--accent); text-decoration: none; font-weight: 500;">
+            Read the full technical write-up →
+          </a>
+        </div>
 
         <div class="footer-actions">
           <a href="/projects/" class="back-link">
