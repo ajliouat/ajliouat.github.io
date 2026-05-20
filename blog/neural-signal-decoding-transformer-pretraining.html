@@ -356,7 +356,7 @@
       <div class="section-badge">BCI &times; Deep Learning</div>
       <h1 class="section-title">Neural signal decoding via transformer pre-training</h1>
       <p class="section-subtitle">
-        Notes on building NeuRoLLM: a foundation-model approach to EEG decoding where a small transformer
+        Notes on building NeuroLLM: a foundation-model approach to EEG decoding where a small transformer
         pre-trained on large-scale clinical EEG data is fine-tuned for motor-imagery classification.
       </p>
       <div class="post-meta">2026 &middot; BCI &middot; EEG &middot; transformer &middot; pre-training</div>
@@ -386,7 +386,7 @@
       <p>
         Recent work (LaBraM, BrainBERT, EEGFormer) demonstrates that transformer-based models pre-trained
         on large EEG datasets can learn general neural-signal representations that transfer across subjects
-        and tasks. NeuRoLLM implements this idea at a reproducible scale: pre-train on TUH, fine-tune on
+        and tasks. NeuroLLM implements this idea at a reproducible scale: pre-train on TUH, fine-tune on
         BCI Competition IV, compare honestly against classical and neural baselines.
       </p>
 
@@ -507,7 +507,7 @@ model.load_state_dict(compatible, strict=False)
           <tr><td>CSP + SVM</td><td>~25%</td><td>&mdash;</td><td>Classical baseline</td></tr>
           <tr><td>EEGNet</td><td>~25%</td><td>2.6K</td><td>Compact CNN (Lawhern 2018)</td></tr>
           <tr><td>Vanilla Transformer</td><td>~25%</td><td>~10M</td><td>Same arch, random init</td></tr>
-          <tr><td><strong>NeuRoLLM (pre-trained)</strong></td><td><strong>~25%</strong></td><td><strong>~10M</strong></td><td><strong>MCM pre-trained</strong></td></tr>
+          <tr><td><strong>NeuroLLM (pre-trained)</strong></td><td><strong>~25%</strong></td><td><strong>~10M</strong></td><td><strong>MCM pre-trained</strong></td></tr>
         </tbody>
       </table>
       <p>
