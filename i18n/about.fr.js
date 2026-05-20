@@ -19,8 +19,9 @@
     "IA appliquée, robotique, IA quantique, systèmes énergétiques, interfaces cerveau–ordinateur et matériel de calcul."
 
   t['about.profile_name'] = 'Abdeljalil Jliouat'
-  t['about.profile_role'] = "Ingénieur Deep Learning & fondateur dans l'IA"
+  t['about.profile_role'] = 'Applied AI Scientist'
 
+  t['about.stack_title'] = 'Stack technique'
   t['about.stack_python'] = 'Python'
   t['about.stack_pytorch'] = 'PyTorch'
   t['about.stack_cuda'] = 'CUDA C++'
