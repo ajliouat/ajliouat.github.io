@@ -51,7 +51,7 @@
     "Spécialisation en optimisation, systèmes distribués et développement logiciel full‑stack."
 
   t['about.current_title'] = 'Rôles actuels'
-  t['about.current_role_title'] = 'Founder @AKIOUD AI'
+  t['about.current_role_title'] = 'Founder @AKIOUD AI, Paris'
   t['about.current_role_meta'] =
     "Pilotage de la recherche et du produit sur une couche runtime et de contrôle vendor‑neutral qui rend l'IA agentique gouvernable, observable et opérable en production."
 

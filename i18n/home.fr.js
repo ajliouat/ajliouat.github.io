@@ -64,7 +64,7 @@
 
   t['home.card_link'] = 'Voir le projet →'
 
-  t['home.exp1_role'] = 'Founder @AKIOUD AI'
+  t['home.exp1_role'] = 'Founder @AKIOUD AI, Paris'
   t['home.exp1_meta'] =
     "Runtime d’IA, outillage et sécurité pour des systèmes réglementés et à forts enjeux."
   t['home.exp2_role'] = 'Lead Data Scientist, Merci Jack, Paris'
