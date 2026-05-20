@@ -66,7 +66,7 @@
 
   t['about.patents_title'] = 'Brevets (déposés)'
   t['about.patent1_title'] =
-    "SYSTÈME D'ORCHESTRATION D'INTELLIGENCE ARTIFICIELLE À ISOLATION PHYSIQUE RECONFIGURABLE PAR DÉSACTIVATION CRYPTOGRAPHIQUE CONDITIONNELLE MULTI-COUCHES"
+    "Système d'orchestration d'intelligence artificielle à isolation physique reconfigurable par désactivation cryptographique conditionnelle multi-couches"
   t['about.patent1_meta'] =
     "Brevet déposé auprès de l'OMPIC (déc. 2025, en instruction)."
   t['about.patent2_title'] =
