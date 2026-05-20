@@ -51,7 +51,7 @@
     'Focused on optimization, distributed systems, and full-stack software development.'
 
   t['about.current_title'] = 'Current roles'
-  t['about.current_role_title'] = 'Chief AI Scientist, AKIOUD AI, Paris'
+  t['about.current_role_title'] = 'Founder @AKIOUD AI'
   t['about.current_role_meta'] =
     'Leading research and product on vendor-neutral runtime and control layers that make agentic AI governable, observable, and operable in production.'
 
