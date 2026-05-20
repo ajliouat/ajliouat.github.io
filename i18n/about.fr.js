@@ -4,7 +4,7 @@
   var t = window.I18N.fr
 
   t['about.badge'] = 'Profil'
-  t['about.title'] = "Ingénieur machine learning et Fondateur en IA"
+  t['about.title'] = 'Applied AI Scientist'
   t['about.subtitle'] =
     "Travail à l'intersection de la conception de modèles, de l'optimisation et du déploiement pour transformer des idées de recherche en systèmes mis en production."
 
