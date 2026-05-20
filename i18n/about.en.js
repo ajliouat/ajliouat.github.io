@@ -19,7 +19,7 @@
     'Applied AI, robotics, quantum AI, energy systems, brain–computer interfaces, and compute hardware.'
 
   t['about.profile_name'] = 'Abdeljalil Jliouat'
-  t['about.profile_role'] = 'Machine Learning Engineer & AI Founder'
+  t['about.profile_role'] = 'Applied AI Scientist'
 
   t['about.stack_python'] = 'Python'
   t['about.stack_pytorch'] = 'PyTorch'
