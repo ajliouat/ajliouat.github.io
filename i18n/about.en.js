@@ -88,7 +88,6 @@
     'For collaborations and advisory work, email is usually the fastest way to reach me.'
 
   t['about.contact_email_label'] = 'Email'
-  t['about.contact_x_label'] = 'X'
   t['about.contact_linkedin_label'] = 'LinkedIn'
   t['about.contact_github_label'] = 'GitHub'
 })()

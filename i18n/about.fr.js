@@ -90,7 +90,6 @@
     'Pour les collaborations et missions de conseil, le courrier électronique reste le moyen le plus rapide pour me joindre.'
 
   t['about.contact_email_label'] = 'E‑mail'
-  t['about.contact_x_label'] = 'X'
   t['about.contact_linkedin_label'] = 'LinkedIn'
   t['about.contact_github_label'] = 'GitHub'
 })()
