@@ -278,8 +278,9 @@ main pre, main .code-block { max-width: 100%; }
 .hero-identity p span { display: block; color: var(--muted); font-size: 13px; font-weight: 400; margin-top: .15rem; }
 .home-hero .section-title { max-width: 750px; margin: 1.1rem auto; font-size: clamp(30px, 4.5vw, 44px); font-weight: 600; line-height: 1.15; letter-spacing: -.035em; text-wrap: balance; }
 .home-hero .section-subtitle { font-size: 16px; line-height: 1.75; max-width: 660px; }
-.hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1.8rem; }
-.button-primary, .button-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .6rem 1.2rem; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; }
+.hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: 1.8rem; }
+.button-primary, .button-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: .45rem 1rem; border: 1px solid var(--border); border-radius: 999px; font-size: 13px; line-height: 1.4; font-weight: 500; text-decoration: none; }
+.button-primary:focus-visible, .button-secondary:focus-visible { border-radius: 999px; }
 .button-primary { background: #2563eb; border-color: #2563eb; color: #fff; }
 .button-primary:hover { background: #1d4ed8; text-decoration: none; }
 .button-secondary { color: var(--text); background: var(--surface); }
@@ -316,7 +317,7 @@ html[data-theme='dark'] .button-secondary { background: #0f172a; }
   .home-hero .section-badge { font-size: 9px; letter-spacing: .05em; }
   .focus-grid { grid-template-columns: 1fr; gap: 1.2rem; }
   .site-footer-inner { flex-direction: column; padding-inline: 1.25rem; gap: 1rem; }
-  .hero-actions a { flex: 1 1 auto; }
+  .hero-actions a { flex: 0 1 auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
