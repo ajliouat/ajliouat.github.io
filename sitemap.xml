@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://ajliouat.com/</loc></url>
+<url><loc>https://ajliouat.com/fr/</loc></url>
+<url><loc>https://ajliouat.com/about.html</loc></url>
+<url><loc>https://ajliouat.com/fr/about.html</loc></url>
+<url><loc>https://ajliouat.com/contact.html</loc></url>
+<url><loc>https://ajliouat.com/fr/contact.html</loc></url>
+<url><loc>https://ajliouat.com/projects/flashkernel.html</loc></url>
+<url><loc>https://ajliouat.com/projects/</loc></url>
+<url><loc>https://ajliouat.com/fr/projects/</loc></url>
+<url><loc>https://ajliouat.com/projects/neurollm.html</loc></url>
+<url><loc>https://ajliouat.com/projects/quantumgrid.html</loc></url>
+<url><loc>https://ajliouat.com/projects/robollm.html</loc></url>
+<url><loc>https://ajliouat.com/blog/foundations-for-robotic-learning.html</loc></url>
+<url><loc>https://ajliouat.com/blog/hierarchical-vlm-rl-manipulation.html</loc></url>
+<url><loc>https://ajliouat.com/blog/</loc></url>
+<url><loc>https://ajliouat.com/fr/blog/</loc></url>
+<url><loc>https://ajliouat.com/blog/neural-signal-decoding-transformer-pretraining.html</loc></url>
+<url><loc>https://ajliouat.com/blog/observability-for-llm-systems.html</loc></url>
+<url><loc>https://ajliouat.com/blog/production-runtime-akiod.html</loc></url>
+<url><loc>https://ajliouat.com/blog/quantum-ai-foundations.html</loc></url>
+<url><loc>https://ajliouat.com/blog/quantum-classical-hybrid-energy-grid-optimization.html</loc></url>
+<url><loc>https://ajliouat.com/blog/rag-pipelines-practical-notes.html</loc></url>
+<url><loc>https://ajliouat.com/blog/robotics-energy-systems.html</loc></url>
+<url><loc>https://ajliouat.com/blog/writing-cuda-kernels-for-transformer-inference.html</loc></url>
+</urlset>

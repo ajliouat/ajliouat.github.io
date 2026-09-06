@@ -1,0 +1,180 @@
+{
+  "site": "https://ajliouat.com",
+  "feedUpdated": "2026-09-06T00:00:00Z",
+  "pages": [
+    {
+      "path": "index.html",
+      "section": "home",
+      "title": "Abdeljalil Jliouat — Applied AI & Systems Engineering",
+      "description": "Applied AI scientist in Paris building efficient, reliable systems. Explore open-source GPU, robotics, EEG and quantum projects and technical notes.",
+      "fr": {
+        "title": "Abdeljalil Jliouat — Ingénierie de systèmes d’IA",
+        "description": "Chercheur en IA appliquée à Paris : inférence GPU, robotique et systèmes fiables. Projets open source, notes techniques et collaborations."
+      }
+    },
+    {
+      "path": "about.html",
+      "section": "about",
+      "title": "About Abdeljalil Jliouat — Applied AI Scientist",
+      "description": "Meet Abdeljalil Jliouat: applied AI scientist and founder with experience in production ML, GPU optimization, robotics and AI systems engineering.",
+      "fr": {
+        "title": "À propos — Abdeljalil Jliouat",
+        "description": "Parcours d’Abdeljalil Jliouat, chercheur en IA appliquée et fondateur : expérience, formation, projets et centres d’intérêt."
+      }
+    },
+    {
+      "path": "contact.html",
+      "section": "contact",
+      "title": "Contact Abdeljalil Jliouat — AI Projects & Collaboration",
+      "description": "Get in touch about applied AI, model performance, production systems and technical advisory work. Based in Paris, available across Europe and remotely.",
+      "fr": {
+        "title": "Contact — Abdeljalil Jliouat",
+        "description": "Discutons de vos projets d’IA, de performance des modèles ou de mise en production. Basé à Paris, disponible en Europe et à distance."
+      }
+    },
+    {
+      "path": "projects/flashkernel.html",
+      "section": "projects",
+      "title": "FlashKernel — Custom CUDA Kernels for Transformer Inference | Abdeljalil Jliouat",
+      "description": "Custom CUDA and Triton kernels for transformer inference, profiled with Nsight Compute on NVIDIA T4. Architecture, benchmarks and reproduction commands."
+    },
+    {
+      "path": "projects/index.html",
+      "section": "projects",
+      "title": "AI Engineering & Research Projects — Abdeljalil Jliouat",
+      "description": "Explore four open-source projects: CUDA inference kernels, language-grounded robotics, EEG decoding and quantum-classical energy grid optimization.",
+      "fr": {
+        "title": "Projets d’IA et de recherche — Abdeljalil Jliouat",
+        "description": "Quatre projets open source : kernels CUDA, robotique guidée par le langage, décodage EEG et optimisation quantique des réseaux électriques."
+      }
+    },
+    {
+      "path": "projects/neurollm.html",
+      "section": "projects",
+      "title": "NeuroLLM — Neural Signal Decoding via Transformer Pre-training | Abdeljalil Jliouat",
+      "description": "Transformer pre-training for EEG decoding and motor-imagery classification. Explore NeuroLLM’s datasets, architecture, benchmarks and source code."
+    },
+    {
+      "path": "projects/quantumgrid.html",
+      "section": "projects",
+      "title": "QuantumGrid — Quantum-Classical Hybrid for Energy Optimization | Abdeljalil Jliouat",
+      "description": "QAOA and VQE for energy grid unit commitment, compared with classical MILP and other baselines. Explore the formulation, limits and reproducible code."
+    },
+    {
+      "path": "projects/robollm.html",
+      "section": "projects",
+      "title": "RoboLLM — Language-Grounded Robotic Manipulation | Abdeljalil Jliouat",
+      "description": "A hierarchical VLM and reinforcement learning system for robotic manipulation in MuJoCo. Explore the architecture, tasks, benchmarks and source code."
+    },
+    {
+      "path": "blog/foundations-for-robotic-learning.html",
+      "section": "blog",
+      "title": "Foundations for deep learning in robotic systems | Abdeljalil Jliouat",
+      "description": "Practical notes on deep learning for robotics: simulation, reinforcement learning, vision-language models and the constraints imposed by real hardware.",
+      "article": true,
+      "headline": "Foundations for deep learning in robotic systems",
+      "updated": "2026-05-20T20:38:25+02:00",
+      "year": "2025"
+    },
+    {
+      "path": "blog/hierarchical-vlm-rl-manipulation.html",
+      "section": "blog",
+      "title": "Building a hierarchical VLM+RL manipulation system | Abdeljalil Jliouat",
+      "description": "Inside RoboLLM: a vision-language planner, object grounding and learned motor policies for hierarchical manipulation tasks in MuJoCo simulation.",
+      "article": true,
+      "headline": "Building a hierarchical VLM+RL manipulation system",
+      "updated": "2026-02-22T14:58:19+01:00",
+      "year": "2025"
+    },
+    {
+      "path": "blog/index.html",
+      "section": "blog",
+      "title": "AI Engineering Notes — Abdeljalil Jliouat",
+      "description": "Practical articles on GPU inference, robotics, LLM systems, brain-computer interfaces and quantum optimization, with links to projects and source code.",
+      "fr": {
+        "title": "Notes techniques sur l’IA — Abdeljalil Jliouat",
+        "description": "Articles sur l’inférence GPU, la robotique, les systèmes LLM, les interfaces cerveau–ordinateur et l’optimisation quantique."
+      }
+    },
+    {
+      "path": "blog/neural-signal-decoding-transformer-pretraining.html",
+      "section": "blog",
+      "title": "Neural signal decoding via transformer pre-training | Abdeljalil Jliouat",
+      "description": "Building NeuroLLM: masked EEG pre-training, motor-imagery fine-tuning, frequency-band attention and comparisons with classical BCI baselines.",
+      "article": true,
+      "headline": "Neural signal decoding via transformer pre-training",
+      "updated": "2026-05-20T20:21:50+02:00",
+      "year": "2026"
+    },
+    {
+      "path": "blog/observability-for-llm-systems.html",
+      "section": "blog",
+      "title": "Observability for LLM systems beyond logs and metrics | Abdeljalil Jliouat",
+      "description": "How to observe LLM behavior through evaluations, evidence and feedback loops, beyond the logs and resource metrics used for conventional services.",
+      "article": true,
+      "headline": "Observability for LLM systems beyond logs and metrics",
+      "updated": "2026-05-20T20:38:25+02:00",
+      "year": "2025"
+    },
+    {
+      "path": "blog/production-runtime-akiod.html",
+      "section": "blog",
+      "title": "Designing a runtime layer for governed, vendor‑neutral AI | Abdeljalil Jliouat",
+      "description": "Design notes on AI runtime layers: governing tool execution, preserving evidence and managing vendor choice and cost in production systems.",
+      "article": true,
+      "headline": "Designing a runtime layer for governed, vendor‑neutral AI",
+      "updated": "2026-05-20T20:38:25+02:00",
+      "year": "2025"
+    },
+    {
+      "path": "blog/quantum-ai-foundations.html",
+      "section": "blog",
+      "title": "Sketches toward quantum AI | Abdeljalil Jliouat",
+      "description": "A practical introduction to qubit states, variational quantum circuits and hybrid training loops that combine quantum and classical computation.",
+      "article": true,
+      "headline": "Sketches toward quantum AI",
+      "updated": "2026-05-20T20:38:25+02:00",
+      "year": "2025"
+    },
+    {
+      "path": "blog/quantum-classical-hybrid-energy-grid-optimization.html",
+      "section": "blog",
+      "title": "Quantum-classical hybrid optimisation for energy grids | Abdeljalil Jliouat",
+      "description": "Building QuantumGrid: unit commitment as QUBO and Ising models, QAOA and VQE experiments, classical baselines, penalty tuning and scaling limits.",
+      "article": true,
+      "headline": "Quantum-classical hybrid optimisation for energy grids",
+      "updated": "2026-02-22T18:52:33+01:00",
+      "year": "2026"
+    },
+    {
+      "path": "blog/rag-pipelines-practical-notes.html",
+      "section": "blog",
+      "title": "Practical notes on RAG pipelines | Abdeljalil Jliouat",
+      "description": "Practical RAG design notes covering retrieval objectives, indexing, chunking, hybrid scoring and orchestration, with pseudocode and an architecture diagram.",
+      "article": true,
+      "headline": "Practical notes on RAG pipelines",
+      "updated": "2026-05-20T20:38:25+02:00",
+      "year": "2025"
+    },
+    {
+      "path": "blog/robotics-energy-systems.html",
+      "section": "blog",
+      "title": "Robotics × energy systems | Abdeljalil Jliouat",
+      "description": "Thinking about robot fleets as energy systems: task assignment, charging, power constraints and policies that balance cost against service quality.",
+      "article": true,
+      "headline": "Robotics × energy systems",
+      "updated": "2026-05-20T20:38:25+02:00",
+      "year": "2025"
+    },
+    {
+      "path": "blog/writing-cuda-kernels-for-transformer-inference.html",
+      "section": "blog",
+      "title": "Writing CUDA kernels for transformer inference on T4 | Abdeljalil Jliouat",
+      "description": "Implementing FlashAttention, fused GeLU, RoPE and paged KV-cache in CUDA and Triton, and interpreting NVIDIA T4 results with the roofline model.",
+      "article": true,
+      "headline": "Writing CUDA kernels for transformer inference on T4",
+      "updated": "2026-02-22T14:58:19+01:00",
+      "year": "2026"
+    }
+  ]
+}

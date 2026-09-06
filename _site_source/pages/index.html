@@ -1,0 +1,487 @@
+<style>
+
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 640px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: #374151;
+      background-color: #f9fafb;
+    }
+
+    .section-block {
+      margin-bottom: 3rem;
+    }
+
+    .section-heading {
+      margin-bottom: 1.25rem;
+    }
+
+    .section-heading h2 {
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .section-heading p {
+      margin: 0.4rem 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 1rem 1.1rem;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin: 0 0 0.4rem;
+    }
+
+    .card-body {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 0.6rem;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-tag {
+      font-size: 11px;
+      padding: 0.12rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .card-link {
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .experience-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.9rem;
+      font-size: 13px;
+    }
+
+    .experience-role {
+      font-weight: 500;
+    }
+
+    .experience-meta {
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .contact-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 13px;
+    }
+
+    .contact-inline a {
+      color: var(--accent);
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .site-footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .site-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .site-footer-brand {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 12px;
+    }
+
+    .site-footer-right a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .card-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .site-footer-inner {
+        padding-inline: 1.25rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+</style>
+<main class="page">
+    <section class="section-header home-hero">
+      <div class="hero-identity">
+        <img src="/assets/avatar-160.webp" srcset="/assets/avatar-160.webp 160w, /assets/avatar-320.webp 320w" sizes="96px" width="96" height="96" alt="Abdeljalil Jliouat" decoding="async">
+        <p>Abdeljalil Jliouat <span>Applied AI Scientist · Paris</span></p>
+      </div>
+      <div class="section-badge" data-i18n="home.hero_badge">AI systems engineering</div>
+      <h1 class="section-title" data-i18n="home.hero_title">Deep systems across LLM, robotics, quantum AI, and GPU compute</h1>
+      <p class="section-subtitle" data-i18n="home.hero_subtitle">
+        Building reproducible, benchmarked projects at the intersection of large language models, robotic manipulation,
+        brain–computer interfaces, quantum optimization, and energy systems.
+      </p>
+      <div class="hero-actions">
+        <a class="button-primary" href="/projects/" data-i18n="home.explore">Explore my projects</a>
+        <a class="button-secondary" href="/contact.html" data-i18n="home.discuss">Discuss a project</a>
+      </div>
+      <div class="work-summary" aria-label="Work at a glance">
+        <a href="/projects/"><strong>4</strong> <span data-i18n="home.project_count">open-source projects</span></a>
+        <a href="/blog/"><strong>{{articleCount}}</strong> <span data-i18n="home.article_count">technical articles</span></a>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <h2 data-i18n="home.focus_title">Focus areas</h2>
+        <p data-i18n="home.focus_subtitle">Building at the intersection of six domains.</p>
+      </div>
+      <div class="focus-grid">
+        <div><h3 data-i18n="home.focus_compute">Compute & inference</h3><p data-i18n="home.focus_compute_body">Efficient models, CUDA kernels and the systems that run them.</p></div>
+        <div><h3 data-i18n="home.focus_embodied">Robotics & neural signals</h3><p data-i18n="home.focus_embodied_body">Learning from language, interaction and brain signals.</p></div>
+        <div><h3 data-i18n="home.focus_energy">Optimization & energy</h3><p data-i18n="home.focus_energy_body">Classical and quantum methods, tested against practical constraints.</p></div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <h2 data-i18n="home.projects_title">Flagship projects</h2>
+        <p data-i18n="home.projects_subtitle">Deep, reproducible systems at the intersection of LLM, robotics, quantum AI, BCI, and GPU compute.</p>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <h3 class="card-title" data-i18n="home.flash_title">FlashKernel</h3>
+          <p class="card-body" data-i18n="home.flash_body">
+            Custom CUDA C++ and Triton kernels for transformer inference — tiled FlashAttention,
+            fused GeLU, RoPE, paged KV-cache — benchmarked with Nsight Compute on T4.
+          </p>
+          <div class="card-tags">
+            <span class="card-tag" data-i18n="home.flash_tag_cuda">CUDA C++</span>
+            <span class="card-tag" data-i18n="home.flash_tag_triton">Triton</span>
+            <span class="card-tag" data-i18n="home.flash_tag_nsight">Nsight Compute</span>
+          </div>
+          <a href="/projects/flashkernel.html" class="card-link" data-i18n="home.card_link">View details →</a>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title" data-i18n="home.robo_title">RoboLLM</h3>
+          <p class="card-body" data-i18n="home.robo_body">
+            Language-grounded robotic manipulation — VLM planner decomposes instructions into sub-tasks,
+            RL policies execute each step in MuJoCo simulation.
+          </p>
+          <div class="card-tags">
+            <span class="card-tag" data-i18n="home.robo_tag_mujoco">MuJoCo</span>
+            <span class="card-tag" data-i18n="home.robo_tag_paligemma">PaliGemma-3B</span>
+            <span class="card-tag" data-i18n="home.robo_tag_sac">SAC</span>
+          </div>
+          <a href="/projects/robollm.html" class="card-link" data-i18n="home.card_link">View details →</a>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title" data-i18n="home.neuro_title">NeuroLLM</h3>
+          <p class="card-body" data-i18n="home.neuro_body">
+            Foundation model for neural signal decoding — pre-train a transformer on large-scale EEG,
+            fine-tune for motor imagery BCI with frequency-band attention.
+          </p>
+          <div class="card-tags">
+            <span class="card-tag" data-i18n="home.neuro_tag_pytorch">PyTorch</span>
+            <span class="card-tag" data-i18n="home.neuro_tag_mne">MNE-Python</span>
+            <span class="card-tag" data-i18n="home.neuro_tag_eeg">EEG</span>
+          </div>
+          <a href="/projects/neurollm.html" class="card-link" data-i18n="home.card_link">View details →</a>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title" data-i18n="home.quantum_title">QuantumGrid</h3>
+          <p class="card-body" data-i18n="home.quantum_body">
+            Quantum-classical hybrid optimization for energy grids — QAOA and VQE applied to unit commitment
+            on real ENTSO-E data, benchmarked against MILP solvers.
+          </p>
+          <div class="card-tags">
+            <span class="card-tag" data-i18n="home.quantum_tag_pennylane">PennyLane</span>
+            <span class="card-tag" data-i18n="home.quantum_tag_qaoa">QAOA/VQE</span>
+            <span class="card-tag" data-i18n="home.quantum_tag_ortools">OR-Tools</span>
+          </div>
+          <a href="/projects/quantumgrid.html" class="card-link" data-i18n="home.card_link">View details →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <h2 data-i18n="home.experience_title">Experience</h2>
+        <p data-i18n="home.experience_subtitle">Leading applied ML and AI systems in startups, NGOs, and banking.</p>
+      </div>
+      <ul class="experience-list">
+        <li>
+          <div class="experience-role" data-i18n="home.exp1_role">Founder @AKIOUD AI, Paris</div>
+          <div class="experience-meta" data-i18n="home.exp1_meta">
+            AI runtime, tooling, and safety for regulated and high-stakes systems.
+          </div>
+        </li>
+        <li>
+          <div class="experience-role" data-i18n="home.exp2_role">Lead Data Scientist, Merci Jack, Paris</div>
+          <div class="experience-meta" data-i18n="home.exp2_meta">
+            Multimodal models and optimized inference on edge devices.
+          </div>
+        </li>
+        <li>
+          <div class="experience-role" data-i18n="home.exp3_role">Lead Data Scientist, Société Générale, Paris</div>
+          <div class="experience-meta" data-i18n="home.exp3_meta">
+            End-to-end AI solutions for fraud detection, churn, and workflow automation.
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <h2 data-i18n="home.contact_title">Contact</h2>
+        <p data-i18n="home.contact_subtitle">Available for collaborations, advisory work, and technical leadership roles.</p>
+      </div>
+      <div class="contact-inline">
+        <span>
+          <span data-i18n="home.contact_email_label">Email:</span>
+          <a href="mailto:contact@ajliouat.com" data-i18n="footer.email">contact@ajliouat.com</a>
+        </span>
+        <span>
+          <a
+            href="https://www.linkedin.com/in/a-jliouat/"
+            target="_blank"
+            data-i18n="home.contact_linkedin"
+          >
+            LinkedIn
+          </a>
+        </span>
+        <span>
+          <a href="https://github.com/ajliouat" target="_blank" data-i18n="home.contact_github">
+            GitHub
+          </a>
+        </span>
+      </div>
+    </section>
+  </main>

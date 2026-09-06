@@ -1,0 +1,534 @@
+<style>
+
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 640px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .layout-two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: flex-start;
+    }
+
+    .profile-meta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .profile-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 999px;
+      object-fit: cover;
+    }
+
+    .profile-name {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .profile-role {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .social-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      font-size: 13px;
+      margin-top: 0.75rem;
+    }
+
+    .social-inline a {
+      color: var(--accent);
+    }
+
+    .section-block {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-heading {
+      margin-bottom: 1rem;
+    }
+
+    .section-heading h2 {
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .body-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      margin: 0 0 0.75rem;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.75rem;
+    }
+
+    .tech-tag {
+      font-size: 11px;
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background-color: #f9fafb;
+    }
+
+    .timeline {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 1rem;
+      font-size: 13px;
+    }
+
+    .timeline-role {
+      font-weight: 500;
+    }
+
+    .timeline-meta {
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .contact-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .site-footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .site-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .site-footer-brand {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 12px;
+    }
+
+    .site-footer-right a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .layout-two-column {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+      }
+
+      .profile-meta {
+        align-items: flex-start;
+      }
+
+      .site-footer-inner {
+        padding-inline: 1.25rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+</style>
+<main class="page">
+    <section class="section-header">
+      <div class="section-badge" data-i18n="about.badge">Profile</div>
+<h1 class="section-title" data-i18n="about.title">Applied AI Scientist</h1>
+      <p data-i18n="about.subtitle">
+        Working at the intersection of model design, optimization, and deployment to take research-grade ideas into
+        production.
+      </p>
+    </section>
+
+    <section class="layout-two-column">
+      <div>
+        <div class="profile-meta">
+          <img src="avatar.png?v=20260906" alt="Abdeljalil Jliouat" class="profile-image" width="80" height="80" decoding="async" />
+          <div>
+            <p class="profile-name" data-i18n="about.profile_name">Abdeljalil Jliouat</p>
+            <p class="profile-role" data-i18n="about.profile_role">Applied AI Scientist</p>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="section-heading">
+            <h2 data-i18n="about.short_title">Bio</h2>
+          </div>
+          <p class="body-text" data-i18n="about.short_p1">
+            Applied AI Scientist with 10+ years building and scaling production AI across banking,
+            tech startups, and NGOs. I work end to end, from strategy and productization to deployment at scale.
+          </p>
+          <p class="body-text" data-i18n="about.short_p2">
+            My focus is on GPU-level systems work (CUDA, Triton), language-grounded robotics, brain–computer interfaces,
+            quantum optimization for energy, and the infrastructure to deploy these systems reliably.
+          </p>
+        </div>
+
+        <div class="section-block">
+          <div class="section-heading">
+            <h2 data-i18n="about.interests_title">Interests</h2>
+          </div>
+          <p class="body-text" data-i18n="about.interests_body">
+            AI in robotics, quantum AI, energy systems, brain–computer interfaces, and hardware.
+          </p>
+        </div>
+
+        <div class="section-block">
+          <div class="section-heading">
+            <h2 data-i18n="about.stack_title">Core stack</h2>
+          </div>
+          <div class="tech-stack">
+            <span class="tech-tag" data-i18n="about.stack_python">Python</span>
+            <span class="tech-tag" data-i18n="about.stack_pytorch">PyTorch</span>
+            <span class="tech-tag" data-i18n="about.stack_cuda">CUDA C++</span>
+            <span class="tech-tag" data-i18n="about.stack_triton">Triton</span>
+            <span class="tech-tag" data-i18n="about.stack_jax">JAX</span>
+            <span class="tech-tag" data-i18n="about.stack_mujoco">MuJoCo</span>
+            <span class="tech-tag" data-i18n="about.stack_pennylane">PennyLane</span>
+            <span class="tech-tag" data-i18n="about.stack_mne">MNE-Python</span>
+            <span class="tech-tag" data-i18n="about.stack_hf">Hugging Face</span>
+            <span class="tech-tag" data-i18n="about.stack_deepspeed">DeepSpeed</span>
+            <span class="tech-tag" data-i18n="about.stack_flashattn">FlashAttention</span>
+            <span class="tech-tag" data-i18n="about.stack_vllm">vLLM</span>
+            <span class="tech-tag" data-i18n="about.stack_nsight">Nsight Compute</span>
+            <span class="tech-tag" data-i18n="about.stack_docker">Docker</span>
+            <span class="tech-tag" data-i18n="about.stack_aws">AWS</span>
+            <span class="tech-tag" data-i18n="about.stack_wandb">wandb</span>
+            <span class="tech-tag" data-i18n="about.stack_mlflow">MLflow</span>
+            <span class="tech-tag" data-i18n="about.stack_fastapi">FastAPI</span>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="section-heading">
+            <h2 data-i18n="about.academic_title">Academic background</h2>
+          </div>
+          <ul class="timeline">
+            <li>
+              <div class="timeline-role" data-i18n="about.academic_ds_title">M.Sc. Data Science</div>
+              <div class="timeline-meta" data-i18n="about.academic_ds_meta">Université Paris-Saclay · 2018-2020</div>
+            </li>
+            <li>
+              <div class="timeline-role" data-i18n="about.academic_cs_title">B.Sc. Computer Science</div>
+              <div class="timeline-meta" data-i18n="about.academic_cs_meta">Université Paris-Saclay · 2015-2018</div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <aside>
+        <div class="section-block">
+          <div class="section-heading">
+            <h2 data-i18n="about.current_title">Current roles</h2>
+          </div>
+          <ul class="timeline">
+            <li>
+              <div class="timeline-role" data-i18n="about.current_role_title">
+                Founder @AKIOUD AI, Paris
+              </div>
+              <div class="timeline-meta" data-i18n="about.current_role_meta">
+                Leading research and product on vendor‑neutral runtime and control layers that make agentic AI
+                governable, observable, and operable in production.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <div class="section-heading">
+            <h2 data-i18n="about.previous_title">Previous experience</h2>
+          </div>
+          <ul class="timeline">
+            <li>
+              <div class="timeline-role" data-i18n="about.prev_merci_title">
+                Lead Data Scientist, Merci Jack, Paris
+              </div>
+              <div class="timeline-meta" data-i18n="about.prev_merci_meta">
+                Multimodal models and edge deployment.
+              </div>
+            </li>
+            <li>
+              <div class="timeline-role" data-i18n="about.prev_sg_title">
+                Lead Data Scientist, Société Générale, Paris
+              </div>
+              <div class="timeline-meta" data-i18n="about.prev_sg_meta">
+                Fraud, churn, and workflow automation at scale.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <div class="section-heading">
+            <h2 data-i18n="about.patents_title">Patents</h2>
+          </div>
+          <ul class="timeline">
+            <li>
+              <div class="timeline-role" data-i18n="about.patent1_title">Reconfigurable physically isolated AI orchestration system with multi-layer conditional cryptographic deactivation</div>
+              <div class="timeline-meta" data-i18n="about.patent1_meta">Filed with OMPIC (Dec 2025, under examination)</div>
+            </li>
+            <li>
+              <div class="timeline-role" data-i18n="about.patent2_title">Automatic generation of legally probative cryptographic proof for multi-agent AI systems</div>
+              <div class="timeline-meta" data-i18n="about.patent2_meta">Filed with INPI (Jan 2026, under examination)</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <div class="section-heading">
+            <h2 data-i18n="about.community_title">Community &amp; activities</h2>
+          </div>
+          <ul class="timeline">
+            <li>
+              <div class="timeline-role" data-i18n="about.gdg_title">Member, Google Developer Group</div>
+              <div class="timeline-meta" data-i18n="about.gdg_meta">
+                Participating in Google Developer Group events and discussions around AI and developer tooling.
+              </div>
+            </li>
+            <li>
+              <div class="timeline-role" data-i18n="about.mentor_title">Mentor, DeepLearning.AI</div>
+              <div class="timeline-meta" data-i18n="about.mentor_meta">
+                Mentoring learners in natural language processing as part of DeepLearning.AI programs led by Andrew Ng.
+              </div>
+            </li>
+            <li>
+              <div class="timeline-role" data-i18n="about.horse_title">Horse rider, Bayard UCPA Vincennes</div>
+              <div class="timeline-meta" data-i18n="about.horse_meta">
+                Regular equestrian practice at Bayard UCPA Vincennes.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <div class="section-heading">
+            <h2 data-i18n="about.contact_title">Contact</h2>
+          </div>
+          <div class="social-inline">
+            <a
+              href="mailto:contact@ajliouat.com"
+              data-i18n="about.contact_email_label"
+            >
+              Email
+            </a>
+            <a
+              href="https://www.linkedin.com/in/a-jliouat/"
+              target="_blank"
+              data-i18n="about.contact_linkedin_label"
+            >
+              LinkedIn
+            </a>
+            <a href="https://github.com/ajliouat" target="_blank" data-i18n="about.contact_github_label">
+              GitHub
+            </a>
+          </div>
+          <p class="contact-note" data-i18n="about.contact_note">
+            For collaborations and advisory work, email is usually the fastest way to reach me.
+          </p>
+        </div>
+      </aside>
+    </section>
+  </main>

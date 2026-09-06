@@ -1,143 +1,54 @@
 ;(function () {
-  var placeholder = document.getElementById('site-nav-root')
-  if (!placeholder) return
-
-  function getStoredTheme() {
-    try {
-      return window.localStorage.getItem('theme')
-    } catch (e) {
-      return null
+  var root = document.documentElement
+  var theme = 'light'
+  try {
+    var stored = localStorage.getItem('theme')
+    if (stored === 'dark' || stored === 'light') theme = stored
+  } catch (error) {}
+  root.setAttribute('data-theme', theme)
+  function init() {
+    // Complete older cached pages that still have an empty navigation placeholder.
+    var placeholder = document.getElementById('site-nav-root')
+    if (placeholder && !placeholder.querySelector('nav')) {
+      fetch('/nav.html').then(function (response) {
+        if (!response.ok) throw new Error('Navigation unavailable')
+        return response.text()
+      }).then(function (html) {
+        placeholder.innerHTML = html
+        if (typeof window.__applyLanguage === 'function') window.__applyLanguage()
+        init()
+      }).catch(function () {})
+      return
     }
-  }
-
-  function storeTheme(theme) {
-    try {
-      window.localStorage.setItem('theme', theme)
-    } catch (e) {}
-  }
-
-  function getPreferredTheme() {
-    var stored = getStoredTheme()
-    if (stored === 'light' || stored === 'dark') return stored
-
-    return 'light'
-  }
-
-  function applyTheme(theme) {
-    var root = document.documentElement
-    root.setAttribute('data-theme', theme)
-  }
-
-  function updateToggle(theme) {
-    var toggle = placeholder.querySelector('.theme-toggle')
+    var toggle = document.querySelector('.theme-toggle')
     if (!toggle) return
-
-    var icon = toggle.querySelector('.theme-toggle-icon')
-    var label = toggle.querySelector('.theme-toggle-label')
-
-    if (theme === 'dark') {
-      if (icon) icon.textContent = '☀'
-      if (label) label.textContent = 'Light'
-    } else {
-      if (icon) icon.textContent = '☾'
-      if (label) label.textContent = 'Dark'
+    var french = root.lang === 'fr'
+    function update() {
+      var dark = root.getAttribute('data-theme') === 'dark'
+      toggle.setAttribute('aria-pressed', String(dark))
+      toggle.setAttribute('aria-label', french ? 'Thème sombre' : 'Dark theme')
+      toggle.querySelector('.theme-toggle-icon').textContent = dark ? '☀' : '☾'
+      toggle.querySelector('.theme-toggle-label').textContent = dark ? (french ? 'Clair' : 'Light') : (french ? 'Sombre' : 'Dark')
     }
-  }
-
-  function getStoredLang() {
-    try {
-      return window.localStorage.getItem('lang')
-    } catch (e) {
-      return null
-    }
-  }
-
-  function storeLang(lang) {
-    try {
-      window.localStorage.setItem('lang', lang)
-    } catch (e) {}
-  }
-
-  function getPreferredLang() {
-    var stored = getStoredLang()
-    if (stored === 'en' || stored === 'fr') return stored
-    if (typeof window.__getLanguage === 'function') return window.__getLanguage()
-    return 'en'
-  }
-
-  function updateLangToggle(lang) {
-    var btn = placeholder.querySelector('.lang-toggle')
-    if (!btn) return
-    var label = btn.querySelector('.lang-toggle-label')
-    if (label) label.textContent = (lang || 'en').toUpperCase()
-  }
-
-  fetch('/nav.html')
-    .then(function (res) {
-      if (!res.ok) throw new Error('Failed to load nav include')
-      return res.text()
-    })
-    .then(function (html) {
-      placeholder.innerHTML = html
-
-      var path = window.location.pathname || '/'
-      var key = 'home'
-
-      if (path === '/' || path === '/index.html') {
-        key = 'home'
-      } else if (path.indexOf('/about') === 0) {
-        key = 'about'
-      } else if (path.indexOf('/projects') === 0) {
-        key = 'projects'
-      } else if (path.indexOf('/blog') === 0) {
-        key = 'blog'
-      } else if (path.indexOf('/contact') === 0) {
-        key = 'contact'
-      }
-
-      var active = placeholder.querySelector('.nav-link-active')
-      if (active) active.classList.remove('nav-link-active')
-
-      var link = placeholder.querySelector('[data-nav="' + key + '"]')
-      if (link) {
-        link.classList.add('nav-link-active')
-      }
-
-      var currentTheme = getPreferredTheme()
-      applyTheme(currentTheme)
-      updateToggle(currentTheme)
-
-      var themeToggle = placeholder.querySelector('.theme-toggle')
-      if (themeToggle) {
-        themeToggle.addEventListener('click', function () {
-          var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
-          applyTheme(next)
-          storeTheme(next)
-          updateToggle(next)
-        })
-      }
-
-      var currentLang = getPreferredLang()
+    toggle.hidden = false
+    update()
+    var legacyLanguage = document.querySelector('button.lang-toggle')
+    if (legacyLanguage) {
       if (typeof window.__setLanguage === 'function') {
-        window.__setLanguage(currentLang)
-      } else if (typeof window.__applyLanguage === 'function') {
-        window.__applyLanguage()
-      }
-      updateLangToggle(currentLang)
-
-      var langToggle = placeholder.querySelector('.lang-toggle')
-      if (langToggle) {
-        langToggle.addEventListener('click', function () {
-          var next = getPreferredLang() === 'en' ? 'fr' : 'en'
-          storeLang(next)
-          if (typeof window.__setLanguage === 'function') {
-            window.__setLanguage(next)
-          } else {
-            document.documentElement.setAttribute('lang', next)
-          }
-          updateLangToggle(next)
+        legacyLanguage.addEventListener('click', function () {
+          window.__setLanguage(root.lang === 'fr' ? 'en' : 'fr')
+          french = root.lang === 'fr'
+          update()
         })
-      }
+      } else legacyLanguage.hidden = true
+    }
+    toggle.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+      root.setAttribute('data-theme', next)
+      try { localStorage.setItem('theme', next) } catch (error) {}
+      update()
     })
-    .catch(function () {})
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init)
+  else init()
 })()

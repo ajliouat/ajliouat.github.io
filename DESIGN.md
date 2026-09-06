@@ -7,7 +7,7 @@ The core principles:
 - Emphasize reading: typography and spacing are tuned for long-form reading rather than marketing.
 - Show, don’t shout: color is used sparingly to highlight structure and key actions, not as decoration.
 - Feel “engineered”: cards, diagrams, and code-like blocks borrow from developer tools rather than generic blog themes.
-- Dark-first, light-optional: dark mode is the default, with a clean light theme as an alternate view.
+- Light by default, with an optional dark theme that remembers the reader’s preference.
 
 ---
 
@@ -56,7 +56,7 @@ Header sections typically include:
 
 ## Navigation system
 
-The navigation bar is a shared include (`nav.html` + `nav.js`) injected into a `#site-nav-root` placeholder on every page.
+The navigation and footer are generated into every page by `_tools/build.mjs`. They work without JavaScript. Their shared styles live in `assets/site.css`.
 
 Key behaviors:
 
@@ -66,13 +66,11 @@ Key behaviors:
 
 Implementation details:
 
-- HTML structure lives in `nav.html`.
-- JavaScript loader lives in `nav.js`, which:
-  - Fetches and injects the nav HTML.
-  - Computes the active section based on `window.location.pathname`.
-  - Wires up the theme toggle button.
-
-This lets project pages and blog posts stay focused on their content while inheriting a consistent shell.
+- `_site_source/pages/` contains page content and page-specific styles.
+- `_site_source/pages.json` defines public URLs, metadata and available translations.
+- `_tools/build.mjs` produces complete HTML, language links, the feed and sitemap.
+- `nav.js` reads the saved theme before the page paints, then attaches the theme control.
+- `nav.html` and the runtime translation files remain for older cached pages; the generated site does not fetch them.
 
 ---
 
@@ -83,9 +81,9 @@ The theming model is deliberately simple:
 - The `<html>` element carries `data-theme="dark"` or `data-theme="light"`.
 - `nav.js`:
   - Reads a stored theme from `localStorage` if present.
-  - Defaults to **dark** if nothing is stored.
+  - Defaults to **light** if nothing is stored.
   - Toggles the `data-theme` attribute and persists the new value.
-- `nav.html` holds the dark-theme overrides:
+- `assets/site.css` holds the dark-theme overrides:
   - Sets `--bg`, `--surface`, `--border`, `--text`, `--muted`, `--accent` for dark mode.
   - Adjusts the nav background and link colors to remain legible.
   - Tweaks specific components (like `.tech-tag`) so text remains readable on dark surfaces.
@@ -95,7 +93,7 @@ The toggle itself:
 - Compact pill button next to the nav links.
 - Shows “Dark” with a moon icon when the site is in light mode, and “Light” with a sun icon in dark mode.
 
-The overarching philosophy is that dark mode is the “primary” view for this site, with light mode being a first-class but secondary option.
+Both themes must stay readable. Light is the initial view; a reader’s saved theme takes precedence.
 
 ---
 

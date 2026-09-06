@@ -1,0 +1,7 @@
+# GitHub Pages serves the generated static HTML. Keep authoring files out of the site.
+exclude:
+  - _site_source
+  - _tools
+  - README.md
+  - DESIGN.md
+  - readme.mld
