@@ -18,7 +18,7 @@
 
   t['home.experience_title'] = 'Expérience'
   t['home.experience_subtitle'] =
-    "Direction de systèmes d'IA appliquée dans des startups, des ONG et la banque."
+    "Direction de systèmes d’IA appliquée pour la finance, la banque, les startups et les ONG."
 
   t['home.contact_title'] = 'Contact'
   t['home.contact_subtitle'] =
@@ -67,6 +67,9 @@
   t['home.exp1_role'] = 'Founder @AKIOUD AI, Paris'
   t['home.exp1_meta'] =
     "Runtime d’IA, outillage et sécurité pour des systèmes réglementés et à forts enjeux."
+  t['home.orange_role'] = 'Lead AI Engineer · Orange'
+  t['home.orange_meta'] =
+    "Applications agentiques, RAG et LLMOps pour la direction financière et les équipes du CFO, au service de l’analyse financière et des processus métiers sur des données multi-pays."
   t['home.exp2_role'] = 'Lead Data Scientist, Merci Jack, Paris'
   t['home.exp2_meta'] =
     "Modèles multimodaux et inférence optimisée sur dispositifs en périphérie (edge)."

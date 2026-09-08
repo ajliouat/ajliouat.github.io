@@ -16,7 +16,7 @@
     'Deep, reproducible systems at the intersection of LLM, robotics, quantum AI, BCI, and GPU compute.'
 
   t['home.experience_title'] = 'Experience'
-  t['home.experience_subtitle'] = 'Leading applied ML and AI systems in startups, NGOs, and banking.'
+  t['home.experience_subtitle'] = 'Leading applied ML and AI systems across finance, banking, startups, and NGOs.'
 
   t['home.contact_title'] = 'Contact'
   t['home.contact_subtitle'] =
@@ -65,6 +65,9 @@
   t['home.exp1_role'] = 'Founder @AKIOUD AI, Paris'
   t['home.exp1_meta'] =
     'AI runtime, tooling, and safety for regulated and high-stakes systems.'
+  t['home.orange_role'] = 'Lead AI Engineer · Orange'
+  t['home.orange_meta'] =
+    'Agentic applications, RAG, and LLMOps for Finance and CFO teams, connecting multi-country financial data with financial analysis and business workflows.'
   t['home.exp2_role'] = 'Lead Data Scientist, Merci Jack, Paris'
   t['home.exp2_meta'] =
     'Multimodal models and optimized inference on edge devices.'

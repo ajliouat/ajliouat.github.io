@@ -55,6 +55,9 @@
   t['about.current_role_title'] = 'Founder @AKIOUD AI, Paris'
   t['about.current_role_meta'] =
     'Leading research and product on vendor-neutral runtime and control layers that make agentic AI governable, observable, and operable in production.'
+  t['about.current_orange_title'] = 'Lead AI Engineer · Orange'
+  t['about.current_orange_meta'] =
+    'Building agentic applications, RAG systems, and LLMOps for Finance and CFO teams. Working with Orange’s financial data across countries to connect advanced AI engineering with financial analysis and business workflows.'
 
   t['about.previous_title'] = 'Previous experience'
   t['about.prev_merci_title'] = 'Lead Data Scientist, Merci Jack, Paris'
