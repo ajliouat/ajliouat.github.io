@@ -271,6 +271,10 @@ main pre, main .code-block { max-width: 100%; }
 .site-footer-brand { letter-spacing: .06em; text-transform: uppercase; }
 .site-footer-right { display: flex; flex-direction: column; gap: .4rem; align-items: flex-start; flex-shrink: 0; }
 .site-footer-right a { color: var(--accent); }
+.role-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .15rem .75rem; }
+.role-period { color: var(--muted); font-size: 12px; font-weight: 400; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.role-progression { list-style: none; margin: .7rem 0 0; padding-left: .85rem; border-left: 1px solid var(--border); display: grid; gap: .5rem; }
+.role-progression li { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .1rem .75rem; font-size: 12px; }
 .home-hero { margin-bottom: 3.5rem; }
 .hero-identity { display: flex; flex-direction: column; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
 .hero-identity img { border-radius: 50%; width: 96px; height: 96px; }

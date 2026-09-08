@@ -62,8 +62,14 @@
   t['about.previous_title'] = 'Previous experience'
   t['about.prev_merci_title'] = 'Lead Data Scientist, Merci Jack, Paris'
   t['about.prev_merci_meta'] = 'Multimodal models and edge deployment.'
-  t['about.prev_sg_title'] = 'Lead Data Scientist, Société Générale, Paris'
+  t['about.prev_sg_title'] = 'Société Générale, Paris'
   t['about.prev_sg_meta'] = 'Fraud, churn, and workflow automation at scale.'
+  t['about.sg_lead'] = 'Lead Data Scientist'
+  t['about.sg_senior'] = 'Senior Data Scientist'
+  t['about.sg_data'] = 'Data Scientist'
+  t['about.sg_research'] = 'Research Intern'
+  t['about.dauphine_title'] = 'Teaching Assistant'
+  t['about.dauphine_meta'] = 'Université Paris Dauphine – PSL, Paris'
 
   t['about.patents_title'] = 'Patents'
   t['about.patent1_title'] =

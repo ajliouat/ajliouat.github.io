@@ -1,5 +1,6 @@
 {
   "en": {
+    "experience.present": "Present",
     "home.hero_badge": "Applied AI & systems engineering",
     "home.hero_title": "AI systems, from research to production.",
     "home.hero_subtitle": "I build efficient, reliable AI systems — from GPU kernels to robotic learning. Here I share the code, experiments and engineering decisions behind my work.",
@@ -22,6 +23,7 @@
     "blog.subtitle": "Engineering notes on the systems I build, with experiments, trade-offs and links to the code. Technical articles are currently available in English."
   },
   "fr": {
+    "experience.present": "aujourd’hui",
     "home.hero_badge": "IA appliquée et ingénierie des systèmes",
     "home.hero_title": "Des systèmes d’IA, de la recherche à la production.",
     "home.hero_subtitle": "Je conçois des systèmes d’IA efficaces et fiables, des kernels GPU à l’apprentissage robotique. Je partage ici le code, les expériences et les décisions techniques qui accompagnent mon travail.",
