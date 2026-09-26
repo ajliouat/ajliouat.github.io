@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-09-26T11:19:46+00:00",
+  "feedUpdated": "2026-09-26T12:57:43+00:00",
   "pages": [
     {
       "path": "index.html",
@@ -64,7 +64,7 @@
       "path": "projects/robollm.html",
       "section": "projects",
       "title": "RoboLLM — Language-Grounded Robotic Manipulation | Abdeljalil Jliouat",
-      "description": "A MuJoCo prototype with a diagnosed physical-model repair, 100-scene paired reaching comparison, full traces and explicit limitations."
+      "description": "A MuJoCo prototype with reproducible fixed-goal reaching and one-second holds, paired controller comparisons, complete traces and explicit limits."
     },
     {
       "path": "blog/foundations-for-robotic-learning.html",
@@ -75,6 +75,16 @@
       "headline": "Foundations for deep learning in robotic systems",
       "updated": "2026-05-20T20:38:25+02:00",
       "year": "2025"
+    },
+    {
+      "path": "blog/stationary-robot-reaching.html",
+      "section": "blog",
+      "title": "RoboLLM: reaching a fixed goal without disturbing the scene | Abdeljalil Jliouat",
+      "description": "A fixed-goal simulation study with one-second holds, collision checks and full traces: 88/100 successes with a joint plan versus 29/100 with direct control.",
+      "article": true,
+      "headline": "RoboLLM: reaching a fixed goal without disturbing the scene",
+      "updated": "2026-09-26T12:57:43+00:00",
+      "year": "2026"
     },
     {
       "path": "blog/hierarchical-vlm-rl-manipulation.html",

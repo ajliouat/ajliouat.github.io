@@ -378,18 +378,18 @@
     <section class="section-block home-study" aria-labelledby="study-title">
       <div class="section-heading">
         <p class="study-label" data-i18n="home.study_label">Une étude en détail · RoboLLM</p>
-        <h2 id="study-title" data-i18n="home.study_title">Pourquoi le robot n’atteignait-il pas sa cible ?</h2>
+        <h2 id="study-title" data-i18n="home.study_title">Le robot peut-il s’approcher sans perturber la scène ?</h2>
       </div>
       <div class="study-grid">
         <div>
-          <p class="study-question" data-i18n="home.study_question">Le ciblage corrigé a révélé un autre problème : la géométrie du bras simulé, sa position initiale et la compensation de son poids. Une nouvelle étude mesure la correction.</p>
+          <p class="study-question" data-i18n="home.study_question">Une cible fixe au-dessus de l’objet, un maintien d’une seconde et des contrôles de collision et de déplacement des objets.</p>
         </div>
         <dl class="study-details">
-          <div><dt data-i18n="home.study_method">Méthode</dt><dd data-i18n="home.study_method_body">Deux configurations comparées sur 100 nouvelles scènes identiques côté objets, soit 200 épisodes enregistrés.</dd></div>
-          <div><dt data-i18n="home.study_finding">Résultat</dt><dd data-i18n="home.study_finding_body">À moins de 3 cm de la cible dans 35/100 scènes après correction, contre 0/100 avec la configuration initiale. La manipulation fiable reste à démontrer.</dd></div>
+          <div><dt data-i18n="home.study_method">Méthode</dt><dd data-i18n="home.study_method_body">Deux contrôleurs, des états initiaux identiques sur 100 nouvelles scènes simulées et des contrôles toutes les 2 millisecondes.</dd></div>
+          <div><dt data-i18n="home.study_finding">Résultat</dt><dd data-i18n="home.study_finding_body">88/100 maintiens réussis avec un trajet tenant compte des collisions, contre 29/100 en commande directe. Les 12 cas sans trajet accepté comptent comme des échecs.</dd></div>
         </dl>
       </div>
-      <p class="study-action"><a class="text-link" href="/blog/hierarchical-vlm-rl-manipulation.html" data-i18n="home.study_link">Lire l’étude en anglais →</a></p>
+      <p class="study-action"><a class="text-link" href="/blog/stationary-robot-reaching.html" data-i18n="home.study_link">Lire l’étude en anglais →</a></p>
     </section>
 
     <section class="section-block">
@@ -411,7 +411,7 @@
 
         <article class="card">
           <h3 class="card-title"><a href="/projects/robollm.html">RoboLLM</a></h3>
-          <p class="card-body" data-i18n="home.robo_body">Un prototype MuJoCo avec des défauts d’initialisation identifiés et une comparaison du déplacement. Code, traces complètes et limites de la correction mesurée.</p>
+          <p class="card-body" data-i18n="home.robo_body">Un prototype MuJoCo évalué sur une cible fixe et un maintien d’une seconde : contrôles de collision, traces complètes et comparaisons reproductibles.</p>
           <div class="card-tags">
             <span class="card-tag" data-i18n="home.robo_tag_mujoco">MuJoCo</span>
             <span class="card-tag" data-i18n="home.robo_tag_paligemma">Contrôleurs scriptés</span>

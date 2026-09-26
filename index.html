@@ -378,18 +378,18 @@
     <section class="section-block home-study" aria-labelledby="study-title">
       <div class="section-heading">
         <p class="study-label" data-i18n="home.study_label">A closer look · RoboLLM</p>
-        <h2 id="study-title" data-i18n="home.study_title">What kept the robot from reaching its target?</h2>
+        <h2 id="study-title" data-i18n="home.study_title">Can the robot approach without disturbing the scene?</h2>
       </div>
       <div class="study-grid">
         <div>
-          <p class="study-question" data-i18n="home.study_question">Correct targeting exposed a second problem: the simulated arm’s geometry, reset and gravity support. A frozen follow-up measures the repair.</p>
+          <p class="study-question" data-i18n="home.study_question">A fixed goal above the object, a full second of holding, and checks on collisions and object movement.</p>
         </div>
         <dl class="study-details">
-          <div><dt data-i18n="home.study_method">Method</dt><dd data-i18n="home.study_method_body">100 fresh object scenes, each run on the original and repaired systems: 200 recorded episodes.</dd></div>
-          <div><dt data-i18n="home.study_finding">Finding</dt><dd data-i18n="home.study_finding_body">Within 3 cm of the target in 35/100 scenes after repair, versus 0/100 with the original configuration. Reliable manipulation remains unproven.</dd></div>
+          <div><dt data-i18n="home.study_method">Method</dt><dd data-i18n="home.study_method_body">Two controllers, identical initial states across 100 fresh simulated scenes, and checks every 2 milliseconds.</dd></div>
+          <div><dt data-i18n="home.study_finding">Finding</dt><dd data-i18n="home.study_finding_body">88/100 successful holds with a collision-aware plan, versus 29/100 with direct control. The 12 cases without an accepted plan count as failures.</dd></div>
         </dl>
       </div>
-      <p class="study-action"><a class="text-link" href="/blog/hierarchical-vlm-rl-manipulation.html" data-i18n="home.study_link">Read the study →</a></p>
+      <p class="study-action"><a class="text-link" href="/blog/stationary-robot-reaching.html" data-i18n="home.study_link">Read the study →</a></p>
     </section>
 
     <section class="section-block">
@@ -411,7 +411,7 @@
 
         <article class="card">
           <h3 class="card-title"><a href="/projects/robollm.html">RoboLLM</a></h3>
-          <p class="card-body" data-i18n="home.robo_body">A MuJoCo prototype with diagnosed initialization defects and a frozen reaching comparison. Code, complete traces and limits of the measured repair.</p>
+          <p class="card-body" data-i18n="home.robo_body">A MuJoCo prototype tested on fixed-goal reaching and one-second holds, with collision checks, complete traces and reproducible controller comparisons.</p>
           <div class="card-tags">
             <span class="card-tag" data-i18n="home.robo_tag_mujoco">MuJoCo</span>
             <span class="card-tag" data-i18n="home.robo_tag_paligemma">Scripted baselines</span>
