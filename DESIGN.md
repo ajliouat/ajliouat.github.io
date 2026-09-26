@@ -5,7 +5,7 @@ The site uses a system typeface, a narrow neutral-and-blue palette and static pa
 ## Typography and layout
 
 - Main content is constrained to about 960 px. Long articles use a narrower reading column.
-- The home headline uses regular weight, 24 px on small screens and up to 30 px on desktop, with a 1.35 line height.
+- The home H1 is the owner’s name beside the portrait, followed by a short professional introduction. It uses regular weight, 24 px on small screens and up to 30 px on desktop, with a 1.35 line height.
 - Project section headings use 18 px, medium weight and the primary text color. Project prose uses 15 px with a 1.8 line height.
 - Page introductions use short category labels, proportionate titles and muted descriptions.
 - Project details have an unboxed reading column and a right-hand contents list on desktop. At 840 px and below, the contents list appears above the text in two columns.
@@ -35,7 +35,7 @@ Functional controls retain rounded shapes:
 - Theme, language and profile controls stay compact and rounded.
 - Project footer actions retain pill shapes. The GitHub action uses a solid, contrasting surface without a gradient, shadow or hover movement.
 
-The home page links directly to a recent technical study. Counts of projects or articles are not displayed as achievements.
+The home page starts with the owner’s current roles, then a featured study with its question, method and finding. The study link follows that evidence in reading order. Open projects and experiments follow, with experience and contact below. Project titles are linked, and action links identify their destination by name. Counts of projects or articles are not displayed as achievements.
 
 ## Code, tables and diagrams
 
