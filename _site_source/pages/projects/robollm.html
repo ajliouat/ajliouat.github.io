@@ -160,14 +160,14 @@
     <header class="header">
       <div class="badge"><span class="badge-dot"></span> Language × Robotics</div>
       <h1 class="title">RoboLLM</h1>
-      <p class="subtitle">A MuJoCo testbed for decomposing instructions, grounding objects and executing manipulation primitives. A recorded control study tests target identity and exposes the remaining limits of scripted reaching.</p>
+      <p class="subtitle">A MuJoCo testbed for decomposing instructions, grounding objects and executing manipulation primitives. Recorded studies trace a target-identity defect, diagnose physical-model failures and measure the remaining limits of scripted reaching.</p>
       <div class="meta">MuJoCo · PyTorch · SAC · Simulation</div>
     </header>
     <section class="layout">
       <aside class="toc"><div class="toc-title">On this page</div><ul class="toc-list"><li class="toc-item"><a class="toc-link" href="#overview">Problem and scope</a></li>
 <li class="toc-item"><a class="toc-link" href="#tasks">Task progression</a></li>
 <li class="toc-item"><a class="toc-link" href="#approach">Implemented and experimental components</a></li>
-<li class="toc-item"><a class="toc-link" href="#validation">Grounded control study</a></li>
+<li class="toc-item"><a class="toc-link" href="#validation">Reaching studies</a></li>
 <li class="toc-item"><a class="toc-link" href="#benchmarks">Historical baseline evidence</a></li>
 <li class="toc-item"><a class="toc-link" href="#architecture">Current test pipeline</a></li>
 <li class="toc-item"><a class="toc-link" href="#reproduce">Validation and next experiment</a></li></ul></aside>
@@ -191,13 +191,19 @@
 <li><strong>Tested planning path:</strong> MockVLM performs keyword matching; SimGrounder reads privileged simulator state. Passing these tests is not visual grounding accuracy.</li>
 <li><strong>Motor control:</strong> scripted controllers support pipeline tests. SAC training and checkpoint evaluation are separate components; successful learned manipulation is not established by the baseline archive.</li>
 <li><strong>Extension points:</strong> a Transformers VLM adapter exists. DINOv2-based visual grounding remains a proposed extension in the reviewed source.</li>
-</ul><p><a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/planner">Planner and grounding source</a> · <a href="https://github.com/ajliouat/robollm/blob/f102fe10dc30bf2aa18cc16ed0dc43594051abbd/evaluation/pipeline.py">Hierarchical executor</a> · <a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/policies">Policy implementations</a></p>
+</ul><p><a href="https://github.com/ajliouat/robollm/tree/9c35fccea85bfc9d7ffc98b0d751c9e5dd7e5c6d/planner">Planner and grounding source</a> · <a href="https://github.com/ajliouat/robollm/blob/9c35fccea85bfc9d7ffc98b0d751c9e5dd7e5c6d/evaluation/pipeline.py">Hierarchical executor</a> · <a href="https://github.com/ajliouat/robollm/tree/9c35fccea85bfc9d7ffc98b0d751c9e5dd7e5c6d/policies">Policy implementations</a></p>
 </section>
-<section class="section" id="validation"><h2 class="section-title">Grounded control study · 26 September 2026</h2>
-<p>The executor could select the requested object but drive toward the first object in the scene. The repair retains the named target through control and scoring, distinguishes already-satisfied states, and stops on failures or episode endings.</p>
-<p><strong>Measured result:</strong> zero successes in 100 scenes for the corrected controller, and zero for each of three controls. The corrected controller ended 33.13 cm from the target on average, against a 3 cm threshold. The targeting defect is fixed; successful motor control remains unresolved.</p>
-<p>The frozen study retains 400 complete episode traces and an exact local replay. It uses privileged simulator state and scripted actions, with no learned policy or VLM evaluation. <a href="/blog/hierarchical-vlm-rl-manipulation.html">Read the failure, method, results and limits</a> · <a href="https://github.com/ajliouat/robollm/tree/c5dbcf4ec5bb257242e44133cf4f3ab599f7cf70/evaluation/results/grounded-control-2026-09-26">Inspect the raw evidence</a>.</p>
-<p><a href="https://github.com/ajliouat/robollm/actions/runs/36229451051">Focused GitHub validation passed 180 tests and a simulation smoke</a>. This is a review-branch delivery, not a main-branch merge or a pass of the repository’s full training/rendering suite.</p>
+<section class="section" id="validation"><h2 class="section-title">Reaching studies · 26 September 2026</h2>
+<p><strong>Initial study:</strong> the executor could select the requested object but drive toward the first object in the scene. Retaining the named target through control and scoring fixed that defect, but the corrected controller and each of three controls still scored 0/100. Its mean final distance was 33.13 cm against a 3 cm threshold. The <a href="https://github.com/ajliouat/robollm/tree/c5dbcf4ec5bb257242e44133cf4f3ab599f7cf70/evaluation/results/grounded-control-2026-09-26">400 original traces and replay record</a> remain available.</p>
+<p><strong>Follow-up:</strong> development diagnostics identified penetrating arm colliders and gravity-related drift. Two collider corrections preserve the original inertials and kinematics; a collision-free home, aligned actuator targets and ideal robot-only gravity support change the simulated system. The gain-8 policy and strict 3 cm criterion remain unchanged.</p>
+<table class="benchmark-table"><thead><tr><th>System on 100 fresh paired scenes</th><th>Successes</th><th>Wilson 95% interval</th></tr></thead><tbody>
+<tr><td>Frozen original system</td><td>0 / 100</td><td>0–3.70%</td></tr>
+<tr><td>Repaired geometry/reset/support bundle</td><td>35 / 100</td><td>26.36–44.75%</td></tr>
+</tbody></table>
+<p>Thirty-five pairs succeed only after the repair; 65 fail in both systems. The changed home also starts closer on average, so this measures the complete system bundle. The 200 episodes replayed exactly on the recorded runtime; replay adds no independent scenes.</p>
+<p><strong>Limits:</strong> success is instantaneous proximity to the live target body center, without dwell, grasp or stable placement. The target moves more than 3 cm in 42 repaired episodes, including six of the 35 successes. These outcomes remain in the score. Ideal gravity support is a simulation assumption. The study does not establish safe manipulation, learned-policy performance, VLM understanding or hardware capability.</p>
+<p><a href="/blog/hierarchical-vlm-rl-manipulation.html#repair-results">Read the follow-up and its limits</a> · <a href="https://github.com/ajliouat/robollm/blob/9c35fccea85bfc9d7ffc98b0d751c9e5dd7e5c6d/evaluation/CONTROL_REPAIR.md">Frozen method</a> · <a href="https://github.com/ajliouat/robollm/tree/115d17458c4340366d5da6ce4bb3280c98d4c1f9/evaluation/results/control-repair-2026-09-26">Raw evidence and replay record</a>.</p>
+<p><a href="https://github.com/ajliouat/robollm/actions/runs/36238199770">Focused GitHub validation passed 230 tests and both development simulation smokes</a>. This is a review-branch delivery, not a main-branch merge or a pass of the repository’s full training/rendering suite.</p>
 </section>
 <section class="section" id="benchmarks"><h2 class="section-title">Historical baseline evidence</h2>
 <p>The <a href="https://github.com/ajliouat/robollm/blob/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/evaluation/results/benchmark_results.json">archived evaluation dated 22 February 2026</a> records 100 episodes per task/policy pair, with a 200-step limit. The intervals below are Wilson 95% intervals recalculated from the recorded counts (z = 1.96), not new simulation results.</p><table class="benchmark-table"><thead><tr><th>Task</th><th>Policy</th><th>Successes</th><th>95% interval</th><th>Mean return</th></tr></thead><tbody>
@@ -220,8 +226,8 @@
   Future["Real VLM, visual grounding and learned control: separate validation"]</div></div>
 </section>
 <section class="section" id="reproduce"><h2 class="section-title">Reproduction and next investigation</h2>
-<p>The <a href="https://github.com/ajliouat/robollm/blob/c5dbcf4ec5bb257242e44133cf4f3ab599f7cf70/evaluation/CONTROL_STUDY.md">frozen protocol and reproduction guide</a> define the 100 paired scenes, four controls, recorded runtime and exact success condition. The new experiment exercises three-object reaching; it is not directly comparable to the historical one-object baseline.</p>
-<p>Next: isolate arm, actuation and inverse-kinematics behavior on a separate development set before tuning or training. Reaching, grasping, stable placement and language understanding each require their own evidence.</p>
+<p>The <a href="https://github.com/ajliouat/robollm/blob/9c35fccea85bfc9d7ffc98b0d751c9e5dd7e5c6d/evaluation/CONTROL_REPAIR.md">follow-up protocol and reproduction guide</a> fix the runtime, fresh paired scenes and success condition. The <a href="https://github.com/ajliouat/robollm/blob/c5dbcf4ec5bb257242e44133cf4f3ab599f7cf70/evaluation/CONTROL_STUDY.md">original four-control protocol</a> remains separate. Both studies exercise three-object reaching and are not directly comparable to the historical one-object baseline.</p>
+<p>Next: investigate collision-aware reaching on new development data, with a stricter contract requiring a stationary target and a sustained hold near it. Freeze that contract before another evaluation on fresh scenes. Reaching, grasping, stable placement and language understanding each require their own evidence.</p>
 </section>
         <p><a href="/blog/hierarchical-vlm-rl-manipulation.html">Read the technical note →</a></p>
         <div class="footer-actions">

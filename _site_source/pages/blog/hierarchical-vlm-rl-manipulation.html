@@ -346,8 +346,8 @@
 <main class="page">
     <section class="section-header">
       <div class="section-badge">Robotics · Control study</div>
-      <h1 class="section-title">RoboLLM: fixing target selection, measuring control</h1>
-      <p class="section-subtitle">The planner selected one object; the controller followed another. Fixing that interface made targeting testable, but did not solve reaching.</p>
+      <h1 class="section-title">RoboLLM: diagnosing failed reaching, measuring a repair</h1>
+      <p class="section-subtitle">Correct targeting was not enough. Repairing the simulated arm’s geometry, reset and gravity support improved reaching from 0/100 to 35/100 on fresh paired scenes, with substantial limits.</p>
       <div class="post-meta">Control study · 26 September 2026</div>
     </section>
     <section class="toc"><div class="toc-title">On this page</div><ul>
@@ -356,7 +356,10 @@
       <li><a href="#environment">What counts as success</a></li>
       <li><a href="#planner">The frozen comparison</a></li>
       <li><a href="#results">Results and evidence</a></li>
-      <li><a href="#policies">What remains unresolved</a></li>
+      <li><a href="#policies">What the first study could not explain</a></li>
+      <li><a href="#motor-repair">Physical diagnosis and repair</a></li>
+      <li><a href="#repair-results">Fresh comparison: 35/100 versus 0/100</a></li>
+      <li><a href="#repair-limits">Why proximity is not reliable manipulation</a></li>
       <li><a href="#lessons">Reproduction and next investigation</a></li>
     </ul></section>
     <section class="post-body">
@@ -369,7 +372,7 @@
       <h2 id="environment">What counts as success</h2>
       <p>The custom Franka-inspired arm runs in MuJoCo with three randomized objects. Success requires the end-effector site to become strictly closer than 3 cm to the requested object’s current body center after an action, within 200 steps at 20 Hz. The condition must not hold initially. All scenes remain in the denominator.</p>
       <p>This measures instantaneous proximity, with no grasp, orientation or stable hold requirement. There is no settling phase, and objects may move. The traces therefore retain the target’s motion as well as the arm’s. The simulation is not a calibrated physical-robot result.</p>
-      <h2 id="planner">The frozen comparison</h2>
+      <h2 id="planner">First study: the frozen four-control comparison</h2>
       <p>The <a href="https://github.com/ajliouat/robollm/blob/f102fe10dc30bf2aa18cc16ed0dc43594051abbd/evaluation/control_protocol.json">protocol</a> and controller code were committed before evaluating seeds 260926000–260926099. Development used seeds 17 and 18. The requested target alternates between scene indices one and two; object zero is always a distractor. Each of the four controls starts from an identical, checked scene for each seed.</p>
       <ul>
         <li><strong>Requested object:</strong> the existing proportional controller follows the named live target, with gain 8.</li>
@@ -388,14 +391,28 @@
       <p>All 400 episodes reached the 200-step limit. None started inside the success threshold. The repaired controller’s mean final distance was 33.13 cm, against a 3 cm criterion. Its smaller mean distance than the first-object control does not establish successful reaching: both failed on all 100 paired scenes, giving a paired success-rate difference of zero.</p>
       <p>These are new measurements from the frozen code revision, not a reproduction of the old one-object benchmark. The historical 20/100 scripted result used a different task and lacks complete episode provenance, so it is not a comparable before/after baseline.</p>
       <p><a href="https://github.com/ajliouat/robollm/tree/c5dbcf4ec5bb257242e44133cf4f3ab599f7cf70/evaluation/results/grounded-control-2026-09-26">Raw traces, summary and replay record</a> retain every scene, action, target identity, position and outcome. An exact rerun on the recorded local runtime reproduced all semantic fields. That replay checks repeatability; it adds no independent trials. Wilson intervals describe the individual controls, not the paired difference or performance on real robots.</p>
-      <h2 id="policies">What remains unresolved</h2>
-      <p>The identity bug is fixed and tested. Motor control still fails this reaching protocol. Every corrected run ends short along the X axis. Across those runs, positive X commands reach their maximum in 99.4% of all steps. The requested target’s displacement stays below 0.117 mm across all four controls, so moving targets do not explain the failure. These are observations from the traces, not an identified cause.</p>
-      <p>The result does not distinguish arm geometry, actuator behavior, inverse kinematics or controller settings as the cause. That requires joint, force and contact diagnostics that this study does not record.</p>
-      <p>Mock planning tests remain separate from visual grounding or real language-model evaluation. Abstract destinations such as “goal” or “stack position” are not generally resolved by this environment. SAC training code exists, but this study neither trains nor evaluates it, and it does not validate general pick/place instructions.</p>
-      <h2 id="lessons">Reproduction and the next investigation</h2>
-      <p>The recorded runtime is Python 3.11.14, MuJoCo 3.14.0, NumPy 2.4.2 and Gymnasium 1.3.0 on macOS ARM64, without Torch, rendering or a GPU. The <a href="https://github.com/ajliouat/robollm/blob/c5dbcf4ec5bb257242e44133cf4f3ab599f7cf70/evaluation/CONTROL_STUDY.md">reproduction guide</a> specifies the frozen revision, dependencies and commands; the <a href="https://github.com/ajliouat/robollm/blob/f102fe10dc30bf2aa18cc16ed0dc43594051abbd/evaluation/grounded_control.py">runner</a> requires a clean recorded Git revision for the evaluation split and protects previous output files.</p>
-      <p>The <a href="https://github.com/ajliouat/robollm/actions/runs/36229451051">focused GitHub validation</a> passed 180 tests and a development-seed simulation smoke. It covers this control/evaluation path, not the entire repository’s training and rendering suite. The repair and evidence are available on a review branch; they have not been merged into the repository’s main branch.</p>
-      <p>The next useful experiment is a small, separate development set with explicit reachable end-effector targets and joint/actuator traces. It should distinguish a controller failure from a model or actuation constraint before additional training. These 100 evaluation scenes have now been observed and should not be reused for tuning followed by a fresh “held-out” claim.</p>
+      <h2 id="policies">What the first study could not explain</h2>
+      <p>The identity bug was fixed and tested, but motor control still failed. Every corrected run in that first study ended short along the X axis. Across those runs, positive X commands reach their maximum in 99.4% of all steps. The requested target’s displacement stays below 0.117 mm across all four controls, so moving targets do not explain the failure. These are observations from the traces, not an identified cause.</p>
+      <p>That result did not distinguish arm geometry, actuator behavior, inverse kinematics or controller settings as the cause. The follow-up therefore added joint, force, contact and Jacobian diagnostics on separate development scenes before another evaluation.</p>
+      <h2 id="motor-repair">Follow-up: repair the simulated arm before more training</h2>
+      <p>The original reset placed the first arm link 10 mm into the table and folded two other links into one another. The positional Jacobian was full rank at reset; initial singularity did not explain those collisions. Without gravity support, zero incremental commands also allowed the arm to drift.</p>
+      <p>The repair shortens two collision capsules while preserving the robot’s original masses, inertias and kinematic link lengths. It uses a collision-free home, aligns the actuator targets with that pose and adds ideal gravity compensation to robot bodies. Objects retain gravity; collisions remain active. The proportional policy, inverse kinematics, gain, timing and success threshold are unchanged.</p>
+      <p>Ideal <a href="https://mujoco.readthedocs.io/en/stable/XMLreference.html#body">MuJoCo body gravity compensation</a> supports the robot’s weight in simulation; it is not a validated hardware controller. Twenty-six physical tests check initialization, inertial preservation, position holding, falling objects, retained collisions and nearby reachable targets. Eight development configurations cross the collider, reset and gravity changes on two scenes. These diagnostics guide the repair but do not isolate each component’s effect over the whole workspace.</p>
+      <h2 id="repair-results">Fresh comparison: 35/100 versus 0/100</h2>
+      <p>The <a href="https://github.com/ajliouat/robollm/blob/9c35fccea85bfc9d7ffc98b0d751c9e5dd7e5c6d/evaluation/control_repair_protocol.json">new protocol and implementation</a> were committed before evaluating seeds 260927000–260927099. Development used seeds 17, 18 and 101–110. Each fresh object scene runs both the frozen original system and the repaired configuration, with exact named-target grounding and the same strict post-action 3 cm criterion. No scene is filtered or resampled.</p>
+      <table class="benchmark-table"><thead><tr><th>System</th><th>Successes</th><th>Wilson 95% interval</th><th>Mean final distance</th></tr></thead><tbody>
+<tr><td>Frozen original</td><td>0 / 100</td><td>0–3.70%</td><td>32.65 cm</td></tr>
+<tr><td>Repaired configuration</td><td>35 / 100</td><td>26.36–44.75%</td><td>13.01 cm</td></tr>
+</tbody></table>
+      <p>35 paired scenes succeed only after the repair; 65 fail in both configurations. The observed difference is +35 percentage points. There are 200 episodes and 33,927 control steps, with no initially satisfied scene. A second execution reproduces every recorded semantic field exactly on the same runtime. That verifies repeatability, not another 100 independent trials.</p>
+      <p>This compares a geometry/reset/gravity-support bundle. The objects start identically, but the arm does not: the new home reduces mean initial target distance from 52.46 to 40.67 cm. The score cannot be attributed to one component alone. The Wilson intervals describe each configuration, not the paired difference. <a href="https://github.com/ajliouat/robollm/tree/115d17458c4340366d5da6ce4bb3280c98d4c1f9/evaluation/results/control-repair-2026-09-26">Inspect all trajectories, model snapshots, summary and replay record</a>.</p>
+      <h2 id="repair-limits">Why proximity is not reliable manipulation</h2>
+      <p>The repaired arm moves the target by more than 3 cm during 42 of the 100 episodes, including 6 of the 35 successful ones. The largest displacement is 1.79 m in a failed episode. Contacts can disturb or eject objects; no such episode was removed from the result. Entering a sphere around a moving object is a much weaker requirement than reaching safely and holding position.</p>
+      <p>This experiment uses privileged simulator state and scripted actions. It does not demonstrate visual grounding, a learned policy, a secure grasp, stable placement or physical-robot performance. Mock planning and SAC training code remain separate from the measured result.</p>
+      <h2 id="lessons">Reproduction and the next useful question</h2>
+      <p>The recorded runtime is Python 3.11.14, MuJoCo 3.14.0, NumPy 2.4.2 and Gymnasium 1.3.0 on macOS ARM64, without Torch, rendering or a GPU. The <a href="https://github.com/ajliouat/robollm/blob/115d17458c4340366d5da6ce4bb3280c98d4c1f9/evaluation/CONTROL_REPAIR.md">repair method and reproduction guide</a> identify the frozen revision, commands and exact metric. The <a href="https://github.com/ajliouat/robollm/blob/c5dbcf4ec5bb257242e44133cf4f3ab599f7cf70/evaluation/CONTROL_STUDY.md">first study’s protocol</a> and its negative results remain available separately.</p>
+      <p><a href="https://github.com/ajliouat/robollm/actions/runs/36238199770">Focused GitHub validation passed 230 tests and both development simulation smokes</a>. The code and evidence are on a review branch; the main branch is not merged and the broader training/rendering suite is not certified.</p>
+      <p>The next question is whether collision-aware reaching can attain and hold a target without moving it or striking surrounding objects. Define that stricter contract before controller changes, diagnose failures on development data, then reserve fresh evaluation scenes. Both published sets are now observed; reusing them is reproduction, not a new held-out result.</p>
       <p>Implementation and regression tests were developed with Codex assistance. The inspected code, recorded executions and explicit limits support the result.</p>
       <p><a href="/projects/robollm.html">Project scope and historical evidence →</a></p>
     </section>
