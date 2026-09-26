@@ -43,7 +43,7 @@
 
   t['home.robo_title'] = 'RoboLLM'
   t['home.robo_body'] =
-    "Un environnement MuJoCo avec planification simulée, contrôleurs scriptés et expériences SAC. Ce qui est testé et ce qui reste à apprendre."
+    "Un prototype MuJoCo avec une correction du ciblage et une étude reproductible du déplacement. Résultats, traces et limites du contrôle à explorer."
   t['home.robo_tag_mujoco'] = 'MuJoCo'
   t['home.robo_tag_paligemma'] = "Contrôleurs scriptés"
   t['home.robo_tag_sac'] = 'SAC'

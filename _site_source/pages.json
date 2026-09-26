@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-09-26T07:30:54+00:00",
+  "feedUpdated": "2026-09-26T08:26:43+00:00",
   "pages": [
     {
       "path": "index.html",
@@ -64,7 +64,7 @@
       "path": "projects/robollm.html",
       "section": "projects",
       "title": "RoboLLM — Language-Grounded Robotic Manipulation | Abdeljalil Jliouat",
-      "description": "A MuJoCo manipulation prototype with mock planning, scripted baselines and SAC experiments. Inspect the source, archived results and evaluation limits."
+      "description": "A MuJoCo manipulation prototype with a recorded target-selection repair, four-control reaching study, complete traces and explicit limitations."
     },
     {
       "path": "blog/foundations-for-robotic-learning.html",
@@ -79,11 +79,11 @@
     {
       "path": "blog/hierarchical-vlm-rl-manipulation.html",
       "section": "blog",
-      "title": "Building a hierarchical VLM+RL manipulation system | Abdeljalil Jliouat",
-      "description": "Inside RoboLLM: mock planning, privileged grounding, scripted control and the distinction between integration tests and learned manipulation results.",
+      "title": "RoboLLM: fixing target selection, measuring control | Abdeljalil Jliouat",
+      "description": "A target-identity repair, a frozen four-control MuJoCo study and a negative result: what 400 recorded episodes establish about reaching.",
       "article": true,
-      "headline": "Building a hierarchical VLM+RL manipulation system",
-      "updated": "2026-09-26T07:30:54+00:00",
+      "headline": "RoboLLM: fixing target selection, measuring control",
+      "updated": "2026-09-26T08:26:43+00:00",
       "year": "2025"
     },
     {

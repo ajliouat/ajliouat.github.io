@@ -41,7 +41,7 @@
 
   t['home.robo_title'] = 'RoboLLM'
   t['home.robo_body'] =
-    "A MuJoCo manipulation testbed with mock planning, scripted baselines and SAC experiments. Explore what is tested and what remains to be learned."
+    "A MuJoCo prototype with a recorded target-selection repair and a reproducible reaching study. Explore the results, traces and remaining control limits."
   t['home.robo_tag_mujoco'] = 'MuJoCo'
   t['home.robo_tag_paligemma'] = "Scripted baselines"
   t['home.robo_tag_sac'] = 'SAC'

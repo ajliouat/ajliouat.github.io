@@ -22,7 +22,7 @@
     "projects.subtitle": "GPU inference, robotics, EEG and energy optimization: explore the implementations, available evidence and next validation steps.",
     "blog.subtitle": "Engineering notes on the systems I build, with experiments, trade-offs and links to the code. Technical articles are currently available in English.",
     "home.flash_body": "CUDA and Triton kernels for attention, activation fusion and cache operations. Explore the implementation, correctness boundaries and GPU validation requirements.",
-    "home.robo_body": "A MuJoCo manipulation testbed with mock planning, scripted baselines and SAC experiments. Explore what is tested and what remains to be learned.",
+    "home.robo_body": "A MuJoCo prototype with a recorded target-selection repair and a reproducible reaching study. Explore the results, traces and remaining control limits.",
     "home.neuro_body": "An EEG transformer prototype for masked reconstruction and motor-imagery classification, with data separation and evaluation as the current priorities.",
     "home.quantum_body": "Synthetic unit-commitment experiments using QUBO, QAOA, VQE and classical solvers. Explore the formulation and requirements for a fair comparison.",
     "home.robo_tag_paligemma": "Scripted baselines",
@@ -54,7 +54,7 @@
     "projects.subtitle": "Inférence GPU, robotique, EEG et optimisation énergétique : les implémentations, les preuves disponibles et les prochaines validations.",
     "blog.subtitle": "Des notes sur les systèmes que je construis : expériences, compromis techniques et liens vers le code. Les articles sont actuellement disponibles en anglais.",
     "home.flash_body": "Kernels CUDA et Triton pour l’attention, la fusion d’activations et le cache. Implémentation, limites de validité et protocole de vérification sur GPU.",
-    "home.robo_body": "Un environnement MuJoCo avec planification simulée, contrôleurs scriptés et expériences SAC. Ce qui est testé et ce qui reste à apprendre.",
+    "home.robo_body": "Un prototype MuJoCo avec une correction du ciblage et une étude reproductible du déplacement. Résultats, traces et limites du contrôle à explorer.",
     "home.neuro_body": "Un prototype de transformeur EEG pour la reconstruction masquée et l’imagerie motrice. Priorités actuelles : séparation des données et évaluation.",
     "home.quantum_body": "Des expériences de planification électrique sur données synthétiques, avec QUBO, QAOA, VQE et solveurs classiques. Formulation et comparaison équitable.",
     "home.robo_tag_paligemma": "Contrôleurs scriptés",
@@ -69,8 +69,8 @@
       "topic": "Calcul et inférence"
     },
     "hierarchical-vlm-rl-manipulation": {
-      "title": "Construire un système de manipulation hiérarchique VLM et RL",
-      "summary": "RoboLLM : distinguer les tests avec planificateur simulé, les contrôleurs scriptés et les résultats de politiques apprises.",
+      "title": "RoboLLM : corriger le ciblage, mesurer le contrôle",
+      "summary": "Une erreur de transmission de la cible, quatre comportements comparés sur les mêmes scènes et 400 épisodes enregistrés avec leurs limites.",
       "topic": "Robotique et signaux"
     },
     "neural-signal-decoding-transformer-pretraining": {

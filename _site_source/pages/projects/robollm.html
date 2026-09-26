@@ -160,16 +160,16 @@
     <header class="header">
       <div class="badge"><span class="badge-dot"></span> Language × Robotics</div>
       <h1 class="title">RoboLLM</h1>
-      <p class="subtitle">A MuJoCo testbed for decomposing instructions, grounding objects and executing manipulation primitives. The current evidence covers scripted baselines and a mock planning pipeline, with learned control still under evaluation.</p>
+      <p class="subtitle">A MuJoCo testbed for decomposing instructions, grounding objects and executing manipulation primitives. A recorded control study tests target identity and exposes the remaining limits of scripted reaching.</p>
       <div class="meta">MuJoCo · PyTorch · SAC · Simulation</div>
     </header>
     <section class="layout">
       <aside class="toc"><div class="toc-title">On this page</div><ul class="toc-list"><li class="toc-item"><a class="toc-link" href="#overview">Problem and scope</a></li>
 <li class="toc-item"><a class="toc-link" href="#tasks">Task progression</a></li>
 <li class="toc-item"><a class="toc-link" href="#approach">Implemented and experimental components</a></li>
+<li class="toc-item"><a class="toc-link" href="#validation">Grounded control study</a></li>
 <li class="toc-item"><a class="toc-link" href="#benchmarks">Historical baseline evidence</a></li>
 <li class="toc-item"><a class="toc-link" href="#architecture">Current test pipeline</a></li>
-<li class="toc-item"><a class="toc-link" href="#validation">Validation update</a></li>
 <li class="toc-item"><a class="toc-link" href="#reproduce">Validation and next experiment</a></li></ul></aside>
       <article class="project-body">
         <div class="tech-stack"><span class="tech-pill">MuJoCo</span><span class="tech-pill">PyTorch</span><span class="tech-pill">SAC</span><span class="tech-pill">Simulation</span></div>
@@ -192,7 +192,13 @@
 <li><strong>Tested planning path:</strong> MockVLM performs keyword matching; SimGrounder reads privileged simulator state. Passing these tests is not visual grounding accuracy.</li>
 <li><strong>Motor control:</strong> scripted controllers support pipeline tests. SAC training and checkpoint evaluation are separate components; successful learned manipulation is not established by the baseline archive.</li>
 <li><strong>Extension points:</strong> a Transformers VLM adapter exists. DINOv2-based visual grounding remains a proposed extension in the reviewed source.</li>
-</ul><p><a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/planner">Planner and grounding source</a> · <a href="https://github.com/ajliouat/robollm/blob/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/evaluation/pipeline.py">Hierarchical executor</a> · <a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/policies">Policy implementations</a></p>
+</ul><p><a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/planner">Planner and grounding source</a> · <a href="https://github.com/ajliouat/robollm/blob/f102fe10dc30bf2aa18cc16ed0dc43594051abbd/evaluation/pipeline.py">Hierarchical executor</a> · <a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/policies">Policy implementations</a></p>
+</section>
+<section class="section" id="validation"><h2 class="section-title">Grounded control study · 26 September 2026</h2>
+<p>The executor could select the requested object but drive toward the first object in the scene. The repair retains the named target through control and scoring, distinguishes already-satisfied states, and stops on failures or episode endings.</p>
+<p><strong>Measured result:</strong> zero successes in 100 scenes for the corrected controller, and zero for each of three controls. The corrected controller ended 33.13 cm from the target on average, against a 3 cm threshold. The targeting defect is fixed; successful motor control remains unresolved.</p>
+<p>The frozen study retains 400 complete episode traces and an exact local replay. It uses privileged simulator state and scripted actions, with no learned policy or VLM evaluation. <a href="/blog/hierarchical-vlm-rl-manipulation.html">Read the failure, method, results and limits</a> · <a href="https://github.com/ajliouat/robollm/tree/c5dbcf4ec5bb257242e44133cf4f3ab599f7cf70/evaluation/results/grounded-control-2026-09-26">Inspect the raw evidence</a>.</p>
+<p><a href="https://github.com/ajliouat/robollm/actions/runs/36229451051">Focused GitHub validation passed 180 tests and a simulation smoke</a>. This is a review-branch delivery, not a main-branch merge or a pass of the repository’s full training/rendering suite.</p>
 </section>
 <section class="section" id="benchmarks"><h2 class="section-title">Historical baseline evidence</h2>
 <p>The <a href="https://github.com/ajliouat/robollm/blob/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/evaluation/results/benchmark_results.json">archived evaluation dated 22 February 2026</a> records 100 episodes per task/policy pair, with a 200-step limit. The intervals below are Wilson 95% intervals recalculated from the recorded counts (z = 1.96), not new simulation results.</p><table class="benchmark-table"><thead><tr><th>Task</th><th>Policy</th><th>Successes</th><th>95% interval</th><th>Mean return</th></tr></thead><tbody>
@@ -214,12 +220,9 @@
   Env --&gt; Scene
   Future["Real VLM, visual grounding and learned control: separate validation"]</div></div>
 </section>
-<section class="section" id="validation"><h2 class="section-title">Validation update · 26 September 2026</h2>
-<p><strong>Reproducible evaluation export.</strong> The evaluator repair seeds both environment and actions, records per-episode outcomes and provenance, exports Wilson endpoints, and validates reports before replacing saved files. Focused checks include repeatable seeded MuJoCo rollouts and artifact-preservation regressions. A 24-episode CLI smoke checks the export path; it is not a performance reproduction.</p>
-<p><a href="https://github.com/ajliouat/robollm/blob/0c4738f19f9eca802b1246ac82df4b7bdc027e0d/evaluation/README.md">Inspect the tested revision and validation details</a>. This repair is available on a review branch; the repository’s main branch has not yet been updated.</p>
-</section>
-<section class="section" id="reproduce"><h2 class="section-title">Validation and next experiment</h2>
-<p>A useful next run must retain the code revision, dependency versions, action and environment seeds, individual outcomes and both confidence-interval endpoints. Keep mock integration tests separate from actual VLM evaluation and motor-policy success.</p><p>The <a href="https://github.com/ajliouat/robollm/blob/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/evaluation/results/pick_training_summary.json">archived training summary</a> is not evidence that more training reliably solves the task. A next control experiment should first reproduce a reaching baseline, then isolate grasping and reward/success-condition behavior.</p><p><a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/tests">Inspect the tests</a> and <a href="https://github.com/ajliouat/robollm/blob/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/evaluation/benchmark.py">evaluation entry point</a> at the reviewed revision. No new learned-policy or GPU training result is claimed here.</p>
+<section class="section" id="reproduce"><h2 class="section-title">Reproduction and next investigation</h2>
+<p>The <a href="https://github.com/ajliouat/robollm/blob/c5dbcf4ec5bb257242e44133cf4f3ab599f7cf70/evaluation/CONTROL_STUDY.md">frozen protocol and reproduction guide</a> define the 100 paired scenes, four controls, recorded runtime and exact success condition. The new experiment exercises three-object reaching; it is not directly comparable to the historical one-object baseline.</p>
+<p>Next: isolate arm, actuation and inverse-kinematics behavior on a separate development set before tuning or training. Reaching, grasping, stable placement and language understanding each require their own evidence.</p>
 </section>
         <p><a href="/blog/hierarchical-vlm-rl-manipulation.html">Read the technical note →</a></p>
         <div class="footer-actions">
