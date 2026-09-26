@@ -248,231 +248,88 @@
 </style>
 <main class="page">
     <header class="header">
-      <div class="badge"><span class="badge-dot"></span> Hardware/GPU × LLM</div>
+      <div class="badge"><span class="badge-dot"></span> GPU compute × Transformer inference</div>
       <h1 class="title">FlashKernel</h1>
-      <p class="subtitle">
-        Custom CUDA C++ and Triton kernels for transformer inference, targeting the critical path
-        of attention computation, activation fusion, and KV-cache management — benchmarked with
-        Nsight Compute profiling on NVIDIA T4.
-      </p>
-      <div class="meta">CUDA · Triton · Nsight Compute · PyTorch</div>
+      <p class="subtitle">CUDA C++ and Triton implementations for studying attention, activation fusion and memory movement. The focus is numerical correctness, explicit dispatch boundaries and a verifiable path to GPU measurement.</p>
+      <div class="meta">CUDA C++ · Triton · PyTorch · Nsight Compute</div>
     </header>
-
     <section class="layout">
-      <aside class="toc">
-        <div class="toc-title">On this page</div>
-        <ul class="toc-list">
-          <li class="toc-item"><a class="toc-link" href="#overview">Overview</a></li>
-          <li class="toc-item"><a class="toc-link" href="#motivation">Why this project</a></li>
-          <li class="toc-item"><a class="toc-link" href="#kernels">Kernel inventory</a></li>
-          <li class="toc-item"><a class="toc-link" href="#approach">Technical approach</a></li>
-          <li class="toc-item"><a class="toc-link" href="#code">Core algorithm</a></li>
-          <li class="toc-item"><a class="toc-link" href="#benchmarks">Roofline benchmarks</a></li>
-          <li class="toc-item"><a class="toc-link" href="#e2e">End-to-end results</a></li>
-          <li class="toc-item"><a class="toc-link" href="#architecture">Architecture diagram</a></li>
-          <li class="toc-item"><a class="toc-link" href="#reproduce">Reproduce</a></li>
-        </ul>
-      </aside>
-
+      <aside class="toc"><div class="toc-title">On this page</div><ul class="toc-list"><li class="toc-item"><a class="toc-link" href="#overview">Problem and scope</a></li>
+<li class="toc-item"><a class="toc-link" href="#motivation">Engineering questions</a></li>
+<li class="toc-item"><a class="toc-link" href="#kernels">Implementation inventory</a></li>
+<li class="toc-item"><a class="toc-link" href="#approach">Technical decisions</a></li>
+<li class="toc-item"><a class="toc-link" href="#code">Online softmax</a></li>
+<li class="toc-item"><a class="toc-link" href="#benchmarks">Performance evidence</a></li>
+<li class="toc-item"><a class="toc-link" href="#e2e">GPT-2 integration boundaries</a></li>
+<li class="toc-item"><a class="toc-link" href="#architecture">Integration structure</a></li>
+<li class="toc-item"><a class="toc-link" href="#validation">Validation update</a></li>
+<li class="toc-item"><a class="toc-link" href="#reproduce">Inspect and validate</a></li></ul></aside>
       <article class="project-body">
-        <div class="project-intro" id="overview">
-          CUDA kernel engineering is the scarcest skill in ML infrastructure. This project implements
-          the core kernels of transformer inference from scratch — tiled attention with online softmax,
-          fused activations, rotary embeddings, and paged KV-cache — in both CUDA C++ and Triton.
-          Every kernel is profiled with NVIDIA Nsight Compute and benchmarked against PyTorch eager,
-          <code>torch.compile</code>, and cuBLAS baselines on a T4 GPU.
-        </div>
-
-        <div class="tech-stack">
-          <span class="tech-pill">CUDA C++</span>
-          <span class="tech-pill">Triton</span>
-          <span class="tech-pill">Nsight Compute</span>
-          <span class="tech-pill">PyTorch C++ Extensions</span>
-          <span class="tech-pill">CMake</span>
-          <span class="tech-pill">Docker</span>
-        </div>
-
-        <section class="section" id="motivation">
-          <h2 class="section-title">Why this project</h2>
-          <ul>
-            <li><strong>Scarcest skill in ML infrastructure:</strong> CUDA kernel engineering sits at the intersection of hardware and model architecture — production systems (vLLM, TensorRT-LLM, FlashAttention) ship hand-tuned kernels most practitioners never read.</li>
-            <li><strong>Profiling-driven development:</strong> Every optimization guided by Nsight Compute metrics — not intuition. Occupancy, warp stalls, memory throughput, and roofline position drive each design decision.</li>
-            <li><strong>Real verification:</strong> Kernels are not benchmarked in isolation. They're integrated into GPT-2 (124M) to show that micro-kernel gains compose into real model-level speedups.</li>
-          </ul>
-        </section>
-
-        <section class="section" id="kernels">
-          <h2 class="section-title">Kernel inventory</h2>
-          <table class="benchmark-table">
-            <thead>
-              <tr>
-                <th>Kernel</th>
-                <th>CUDA C++</th>
-                <th>Triton</th>
-                <th>Key technique</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Tiled FlashAttention</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>Online softmax, shared memory tiling</td>
-              </tr>
-              <tr>
-                <td>Fused GeLU + Linear</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>Eliminates HBM round-trip</td>
-              </tr>
-              <tr>
-                <td>RoPE Embedding</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>Precomputed sin/cos, fused with attention</td>
-              </tr>
-              <tr>
-                <td>Paged KV-Cache</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>Block-level virtual memory, page table</td>
-              </tr>
-              <tr>
-                <td>Parallel Reduction</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>Warp-level shuffle + shared memory tree</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section class="section" id="approach">
-          <h2 class="section-title">Technical approach</h2>
-          <ul>
-            <li><strong>Memory hierarchy mastery:</strong> Shared memory tiling sized for T4's 48 KB L1, bank conflict avoidance, register pressure tuning for SM 7.5.</li>
-            <li><strong>Warp-level programming:</strong> <code>__shfl_down_sync</code> reductions, cooperative groups for cross-warp synchronization.</li>
-            <li><strong>Kernel fusion:</strong> GeLU activation computed in-register between matmul and HBM write — eliminates one full 6 MB memory round-trip.</li>
-            <li><strong>Profiling-driven:</strong> Every optimization guided by Nsight Compute metrics — occupancy, memory throughput, warp stall analysis, roofline position.</li>
-            <li><strong>End-to-end integration:</strong> Kernels plugged into GPT-2 (124M) via PyTorch C++ extensions, measuring real tokens/sec improvement.</li>
-            <li><strong>Roofline analysis:</strong> All 8 kernel variants mapped against T4 ceilings (fp16 65 TFLOPS, HBM2 300 GB/s).</li>
-          </ul>
-        </section>
-
-        <div class="code-block" id="code">
-          <div class="code-header">
-            <span class="code-lang">CUDA — FlashAttention tiled inner loop</span>
-          </div>
-          <pre>// Load Q tile to shared memory (Br × d)
-// For each K/V tile (Bc × d):
-//   S_tile = Q_smem @ K_tile^T        → Br × Bc in registers
-//   Apply causal mask if needed
-//   m_new = max(m_old, row_max(S_tile))
-//   P_tile = exp(S_tile - m_new)       → rescaled softmax numerator
-//   l_new = exp(m_old - m_new) * l_old + row_sum(P_tile)
-//   O = (l_old/l_new) * exp(m_old - m_new) * O
-//       + (1/l_new) * P_tile @ V_tile
-//   m_old = m_new; l_old = l_new</pre>
-        </div>
-
-        <section class="section" id="benchmarks">
-          <h2 class="section-title">Roofline Benchmarks</h2>
-          <p>
-            All measurements on NVIDIA T4 16 GB (Turing, SM 7.5), CUDA 12.x, PyTorch 2.x.
-            Profiled with Nsight Compute. 6 memory-bound kernels, 2 compute-bound.
-          </p>
-          <table class="benchmark-table">
-            <thead>
-              <tr>
-                <th>Kernel</th>
-                <th>AI (F/B)</th>
-                <th>Achieved</th>
-                <th>% Ceiling</th>
-                <th>Bound</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>vector_add (fp16)</td><td>0.17</td><td>248 GB/s</td><td>83%</td><td>Memory</td></tr>
-              <tr><td>reduce_sum (fp16)</td><td>0.50</td><td>262 GB/s</td><td>87%</td><td>Memory</td></tr>
-              <tr><td>flash_attention (fp16)</td><td>341</td><td>38.2 TFLOPS</td><td>59%</td><td>Compute</td></tr>
-              <tr><td>fused_gelu_linear (fp16)</td><td>295</td><td>31.5 TFLOPS</td><td>49%</td><td>Compute</td></tr>
-              <tr><td>rope_fused (fp16)</td><td>3.25</td><td>222 GB/s</td><td>74%</td><td>Memory</td></tr>
-              <tr><td>rope_table (fp16)</td><td>1.50</td><td>240 GB/s</td><td>80%</td><td>Memory</td></tr>
-              <tr><td>kv_append (fp16)</td><td>0.08</td><td>195 GB/s</td><td>65%</td><td>Memory</td></tr>
-              <tr><td>kv_read (fp16)</td><td>0.08</td><td>178 GB/s</td><td>59%</td><td>Memory</td></tr>
-            </tbody>
-          </table>
-          <p style="font-size: 12px; color: #9ca3af;">
-            Flash attention achieves 38.2 TFLOPS (59% of fp16 peak) — respectable for a hand-written kernel
-            without wmma/mma PTX intrinsics. Reduction achieves 87% of HBM bandwidth via warp-shuffle.
-          </p>
-        </section>
-
-        <section class="section" id="e2e">
-          <h2 class="section-title">End-to-end results</h2>
-          <p>
-            All custom kernels integrated into GPT-2 (124M) via PyTorch C++ extensions.
-            The integration module monkey-patches HuggingFace's GPT2Attention and GPT2MLP:
-          </p>
-          <ul>
-            <li>Standard attention → FlashAttention with RoPE applied to Q/K</li>
-            <li>MLP <code>c_fc</code> projection + GELU → fused GeLU+Linear kernel</li>
-          </ul>
-          <p>
-            Individual kernel gains compose into real model-level speedups — flash attention alone
-            eliminates the O(N²) HBM materialization, and the GeLU fusion saves a 6 MB round-trip
-            per MLP layer.
-          </p>
-        </section>
-
-        <section class="section" id="architecture">
-          <h2 class="section-title">Architecture diagram</h2>
-          <div class="mermaid-block">
-            <div class="mermaid">flowchart TB
-  Input["Input tokens"] --> Embed["Token + RoPE embedding<br/><i>222 GB/s · 74% HBM</i>"]
-  Embed --> Attn["Tiled FlashAttention<br/><i>38.2 TFLOPS · 59% fp16 peak</i>"]
-  Attn --> KV["Paged KV-Cache<br/><i>195 GB/s append · 178 GB/s read</i>"]
-  KV --> Fused["Fused GeLU + Linear<br/><i>31.5 TFLOPS · no HBM roundtrip</i>"]
-  Fused --> Norm["LayerNorm + Residual"]
-  Norm --> Next["Next layer / Output"]
-
-  style Embed fill:#eff6ff,stroke:#2563eb,color:#0f172a
-  style Attn fill:#eff6ff,stroke:#2563eb,color:#0f172a
-  style KV fill:#eff6ff,stroke:#2563eb,color:#0f172a
-  style Fused fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
-          </div>
-        </section>
-
-        </section>
-
-        <section class="section" id="reproduce">
-          <h2 class="section-title">Reproduce</h2>
-          <div class="code-block">
-            <div class="code-header">
-              <span class="code-lang">Shell</span>
-            </div>
-            <pre>docker build -t flashkernel .
-docker run --gpus all flashkernel pytest tests/ -v
-docker run --gpus all flashkernel python profiling/roofline/generate_roofline.py</pre>
-          </div>
-        </section>
-
-        <div style="margin-top: 18px; font-size: 13px;">
-          <a href="/blog/writing-cuda-kernels-for-transformer-inference.html"
-             style="color: var(--accent); text-decoration: none; font-weight: 500;">
-            Read the full technical write-up →
-          </a>
-        </div>
-
+        <div class="tech-stack"><span class="tech-pill">CUDA C++</span><span class="tech-pill">Triton</span><span class="tech-pill">PyTorch</span><span class="tech-pill">Nsight Compute</span></div>
+        <section class="section" id="overview"><h2 class="section-title">Problem and scope</h2>
+<p>Transformer inference combines operations with different compute and memory costs. FlashKernel exposes those operations as small implementations that can be inspected, compared with reference code and profiled separately. It is an experimental kernel library; GPU performance and general deployment suitability remain to be validated.</p>
+</section>
+<section class="section" id="motivation"><h2 class="section-title">Engineering questions</h2>
+<ul>
+<li>When can tiling avoid materializing a full attention matrix?</li>
+<li>Which intermediate reads and writes can activation fusion remove?</li>
+<li>What semantics must an optimized operation preserve when inserted into a real model?</li>
+</ul>
+</section>
+<section class="section" id="kernels"><h2 class="section-title">Implementation inventory</h2>
+<table class="benchmark-table"><thead><tr><th>Family</th><th>Mechanism</th><th>Source</th></tr></thead><tbody>
+<tr><td>Attention</td><td>Tiled computation and online softmax</td><td><a href="https://github.com/ajliouat/flashkernel/tree/c86e4af18787998877553bad70cd05b074f200b9/src/cuda">CUDA implementations</a></td></tr>
+<tr><td>Linear + GeLU</td><td>Apply the activation before writing the projection output</td><td><a href="https://github.com/ajliouat/flashkernel/tree/c86e4af18787998877553bad70cd05b074f200b9/src/triton">Triton implementations</a></td></tr>
+<tr><td>RoPE</td><td>On-the-fly trigonometry or precomputed tables</td><td>Standalone positional-encoding kernels</td></tr>
+<tr><td>Paged KV-cache</td><td>Append and gather through slot and block mappings</td><td>Standalone cache operations</td></tr>
+<tr><td>Reduction</td><td>Warp-level reduction and intermediate partial sums</td><td>Reference comparisons in the test suite</td></tr>
+</tbody></table><p>An implementation in the source tree is distinct from a successfully validated GPU run. <a href="https://github.com/ajliouat/flashkernel/tree/c86e4af18787998877553bad70cd05b074f200b9/tests">Inspect the kernel tests</a>.</p>
+</section>
+<section class="section" id="approach"><h2 class="section-title">Technical decisions</h2>
+<p>Keep the kernel interface narrow and compare it against a reference before integrating it. The most consequential integration constraint is attention shape: cached decoding has a shorter query sequence than the accumulated keys and values. A kernel accepting equal sequence lengths cannot replace that path unchanged.</p><p>GPT-2 also uses learned absolute positional embeddings. RoPE and paged KV-cache experiments are separate from its attention/MLP patch; combining all library components in one diagram would misrepresent the implemented model.</p>
+</section>
+<section class="section" id="code"><h2 class="section-title">Online softmax</h2>
+<div class="code-block"><div class="code-header"><span class="code-lang">Code</span></div><pre>m_new = max(m_old, max(scores_tile))
+alpha = exp(m_old - m_new)
+p = exp(scores_tile - m_new)
+l_new = alpha * l_old + sum(p)
+acc_new = alpha * acc_old + p @ values_tile
+output = acc_new / l_new</pre></div><p>Algorithm sketch for an unnormalized output accumulator. A working kernel must additionally handle causal masking, bounds, synchronization and rows without valid keys.</p>
+</section>
+<section class="section" id="benchmarks"><h2 class="section-title">Performance evidence</h2>
+<p>The repository contains a <a href="https://github.com/ajliouat/flashkernel/blob/c86e4af18787998877553bad70cd05b074f200b9/profiling/roofline/kernel_metrics.json">historical metrics summary</a> and roofline plots. The reviewed revision does not include the underlying Nsight reports or per-run timing records needed to verify the headline throughput values. Those values are not presented here as established performance.</p><ul>
+<li><strong>Correctness first:</strong> compare outputs with the PyTorch reference across causal masks, sequence lengths, head dimensions and precision. Check model logits and generated tokens before timing an integration.</li>
+<li><strong>Comparable timing:</strong> record the code revision, GPU, driver, CUDA/PyTorch/Triton versions, tensor shapes, warm-up, repetitions and synchronization. Report variation and which backend actually executed.</li>
+<li><strong>Traceable profiling:</strong> retain raw Nsight reports and their exports alongside derived plots. A plot generated from an existing JSON file is not a new measurement.</li>
+<li><strong>Separate conclusions:</strong> report individual kernel latency, prefill and cached decoding independently. A faster isolated operation does not establish a faster model.</li>
+</ul>
+</section>
+<section class="section" id="e2e"><h2 class="section-title">GPT-2 integration boundaries</h2>
+<p>The <a href="https://github.com/ajliouat/flashkernel/blob/c86e4af18787998877553bad70cd05b074f200b9/src/integration/gpt2_custom_kernels.py">integration module</a> patches attention and the MLP projection/activation. Model correctness depends on preserving cache handling, masks, dropout, activation choice and the installed Transformers API. No end-to-end speedup is claimed here.</p><p>CPU regression tests can validate dispatch and reference behavior. They do not validate CUDA arithmetic, Triton compilation or NVIDIA T4 throughput. GPU parity checks and raw timing artifacts remain necessary.</p>
+</section>
+<section class="section" id="architecture"><h2 class="section-title">Integration structure</h2>
+<div class="mermaid-block"><div class="mermaid">flowchart TB
+  Input["Tokens + learned absolute positions"] --&gt; GPT["GPT-2 attention and MLP"]
+  GPT --&gt; Gate{"Supported inference inputs?"}
+  Gate --&gt;|Yes| Kernel["Custom attention or fused linear + GeLU"]
+  Gate --&gt;|No| Original["Original PyTorch implementation"]
+  Kernel --&gt; Check["Output correctness before timing"]
+  Original --&gt; Check
+  Standalone["RoPE and paged KV-cache: separate kernel experiments"]</div></div>
+</section>
+<section class="section" id="validation"><h2 class="section-title">Validation update · 26 September 2026</h2>
+<p><strong>Guarded GPT-2 integration.</strong> The integration repair preserves the reference path for caches, masks, training and unsupported inputs, and records which path actually executes. Offline checks on Python 3.11.14, PyTorch 2.8.0 and Transformers 4.44.2 passed 58 tests (14 skipped; 350 CUDA-marked cases excluded). These are CPU integration checks, not validation of native GPU arithmetic or speed.</p>
+<p><a href="https://github.com/ajliouat/flashkernel/blob/c86e4af18787998877553bad70cd05b074f200b9/docs/gpt2-integration.md">Inspect the tested revision and validation details</a>. This repair is available on a review branch; the repository’s main branch has not yet been updated.</p>
+</section>
+<section class="section" id="reproduce"><h2 class="section-title">Inspect and validate</h2>
+<p>Start with the pinned source and inspect the test and benchmark entry points before running them:</p><div class="code-block"><div class="code-header"><span class="code-lang">Code</span></div><pre>git clone https://github.com/ajliouat/flashkernel.git
+cd flashkernel
+git checkout c86e4af18787998877553bad70cd05b074f200b9</pre></div><p><a href="https://github.com/ajliouat/flashkernel/tree/c86e4af18787998877553bad70cd05b074f200b9/benchmarks">Benchmark entry points</a> · <a href="https://github.com/ajliouat/flashkernel/tree/c86e4af18787998877553bad70cd05b074f200b9/profiling/scripts">Profiling scripts</a>. The historical profiler renders the committed metrics file; collecting reports does not automatically refresh every derived value. GPU experiments require a compatible CUDA machine and a separate validation run.</p>
+</section>
+        <p><a href="/blog/writing-cuda-kernels-for-transformer-inference.html">Read the technical note →</a></p>
         <div class="footer-actions">
-          <a href="/projects/" class="back-link">
-            <span>←</span>
-            <span>Back to projects</span>
-          </a>
-          <a href="https://github.com/ajliouat/flashkernel" target="_blank" class="github-link">
-            <span>★</span>
-            <span>View on GitHub</span>
-          </a>
+          <a href="/projects/" class="back-link"><span>←</span><span>Back to projects</span></a>
+          <a href="https://github.com/ajliouat/flashkernel" class="github-link"><span>View on GitHub</span></a>
         </div>
       </article>
     </section>

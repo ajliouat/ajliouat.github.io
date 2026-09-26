@@ -18,9 +18,17 @@
     "home.focus_energy_body": "Classical and quantum methods, tested against practical constraints.",
     "home.projects_title": "Selected projects",
     "home.projects_subtitle": "Explore the architecture, experiments and source code behind four systems.",
-    "projects.title": "Four projects, from models to working systems",
-    "projects.subtitle": "Open-source work in GPU inference, robotics, EEG decoding and energy optimization. Each project includes an architecture overview, experiments and source code.",
-    "blog.subtitle": "Engineering notes on the systems I build, with experiments, trade-offs and links to the code. Technical articles are currently available in English."
+    "projects.title": "Four projects, with code and open questions",
+    "projects.subtitle": "GPU inference, robotics, EEG and energy optimization: explore the implementations, available evidence and next validation steps.",
+    "blog.subtitle": "Engineering notes on the systems I build, with experiments, trade-offs and links to the code. Technical articles are currently available in English.",
+    "home.flash_body": "CUDA and Triton kernels for attention, activation fusion and cache operations. Explore the implementation, correctness boundaries and GPU validation requirements.",
+    "home.robo_body": "A MuJoCo manipulation testbed with mock planning, scripted baselines and SAC experiments. Explore what is tested and what remains to be learned.",
+    "home.neuro_body": "An EEG transformer prototype for masked reconstruction and motor-imagery classification, with data separation and evaluation as the current priorities.",
+    "home.quantum_body": "Synthetic unit-commitment experiments using QUBO, QAOA, VQE and classical solvers. Explore the formulation and requirements for a fair comparison.",
+    "home.robo_tag_paligemma": "Scripted baselines",
+    "projects.status": "Experimental",
+    "home.neuro_tag_mne": "NumPy/SciPy",
+    "footer.tagline": "Applied AI and systems engineering. Code, experiments and technical notes."
   },
   "fr": {
     "experience.present": "aujourd’hui",
@@ -42,20 +50,68 @@
     "home.focus_energy_body": "Des méthodes classiques et quantiques confrontées aux contraintes pratiques.",
     "home.projects_title": "Une sélection de projets",
     "home.projects_subtitle": "L’architecture, les expériences et le code de quatre systèmes à explorer.",
-    "projects.title": "Quatre projets, des modèles aux systèmes",
-    "projects.subtitle": "Des projets open source en inférence GPU, robotique, décodage EEG et optimisation énergétique. Chaque projet présente son architecture, ses expériences et son code.",
-    "blog.subtitle": "Des notes sur les systèmes que je construis : expériences, compromis techniques et liens vers le code. Les articles sont actuellement disponibles en anglais."
+    "projects.title": "Quatre projets, du code et des questions ouvertes",
+    "projects.subtitle": "Inférence GPU, robotique, EEG et optimisation énergétique : les implémentations, les preuves disponibles et les prochaines validations.",
+    "blog.subtitle": "Des notes sur les systèmes que je construis : expériences, compromis techniques et liens vers le code. Les articles sont actuellement disponibles en anglais.",
+    "home.flash_body": "Kernels CUDA et Triton pour l’attention, la fusion d’activations et le cache. Implémentation, limites de validité et protocole de vérification sur GPU.",
+    "home.robo_body": "Un environnement MuJoCo avec planification simulée, contrôleurs scriptés et expériences SAC. Ce qui est testé et ce qui reste à apprendre.",
+    "home.neuro_body": "Un prototype de transformeur EEG pour la reconstruction masquée et l’imagerie motrice. Priorités actuelles : séparation des données et évaluation.",
+    "home.quantum_body": "Des expériences de planification électrique sur données synthétiques, avec QUBO, QAOA, VQE et solveurs classiques. Formulation et comparaison équitable.",
+    "home.robo_tag_paligemma": "Contrôleurs scriptés",
+    "projects.status": "Expérimental",
+    "home.neuro_tag_mne": "NumPy/SciPy",
+    "footer.tagline": "IA appliquée et ingénierie des systèmes. Code, expériences et notes techniques."
   },
   "articles": {
-    "writing-cuda-kernels-for-transformer-inference": {"title":"Écrire des kernels CUDA pour l’inférence de transformeurs sur T4","summary":"FlashAttention, GeLU fusionné, RoPE et KV-cache paginé : implémentation en CUDA et Triton, profilage et analyse avec le modèle roofline.","topic":"Calcul et inférence"},
-    "hierarchical-vlm-rl-manipulation": {"title":"Construire un système de manipulation hiérarchique VLM et RL","summary":"Dans RoboLLM, un modèle vision-langage décompose les instructions et des politiques apprises exécutent les mouvements dans MuJoCo.","topic":"Robotique et signaux"},
-    "neural-signal-decoding-transformer-pretraining": {"title":"Décoder des signaux neuronaux par pré-entraînement de transformeurs","summary":"NeuroLLM : pré-entraînement sur des EEG, adaptation à l’imagerie motrice et comparaison aux méthodes classiques de décodage.","topic":"Robotique et signaux"},
-    "quantum-classical-hybrid-energy-grid-optimization": {"title":"Optimisation hybride quantique-classique des réseaux électriques","summary":"QuantumGrid : formulation QUBO, expériences QAOA et VQE, comparaison aux méthodes classiques et limites de passage à l’échelle.","topic":"Optimisation et énergie"},
-    "foundations-for-robotic-learning": {"title":"Les bases du deep learning pour la robotique","summary":"Simulation, apprentissage par renforcement, modèles vision-langage et contraintes matérielles dans les systèmes robotiques.","topic":"Robotique et signaux"},
-    "observability-for-llm-systems": {"title":"Observer les systèmes LLM au-delà des logs et des métriques","summary":"Suivre le comportement des modèles avec des évaluations, des éléments de preuve et des boucles de retour utiles aux équipes.","topic":"Calcul et inférence"},
-    "production-runtime-akiod": {"title":"Concevoir une couche d’exécution pour une IA gouvernable","summary":"Gouvernance des actions, conservation des preuves, choix des fournisseurs et maîtrise des coûts dans les systèmes d’IA en production.","topic":"Calcul et inférence"},
-    "quantum-ai-foundations": {"title":"Premiers repères pour l’IA quantique","summary":"États de qubits, circuits variationnels et boucles d’apprentissage hybrides entre calcul quantique et classique.","topic":"Optimisation et énergie"},
-    "rag-pipelines-practical-notes": {"title":"Notes pratiques sur les pipelines RAG","summary":"Objectifs de recherche, indexation, découpage des documents, scores hybrides et orchestration d’un pipeline RAG.","topic":"Calcul et inférence"},
-    "robotics-energy-systems": {"title":"Robotique et systèmes énergétiques","summary":"Affecter les tâches et la recharge d’une flotte de robots en tenant compte des coûts, de la puissance et de la qualité de service.","topic":"Optimisation et énergie"}
+    "writing-cuda-kernels-for-transformer-inference": {
+      "title": "Écrire des kernels CUDA pour l’inférence de transformeurs sur T4",
+      "summary": "Kernels CUDA et Triton : justesse numérique, intégration GPT-2 et protocole nécessaire avant toute conclusion de performance.",
+      "topic": "Calcul et inférence"
+    },
+    "hierarchical-vlm-rl-manipulation": {
+      "title": "Construire un système de manipulation hiérarchique VLM et RL",
+      "summary": "RoboLLM : distinguer les tests avec planificateur simulé, les contrôleurs scriptés et les résultats de politiques apprises.",
+      "topic": "Robotique et signaux"
+    },
+    "neural-signal-decoding-transformer-pretraining": {
+      "title": "Décoder des signaux neuronaux par pré-entraînement de transformeurs",
+      "summary": "NeuroLLM : architecture EEG, séparation des données et conditions d’une évaluation fiable du pré-entraînement.",
+      "topic": "Robotique et signaux"
+    },
+    "quantum-classical-hybrid-energy-grid-optimization": {
+      "title": "Optimisation hybride quantique-classique des réseaux électriques",
+      "summary": "QuantumGrid : distinguer énergie QUBO, faisabilité et coût physique pour comparer les solveurs sur les mêmes instances.",
+      "topic": "Optimisation et énergie"
+    },
+    "foundations-for-robotic-learning": {
+      "title": "Les bases du deep learning pour la robotique",
+      "summary": "Simulation, apprentissage par renforcement, modèles vision-langage et contraintes matérielles dans les systèmes robotiques.",
+      "topic": "Robotique et signaux"
+    },
+    "observability-for-llm-systems": {
+      "title": "Observer les systèmes LLM au-delà des logs et des métriques",
+      "summary": "Suivre le comportement des modèles avec des évaluations, des éléments de preuve et des boucles de retour utiles aux équipes.",
+      "topic": "Calcul et inférence"
+    },
+    "production-runtime-akiod": {
+      "title": "Concevoir une couche d’exécution pour une IA gouvernable",
+      "summary": "Gouvernance des actions, conservation des preuves, choix des fournisseurs et maîtrise des coûts dans les systèmes d’IA en production.",
+      "topic": "Calcul et inférence"
+    },
+    "quantum-ai-foundations": {
+      "title": "Premiers repères pour l’IA quantique",
+      "summary": "États de qubits, circuits variationnels et boucles d’apprentissage hybrides entre calcul quantique et classique.",
+      "topic": "Optimisation et énergie"
+    },
+    "rag-pipelines-practical-notes": {
+      "title": "Notes pratiques sur les pipelines RAG",
+      "summary": "Objectifs de recherche, indexation, découpage des documents, scores hybrides et orchestration d’un pipeline RAG.",
+      "topic": "Calcul et inférence"
+    },
+    "robotics-energy-systems": {
+      "title": "Robotique et systèmes énergétiques",
+      "summary": "Affecter les tâches et la recharge d’une flotte de robots en tenant compte des coûts, de la puissance et de la qualité de service.",
+      "topic": "Optimisation et énergie"
+    }
   }
 }

@@ -297,6 +297,7 @@ main pre, main .code-block { max-width: 100%; }
 .next-reading { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
 .next-reading h2 { font-size: 20px; letter-spacing: -.02em; }
 .next-reading a, .rss-callout a { color: var(--accent); }
+.project-body p a, .project-body li a, .project-body td a, .post-body a { color: var(--accent); text-underline-offset: .15em; }
 .next-reading li { margin: .6rem 0; }
 .rss-callout { font-size: 14px; margin-top: 1rem; }
 .post-meta { display: flex; flex-wrap: wrap; gap: .25rem .75rem; }

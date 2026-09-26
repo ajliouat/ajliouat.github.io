@@ -260,7 +260,7 @@
       color: var(--accent);
     }
 
-</style><link rel="stylesheet" href="/assets/site.css?v=8b744f503b"><script src="/nav.js?v=54d2593347"></script>
+</style><link rel="stylesheet" href="/assets/site.css?v=04260c1703"><script src="/nav.js?v=54d2593347"></script>
 </head><body><a class="skip-link" href="#main-content">Aller au contenu</a>
 <div id="site-nav-root"><header class="site-nav"><div class="nav-inner"><a href="/fr/" class="nav-brand">Abdeljalil Jliouat</a><nav class="nav-links" aria-label="Navigation principale"><a href="/fr/" class="nav-link">Accueil</a>
 <a href="/fr/about.html" class="nav-link">À propos</a>
@@ -270,15 +270,15 @@
 <main class="page" id="main-content" tabindex="-1">
     <section class="section-header">
       <div class="section-badge" data-i18n="projects.badge">Projets phares</div>
-      <h1 class="section-title" data-i18n="projects.title">Quatre projets, des modèles aux systèmes</h1>
-      <p class="section-subtitle" data-i18n="projects.subtitle">Des projets open source en inférence GPU, robotique, décodage EEG et optimisation énergétique. Chaque projet présente son architecture, ses expériences et son code.</p>
+      <h1 class="section-title" data-i18n="projects.title">Quatre projets, du code et des questions ouvertes</h1>
+      <p class="section-subtitle" data-i18n="projects.subtitle">Inférence GPU, robotique, EEG et optimisation énergétique : les implémentations, les preuves disponibles et les prochaines validations.</p>
     </section>
 
     <div class="card-grid">
       <article class="card">
         <div class="card-badge"><span class="card-badge-dot"></span> Calcul GPU × LLM</div>
         <h3 class="card-title">FlashKernel</h3>
-        <p class="card-body">Kernels CUDA et Triton pour l’inférence de transformeurs, avec profilage sur GPU NVIDIA T4.</p>
+        <p class="card-body" data-i18n="home.flash_body">Kernels CUDA et Triton pour l’attention, la fusion d’activations et le cache. Implémentation, limites de validité et protocole de vérification sur GPU.</p>
         <div class="card-tags">
           <span class="card-tag">CUDA C++</span>
           <span class="card-tag">Triton</span>
@@ -287,60 +287,60 @@
         </div>
         <div class="card-footer">
           <a href="/projects/flashkernel.html" class="card-link">Voir le projet en anglais →</a>
-          <span class="card-status"><span class="status-dot status-complete"></span> Terminé</span>
+          <span class="card-status" data-i18n="projects.status">Expérimental</span>
         </div>
       </article>
 
       <article class="card">
         <div class="card-badge"><span class="card-badge-dot"></span> LLM × Robotique × GPU</div>
         <h3 class="card-title">RoboLLM</h3>
-        <p class="card-body">Manipulation robotique guidée par le langage : un planificateur VLM et des politiques apprises dans MuJoCo.</p>
+        <p class="card-body" data-i18n="home.robo_body">Un environnement MuJoCo avec planification simulée, contrôleurs scriptés et expériences SAC. Ce qui est testé et ce qui reste à apprendre.</p>
         <div class="card-tags">
           <span class="card-tag">MuJoCo</span>
-          <span class="card-tag">PaliGemma-3B</span>
-          <span class="card-tag">SAC/PPO</span>
+          <span class="card-tag">Contrôle scripté</span>
+          <span class="card-tag">SAC</span>
           <span class="card-tag">PyTorch</span>
         </div>
         <div class="card-footer">
           <a href="/projects/robollm.html" class="card-link">Voir le projet en anglais →</a>
-          <span class="card-status"><span class="status-dot status-complete"></span> Terminé</span>
+          <span class="card-status" data-i18n="projects.status">Expérimental</span>
         </div>
       </article>
 
       <article class="card">
         <div class="card-badge"><span class="card-badge-dot"></span> BCI × LLM × GPU</div>
         <h3 class="card-title">NeuroLLM</h3>
-        <p class="card-body">Pré-entraînement de transformeurs pour le décodage EEG et l’adaptation aux interfaces cerveau–ordinateur.</p>
+        <p class="card-body" data-i18n="home.neuro_body">Un prototype de transformeur EEG pour la reconstruction masquée et l’imagerie motrice. Priorités actuelles : séparation des données et évaluation.</p>
         <div class="card-tags">
           <span class="card-tag">PyTorch</span>
-          <span class="card-tag">MNE-Python</span>
-          <span class="card-tag">CUDA</span>
+          <span class="card-tag">NumPy/SciPy</span>
+          <span class="card-tag">Transformers</span>
           <span class="card-tag">EEG</span>
         </div>
         <div class="card-footer">
           <a href="/projects/neurollm.html" class="card-link">Voir le projet en anglais →</a>
-          <span class="card-status"><span class="status-dot status-complete"></span> Terminé</span>
+          <span class="card-status" data-i18n="projects.status">Expérimental</span>
         </div>
       </article>
 
       <article class="card">
         <div class="card-badge"><span class="card-badge-dot"></span> IA quantique × Énergie</div>
         <h3 class="card-title">QuantumGrid</h3>
-        <p class="card-body">Optimisation hybride quantique-classique des réseaux électriques, comparée aux méthodes classiques.</p>
+        <p class="card-body" data-i18n="home.quantum_body">Des expériences de planification électrique sur données synthétiques, avec QUBO, QAOA, VQE et solveurs classiques. Formulation et comparaison équitable.</p>
         <div class="card-tags">
           <span class="card-tag">PennyLane</span>
           <span class="card-tag">QAOA/VQE</span>
           <span class="card-tag">OR-Tools</span>
-          <span class="card-tag">ENTSO-E</span>
+          <span class="card-tag">QUBO</span>
         </div>
         <div class="card-footer">
           <a href="/projects/quantumgrid.html" class="card-link">Voir le projet en anglais →</a>
-          <span class="card-status"><span class="status-dot status-complete"></span> Terminé</span>
+          <span class="card-status" data-i18n="projects.status">Expérimental</span>
         </div>
       </article>
     </div>
   </main>
 
-<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-left"><span class="site-footer-brand">Abdeljalil Jliouat</span><span>Conception de systèmes d&#39;IA en production à l&#39;intersection des LLM, de la robotique, du quantique et de l&#39;énergie.</span><span>Basé à Paris · Disponible en Europe et à distance</span></div><div class="site-footer-right"><a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a><a href="/feed.xml">S’abonner via RSS</a><a href="https://github.com/ajliouat">GitHub</a></div></div></footer>
+<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-left"><span class="site-footer-brand">Abdeljalil Jliouat</span><span>IA appliquée et ingénierie des systèmes. Code, expériences et notes techniques.</span><span>Basé à Paris · Disponible en Europe et à distance</span></div><div class="site-footer-right"><a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a><a href="/feed.xml">S’abonner via RSS</a><a href="https://github.com/ajliouat">GitHub</a></div></div></footer>
 
 </body></html>

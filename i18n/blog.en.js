@@ -6,6 +6,6 @@
   t['blog.badge'] = 'Blog'
   t['blog.title'] = 'Notes on building production AI systems'
   t['blog.subtitle'] =
-    'Short, practical write-ups on deep learning, LLM infrastructure, observability, robotics, energy systems, and quantum ideas.'
+    "Engineering notes on the systems I build, with experiments, trade-offs and links to the code. Technical articles are currently available in English."
 })()
 

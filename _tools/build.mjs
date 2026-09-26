@@ -95,15 +95,13 @@ function renderBody(p, lang) {
     body = body.replace('</p>\n    </section>', `</p><p class="rss-callout"><a href="/feed.xml">${lang === 'fr' ? 'Recevoir les nouveaux articles via RSS →' : 'Follow new articles via RSS →'}</a></p>\n    </section>`)
   }
   if (p.path === 'projects/index.html' && lang === 'fr') {
-    const summaries = { FlashKernel: 'Kernels CUDA et Triton pour l’inférence de transformeurs, avec profilage sur GPU NVIDIA T4.', RoboLLM: 'Manipulation robotique guidée par le langage : un planificateur VLM et des politiques apprises dans MuJoCo.', NeuroLLM: 'Pré-entraînement de transformeurs pour le décodage EEG et l’adaptation aux interfaces cerveau–ordinateur.', QuantumGrid: 'Optimisation hybride quantique-classique des réseaux électriques, comparée aux méthodes classiques.' }
-    body = body.replace(/<article\b[^>]*>[\s\S]*?<\/article>/g, card => {
-      const name = Object.keys(summaries).find(name => card.includes(`>${name}</h`))
-      if (!name) throw new Error('Project card could not be translated')
-      return card.replace(/(<p class="card-body">)[\s\S]*?(<\/p>)/, `$1${esc(summaries[name])}$2`)
-        .replace(/View details\s*→/g, 'Voir le projet en anglais →').replace(/\bComplete(?=<\/span>)/g, 'Terminé')
-        .replace('Hardware/GPU × LLM', 'Calcul GPU × LLM').replace('LLM × Robotics × GPU', 'LLM × Robotique × GPU').replace('Quantum AI × Energy', 'IA quantique × Énergie')
-    })
+    body = body.replace(/View details\s*→/g, 'Voir le projet en anglais →')
+      .replaceAll('Hardware/GPU × LLM', 'Calcul GPU × LLM')
+      .replaceAll('LLM × Robotics × GPU', 'LLM × Robotique × GPU')
+      .replaceAll('Quantum AI × Energy', 'IA quantique × Énergie')
+      .replaceAll('Scripted control', 'Contrôle scripté')
   }
+
   if (p.article) {
     body = body.replace(/(<div class="post-meta">)([\s\S]*?)(<\/div>)/, `$1$2 · ${p.minutes} min read$3`)
     body = body.replace('</main>', related(p) + '\n</main>')
@@ -137,7 +135,7 @@ for (const p of pages) {
 ${metadata(p, lang)}
 <style>${css}</style><link rel="stylesheet" href="/assets/site.css?v=${version('assets/site.css')}"><script src="/nav.js?v=${version('nav.js')}"></script>
 </head><body>${nav(p, lang)}\n${body}\n${footer(lang)}
-${body.includes('class="mermaid"') ? '<script src="/mermaid.js" defer></script>' : ''}
+${body.includes('class="mermaid"') ? `<script src="/mermaid.js?v=${version('mermaid.js')}" defer></script>` : ''}
 </body></html>\n`)
     urls.push(url(p.path, lang))
   }

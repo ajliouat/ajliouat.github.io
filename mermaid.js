@@ -1,5 +1,8 @@
 ;(function () {
   var MERMAID_CDN = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js'
+  var diagramSources = new WeakMap()
+  var renderQueue = Promise.resolve()
+  var latestRequest = 0
 
   function loadScript(src, onLoad) {
     var script = document.createElement('script')
@@ -67,11 +70,26 @@
     if (!window.mermaid) return
     var currentTheme = theme || getCurrentTheme()
     var config = getConfig(currentTheme)
+    var request = ++latestRequest
 
-    window.mermaid.initialize(config)
-    if (typeof window.mermaid.run === 'function') {
-      window.mermaid.run({ querySelector: '.mermaid' })
-    }
+    // Mermaid marks rendered nodes as processed. Restore their source before
+    // changing themes, and serialize renders so rapid toggles cannot race.
+    renderQueue = renderQueue.then(function () {
+      if (request !== latestRequest) return
+      document.querySelectorAll('.mermaid').forEach(function (diagram) {
+        if (!diagramSources.has(diagram)) {
+          diagramSources.set(diagram, diagram.textContent)
+        }
+        diagram.textContent = diagramSources.get(diagram)
+        diagram.removeAttribute('data-processed')
+      })
+      window.mermaid.initialize(config)
+      if (typeof window.mermaid.run === 'function') {
+        return window.mermaid.run({ querySelector: '.mermaid' })
+      }
+    }).catch(function (error) {
+      console.error('Could not render diagram:', error)
+    })
   }
 
   function observeTheme() {

@@ -11,7 +11,7 @@
 
   t['footer.brand'] = 'Abdeljalil Jliouat'
   t['footer.tagline'] =
-    "Conception de systèmes d'IA en production à l'intersection des LLM, de la robotique, du quantique et de l'énergie."
+    "IA appliquée et ingénierie des systèmes. Code, expériences et notes techniques."
   t['footer.location'] = 'Basé à Paris · Disponible en Europe et à distance'
   t['footer.email'] = 'contact@ajliouat.com'
 })()

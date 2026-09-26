@@ -158,122 +158,62 @@
 </style>
 <main class="page">
     <header class="header">
-      <div class="badge"><span class="badge-dot"></span> BCI × LLM × GPU</div>
+      <div class="badge"><span class="badge-dot"></span> EEG × Representation learning</div>
       <h1 class="title">NeuroLLM</h1>
-      <p class="subtitle">
-        A foundation model approach to EEG decoding: pre-train a small transformer on large-scale clinical
-        EEG data, then fine-tune for motor imagery classification with a custom frequency-band attention kernel.
-      </p>
-      <div class="meta">PyTorch · MNE-Python · CUDA · EEG</div>
+      <p class="subtitle">An experimental EEG transformer pipeline for masked reconstruction and motor-imagery classification. The present work concerns data boundaries, model components and evaluation design; real-data gains are not yet established.</p>
+      <div class="meta">PyTorch · NumPy/SciPy · EEG · Transformers</div>
     </header>
-
     <section class="layout">
-      <aside class="toc">
-        <div class="toc-title">On this page</div>
-        <ul class="toc-list">
-          <li class="toc-item"><a class="toc-link" href="#overview">Overview</a></li>
-          <li class="toc-item"><a class="toc-link" href="#datasets">Datasets</a></li>
-          <li class="toc-item"><a class="toc-link" href="#approach">Technical approach</a></li>
-          <li class="toc-item"><a class="toc-link" href="#benchmarks">Benchmarks</a></li>
-          <li class="toc-item"><a class="toc-link" href="#architecture">Architecture diagram</a></li>
-        </ul>
-      </aside>
-
+      <aside class="toc"><div class="toc-title">On this page</div><ul class="toc-list"><li class="toc-item"><a class="toc-link" href="#overview">Problem and scope</a></li>
+<li class="toc-item"><a class="toc-link" href="#datasets">Data and evaluation boundaries</a></li>
+<li class="toc-item"><a class="toc-link" href="#approach">Implemented model and separate experiments</a></li>
+<li class="toc-item"><a class="toc-link" href="#benchmarks">What can be concluded</a></li>
+<li class="toc-item"><a class="toc-link" href="#architecture">Implemented model path</a></li>
+<li class="toc-item"><a class="toc-link" href="#validation">Validation update</a></li>
+<li class="toc-item"><a class="toc-link" href="#reproduce">Inspect the protocol</a></li></ul></aside>
       <article class="project-body">
-        <div class="project-intro" id="overview">
-          Brain-computer interfaces traditionally rely on hand-crafted features (CSP, band-power) fed into
-          classical classifiers. Foundation models for neural signals — pre-trained transformers that learn
-          general EEG representations — are an active research frontier (LaBraM, BrainBERT, NeurIPS 2023-2024).
-          NeuroLLM demonstrates that even a small model (~10M params) pre-trained on TUH EEG data can improve
-          over standard BCI baselines, with a custom CUDA kernel for EEG-specific frequency-band attention.
-        </div>
-
-        <div class="tech-stack">
-          <span class="tech-pill">PyTorch</span>
-          <span class="tech-pill">MNE-Python</span>
-          <span class="tech-pill">CUDA C++</span>
-          <span class="tech-pill">Triton</span>
-          <span class="tech-pill">EEG / BCI</span>
-          <span class="tech-pill">Transformers</span>
-        </div>
-
-        <section class="section" id="datasets">
-          <h2 class="section-title">Datasets</h2>
-          <table class="benchmark-table">
-            <thead><tr><th>Dataset</th><th>Use</th><th>Size</th><th>Details</th></tr></thead>
-            <tbody>
-              <tr>
-                <td>TUH EEG Corpus</td>
-                <td>Pre-training</td>
-                <td>~25K sessions</td>
-                <td>Clinical EEG, self-supervised masked channel modeling</td>
-              </tr>
-              <tr>
-                <td>BCI Competition IV 2a</td>
-                <td>Fine-tuning + eval</td>
-                <td>9 subjects × 576 trials</td>
-                <td>4-class motor imagery (left/right hand, feet, tongue)</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section class="section" id="approach">
-          <h2 class="section-title">Technical approach</h2>
-          <ul>
-            <li><strong>Patch embedding:</strong> EEG channels split into 200ms temporal windows → tokens. Learnable channel + temporal position encodings capture electrode topology.</li>
-            <li><strong>Pre-training:</strong> Masked Channel Modeling — randomly mask 30% of channel-time patches, reconstruct from context. Self-supervised, no labels needed.</li>
-            <li><strong>Frequency-band attention:</strong> Custom attention mechanism that decomposes patches into frequency bands (delta, theta, alpha, beta, gamma) and applies band-specific attention biases. Implemented as a fused CUDA kernel.</li>
-            <li><strong>Fine-tuning:</strong> [CLS] token → MLP → 4-class softmax. Session 1 train, Session 2 test (standard BCI protocol).</li>
-            <li><strong>Baselines:</strong> CSP+SVM (hand-crafted features), EEGNet (compact CNN), vanilla transformer (same arch, no pre-training).</li>
-          </ul>
-        </section>
-
-        <section class="section" id="benchmarks">
-          <h2 class="section-title">Benchmarks</h2>
-          <p>Per-subject accuracy across 9 subjects. Session 1 → train, Session 2 → test.</p>
-          <table class="benchmark-table">
-            <thead><tr><th>Method</th><th>Avg Accuracy</th><th>Cohen's Kappa</th><th>Parameters</th></tr></thead>
-            <tbody>
-              <tr><td>CSP + SVM</td><td>~65-70% (lit.)</td><td>—</td><td>N/A</td></tr>
-              <tr><td>EEGNet</td><td>~70-75% (lit.)</td><td>—</td><td>2.6K</td></tr>
-              <tr><td>Vanilla Transformer</td><td>—</td><td>—</td><td>~10M</td></tr>
-              <tr><td><strong>NeuroLLM (ours)</strong></td><td><strong>—</strong></td><td><strong>—</strong></td><td><strong>~10M</strong></td></tr>
-            </tbody>
-          </table>
-          <p style="font-size: 12px; color: #9ca3af; font-style: italic;">
-            Results will be populated from real training runs. Attention heatmaps over electrode positions committed to repository.
-          </p>
-        </section>
-
-        <section class="section" id="architecture">
-          <h2 class="section-title">Architecture diagram</h2>
-          <div class="mermaid-block">
-            <div class="mermaid">flowchart TB
-  EEG["EEG Signal<br/><i>22 channels × 1000 samples</i>"] --> Patch["Patch Embedding<br/><i>Channel × time → tokens</i>"]
-  Patch --> Pos["Position + Channel Encoding<br/><i>Electrode topology</i>"]
-  Pos --> Pretrain{"Pre-trained?"}
-  Pretrain -->|Yes| Encoder["Transformer Encoder<br/><i>6 layers, freq-band attention</i><br/><i>Custom CUDA kernel</i>"]
-  Pretrain -->|No| Encoder
-  Encoder --> CLS["[CLS] Token"]
-  CLS --> Head["Classification Head<br/><i>MLP → 4 classes</i>"]
-  Head --> Output["Motor Imagery Class<br/><i>Left/Right/Feet/Tongue</i>"]
-
-  style Encoder fill:#eff6ff,stroke:#2563eb,color:#0f172a
-  style Head fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
-          </div>
-        </section>
-
-        <div style="margin-top: 18px; font-size: 13px;">
-          <a href="/blog/neural-signal-decoding-transformer-pretraining.html"
-             style="color: var(--accent); text-decoration: none; font-weight: 500;">
-            Read the full technical write-up →
-          </a>
-        </div>
-
+        <div class="tech-stack"><span class="tech-pill">PyTorch</span><span class="tech-pill">NumPy/SciPy</span><span class="tech-pill">EEG</span><span class="tech-pill">Transformers</span></div>
+        <section class="section" id="overview"><h2 class="section-title">Problem and scope</h2>
+<p>Can reconstruction of unlabeled EEG provide a useful starting point for supervised motor-imagery decoding? NeuroLLM implements patch embeddings, masked pre-training and a classification head to investigate that question. Its current artifacts do not establish improved decoding accuracy over classical or neural baselines.</p>
+</section>
+<section class="section" id="datasets"><h2 class="section-title">Data and evaluation boundaries</h2>
+<table class="benchmark-table"><thead><tr><th>Input</th><th>Intended role</th><th>Evidence status</th></tr></thead><tbody>
+<tr><td>TUH EEG</td><td>Unlabeled pre-training</td><td>No verified real-data pre-training result presented</td></tr>
+<tr><td>BCI Competition IV 2a</td><td>Separate training and evaluation sessions</td><td>Real-data access and a clean held-out protocol required</td></tr>
+<tr><td>Synthetic arrays</td><td>Exercise loaders, shapes and training code</td><td>Software smoke tests, not EEG decoding evidence</td></tr>
+</tbody></table><p>Synthetic data must be explicitly requested and distinguishable from real recordings. Missing files must fail visibly. Training and evaluation sessions must map to different input files, and model selection must use validation data rather than the held-out test labels.</p>
+</section>
+<section class="section" id="approach"><h2 class="section-title">Implemented model and separate experiments</h2>
+<ul>
+<li><strong>Representation:</strong> channel/time patches with learned channel and temporal encodings.</li>
+<li><strong>Pre-training objective:</strong> masked reconstruction from the surrounding signal; its downstream benefit requires an ablation against the same model without pre-training.</li>
+<li><strong>Encoder:</strong> the reviewed default uses PyTorch TransformerEncoder, not the separate frequency-band attention kernel.</li>
+<li><strong>Model size:</strong> the default 22-channel classifier contains 3,265,284 parameters; alternative configurations need their own count.</li>
+<li><strong>Experimental kernel:</strong> frequency-band attention has separate source. Its integration, numerical behavior and speedup require independent validation.</li>
+</ul><p><a href="https://github.com/ajliouat/neurollm/blob/c48c956e552cf40e9460762dd6836df7ed72570a/model/transformer.py">Model source</a> · <a href="https://github.com/ajliouat/neurollm/blob/c48c956e552cf40e9460762dd6836df7ed72570a/data/dataset.py">Dataset loaders</a> · <a href="https://github.com/ajliouat/neurollm/tree/c48c956e552cf40e9460762dd6836df7ed72570a/kernels">Attention experiments</a></p>
+</section>
+<section class="section" id="benchmarks"><h2 class="section-title">What can be concluded</h2>
+<p>No real-EEG performance result is established here. Approximate literature scores and synthetic smoke-test outputs are not comparable benchmarks for this implementation. The reviewed training script also selects a checkpoint using the evaluation loader, so its reported test score is not an untouched held-out estimate.</p><p>A defensible comparison requires disjoint sessions, train-only preprocessing and checkpoint selection, identical evaluation subjects, documented seeds, per-subject results and a frozen test protocol. Compare CSP+SVM, EEGNet and the transformer with and without pre-training under that same protocol.</p>
+</section>
+<section class="section" id="architecture"><h2 class="section-title">Implemented model path</h2>
+<div class="mermaid-block"><div class="mermaid">flowchart TB
+  EEG["EEG channel × time array"] --&gt; Patch["Patch + channel/time embeddings"]
+  Patch --&gt; Encoder["PyTorch TransformerEncoder"]
+  Encoder --&gt; Reconstruction["Masked reconstruction head"]
+  Encoder --&gt; Classification["CLS token + classification head"]
+  Separate["Frequency-band kernel: separate experiment"]</div></div>
+</section>
+<section class="section" id="validation"><h2 class="section-title">Validation update · 26 September 2026</h2>
+<p><strong>Explicit data boundaries.</strong> The loader repair maps train/test to distinct T/E files, rejects missing real data and requires an explicit synthetic mode with distinct deterministic partitions. On Python 3.11.14 and PyTorch 2.8.0, 54 focused data/preprocessing tests passed without training. Test-based checkpoint selection remains unresolved.</p>
+<p><a href="https://github.com/ajliouat/neurollm/blob/007d46beb23b0d5d511608dbd0a3804136d6cfb1/tests/test_data_integrity.py">Inspect the tested revision and validation details</a>. This repair is available on a review branch; the repository’s main branch has not yet been updated.</p>
+</section>
+<section class="section" id="reproduce"><h2 class="section-title">Inspect the protocol</h2>
+<p><a href="https://github.com/ajliouat/neurollm/blob/c48c956e552cf40e9460762dd6836df7ed72570a/training/finetune.py">Fine-tuning and checkpoint selection</a> · <a href="https://github.com/ajliouat/neurollm/tree/c48c956e552cf40e9460762dd6836df7ed72570a/evaluation">Evaluation code</a> · <a href="https://github.com/ajliouat/neurollm/tree/c48c956e552cf40e9460762dd6836df7ed72570a/tests">Tests</a>. Loader regression tests can establish separation and explicit input handling; they do not establish transfer learning performance.</p>
+</section>
+        <p><a href="/blog/neural-signal-decoding-transformer-pretraining.html">Read the technical note →</a></p>
         <div class="footer-actions">
           <a href="/projects/" class="back-link"><span>←</span><span>Back to projects</span></a>
-          <a href="https://github.com/ajliouat/neurollm" target="_blank" class="github-link"><span>★</span><span>View on GitHub</span></a>
+          <a href="https://github.com/ajliouat/neurollm" class="github-link"><span>View on GitHub</span></a>
         </div>
       </article>
     </section>

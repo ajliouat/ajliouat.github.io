@@ -4,8 +4,8 @@
   var t = window.I18N.fr
 
   t['projects.badge'] = 'Projets phares'
-  t['projects.title'] = 'Quatre systèmes profonds à la croisée de six domaines'
+  t['projects.title'] = "Quatre projets, du code et des questions ouvertes"
   t['projects.subtitle'] =
-    "Chaque projet couvre 2 à 3 domaines — LLM, robotique, IA quantique, systèmes énergétiques, interfaces cerveau–ordinateur et calcul GPU — avec de vrais benchmarks, profils de performance et code reproductible."
+    "Inférence GPU, robotique, EEG et optimisation énergétique : les implémentations, les preuves disponibles et les prochaines validations."
 })()
 

@@ -339,12 +339,9 @@
         <img src="/assets/avatar-160.webp" srcset="/assets/avatar-160.webp 160w, /assets/avatar-320.webp 320w" sizes="96px" width="96" height="96" alt="Abdeljalil Jliouat" decoding="async">
         <p>Abdeljalil Jliouat <span>Applied AI Scientist · Paris</span></p>
       </div>
-      <div class="section-badge" data-i18n="home.hero_badge">AI systems engineering</div>
-      <h1 class="section-title" data-i18n="home.hero_title">Deep systems across LLM, robotics, quantum AI, and GPU compute</h1>
-      <p class="section-subtitle" data-i18n="home.hero_subtitle">
-        Building reproducible, benchmarked projects at the intersection of large language models, robotic manipulation,
-        brain–computer interfaces, quantum optimization, and energy systems.
-      </p>
+      <div class="section-badge" data-i18n="home.hero_badge">Applied AI &amp; systems engineering</div>
+      <h1 class="section-title" data-i18n="home.hero_title">AI systems, from research to production.</h1>
+      <p class="section-subtitle" data-i18n="home.hero_subtitle">I build efficient, reliable AI systems — from GPU kernels to robotic learning. Here I share the code, experiments and engineering decisions behind my work.</p>
       <div class="hero-actions">
         <a class="button-primary" href="/projects/" data-i18n="home.explore">Explore my projects</a>
         <a class="button-secondary" href="/contact.html" data-i18n="home.discuss">Discuss a project</a>
@@ -357,28 +354,25 @@
 
     <section class="section-block">
       <div class="section-heading">
-        <h2 data-i18n="home.focus_title">Focus areas</h2>
-        <p data-i18n="home.focus_subtitle">Building at the intersection of six domains.</p>
+        <h2 data-i18n="home.focus_title">What I work on</h2>
+        <p data-i18n="home.focus_subtitle">Three connected areas of applied research and engineering.</p>
       </div>
       <div class="focus-grid">
-        <div><h3 data-i18n="home.focus_compute">Compute & inference</h3><p data-i18n="home.focus_compute_body">Efficient models, CUDA kernels and the systems that run them.</p></div>
-        <div><h3 data-i18n="home.focus_embodied">Robotics & neural signals</h3><p data-i18n="home.focus_embodied_body">Learning from language, interaction and brain signals.</p></div>
-        <div><h3 data-i18n="home.focus_energy">Optimization & energy</h3><p data-i18n="home.focus_energy_body">Classical and quantum methods, tested against practical constraints.</p></div>
+        <div><h3 data-i18n="home.focus_compute">Compute &amp; inference</h3><p data-i18n="home.focus_compute_body">Efficient models, CUDA kernels and the systems that run them.</p></div>
+        <div><h3 data-i18n="home.focus_embodied">Robotics &amp; neural signals</h3><p data-i18n="home.focus_embodied_body">Learning from language, interaction and brain signals.</p></div>
+        <div><h3 data-i18n="home.focus_energy">Optimization &amp; energy</h3><p data-i18n="home.focus_energy_body">Classical and quantum methods, tested against practical constraints.</p></div>
       </div>
     </section>
 
     <section class="section-block">
       <div class="section-heading">
-        <h2 data-i18n="home.projects_title">Flagship projects</h2>
-        <p data-i18n="home.projects_subtitle">Deep, reproducible systems at the intersection of LLM, robotics, quantum AI, BCI, and GPU compute.</p>
+        <h2 data-i18n="home.projects_title">Selected projects</h2>
+        <p data-i18n="home.projects_subtitle">Explore the architecture, experiments and source code behind four systems.</p>
       </div>
       <div class="card-grid">
         <article class="card">
           <h3 class="card-title" data-i18n="home.flash_title">FlashKernel</h3>
-          <p class="card-body" data-i18n="home.flash_body">
-            Custom CUDA C++ and Triton kernels for transformer inference — tiled FlashAttention,
-            fused GeLU, RoPE, paged KV-cache — benchmarked with Nsight Compute on T4.
-          </p>
+          <p class="card-body" data-i18n="home.flash_body">CUDA and Triton kernels for attention, activation fusion and cache operations. Explore the implementation, correctness boundaries and GPU validation requirements.</p>
           <div class="card-tags">
             <span class="card-tag" data-i18n="home.flash_tag_cuda">CUDA C++</span>
             <span class="card-tag" data-i18n="home.flash_tag_triton">Triton</span>
@@ -389,13 +383,10 @@
 
         <article class="card">
           <h3 class="card-title" data-i18n="home.robo_title">RoboLLM</h3>
-          <p class="card-body" data-i18n="home.robo_body">
-            Language-grounded robotic manipulation — VLM planner decomposes instructions into sub-tasks,
-            RL policies execute each step in MuJoCo simulation.
-          </p>
+          <p class="card-body" data-i18n="home.robo_body">A MuJoCo manipulation testbed with mock planning, scripted baselines and SAC experiments. Explore what is tested and what remains to be learned.</p>
           <div class="card-tags">
             <span class="card-tag" data-i18n="home.robo_tag_mujoco">MuJoCo</span>
-            <span class="card-tag" data-i18n="home.robo_tag_paligemma">PaliGemma-3B</span>
+            <span class="card-tag" data-i18n="home.robo_tag_paligemma">Scripted baselines</span>
             <span class="card-tag" data-i18n="home.robo_tag_sac">SAC</span>
           </div>
           <a href="/projects/robollm.html" class="card-link" data-i18n="home.card_link">View details →</a>
@@ -403,13 +394,10 @@
 
         <article class="card">
           <h3 class="card-title" data-i18n="home.neuro_title">NeuroLLM</h3>
-          <p class="card-body" data-i18n="home.neuro_body">
-            Foundation model for neural signal decoding — pre-train a transformer on large-scale EEG,
-            fine-tune for motor imagery BCI with frequency-band attention.
-          </p>
+          <p class="card-body" data-i18n="home.neuro_body">An EEG transformer prototype for masked reconstruction and motor-imagery classification, with data separation and evaluation as the current priorities.</p>
           <div class="card-tags">
             <span class="card-tag" data-i18n="home.neuro_tag_pytorch">PyTorch</span>
-            <span class="card-tag" data-i18n="home.neuro_tag_mne">MNE-Python</span>
+            <span class="card-tag" data-i18n="home.neuro_tag_mne">NumPy/SciPy</span>
             <span class="card-tag" data-i18n="home.neuro_tag_eeg">EEG</span>
           </div>
           <a href="/projects/neurollm.html" class="card-link" data-i18n="home.card_link">View details →</a>
@@ -417,10 +405,7 @@
 
         <article class="card">
           <h3 class="card-title" data-i18n="home.quantum_title">QuantumGrid</h3>
-          <p class="card-body" data-i18n="home.quantum_body">
-            Quantum-classical hybrid optimization for energy grids — QAOA and VQE applied to unit commitment
-            on real ENTSO-E data, benchmarked against MILP solvers.
-          </p>
+          <p class="card-body" data-i18n="home.quantum_body">Synthetic unit-commitment experiments using QUBO, QAOA, VQE and classical solvers. Explore the formulation and requirements for a fair comparison.</p>
           <div class="card-tags">
             <span class="card-tag" data-i18n="home.quantum_tag_pennylane">PennyLane</span>
             <span class="card-tag" data-i18n="home.quantum_tag_qaoa">QAOA/VQE</span>

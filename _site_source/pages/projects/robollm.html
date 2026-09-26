@@ -158,125 +158,73 @@
 </style>
 <main class="page">
     <header class="header">
-      <div class="badge"><span class="badge-dot"></span> LLM × Robotics × GPU</div>
+      <div class="badge"><span class="badge-dot"></span> Language × Robotics</div>
       <h1 class="title">RoboLLM</h1>
-      <p class="subtitle">
-        A hierarchical system for language-driven robotic manipulation: a vision-language model decomposes
-        natural language instructions into sub-tasks, and RL-trained policies execute each step in MuJoCo simulation.
-      </p>
-      <div class="meta">MuJoCo · PaliGemma-3B · SAC · PyTorch</div>
+      <p class="subtitle">A MuJoCo testbed for decomposing instructions, grounding objects and executing manipulation primitives. The current evidence covers scripted baselines and a mock planning pipeline, with learned control still under evaluation.</p>
+      <div class="meta">MuJoCo · PyTorch · SAC · Simulation</div>
     </header>
-
     <section class="layout">
-      <aside class="toc">
-        <div class="toc-title">On this page</div>
-        <ul class="toc-list">
-          <li class="toc-item"><a class="toc-link" href="#overview">Overview</a></li>
-          <li class="toc-item"><a class="toc-link" href="#tasks">Task complexity levels</a></li>
-          <li class="toc-item"><a class="toc-link" href="#approach">Technical approach</a></li>
-          <li class="toc-item"><a class="toc-link" href="#benchmarks">Benchmarks</a></li>
-          <li class="toc-item"><a class="toc-link" href="#architecture">System diagram</a></li>
-        </ul>
-      </aside>
-
+      <aside class="toc"><div class="toc-title">On this page</div><ul class="toc-list"><li class="toc-item"><a class="toc-link" href="#overview">Problem and scope</a></li>
+<li class="toc-item"><a class="toc-link" href="#tasks">Task progression</a></li>
+<li class="toc-item"><a class="toc-link" href="#approach">Implemented and experimental components</a></li>
+<li class="toc-item"><a class="toc-link" href="#benchmarks">Historical baseline evidence</a></li>
+<li class="toc-item"><a class="toc-link" href="#architecture">Current test pipeline</a></li>
+<li class="toc-item"><a class="toc-link" href="#validation">Validation update</a></li>
+<li class="toc-item"><a class="toc-link" href="#reproduce">Validation and next experiment</a></li></ul></aside>
       <article class="project-body">
-        <div class="project-intro" id="overview">
-          Current robotic systems use either brittle hand-coded planners or data-hungry end-to-end policies.
-          RoboLLM combines the strengths of both: a small VLM (PaliGemma-3B, 4-bit quantized) handles high-level
-          task understanding and decomposition, while SAC-trained motor policies execute precise low-level control.
-          This follows the SayCan / RT-2 / Code-as-Policies research direction, scoped to be reproducible on a single T4 GPU.
-        </div>
-
-        <div class="tech-stack">
-          <span class="tech-pill">MuJoCo</span>
-          <span class="tech-pill">PaliGemma-3B (4-bit)</span>
-          <span class="tech-pill">DINOv2</span>
-          <span class="tech-pill">SAC</span>
-          <span class="tech-pill">PPO</span>
-          <span class="tech-pill">PyTorch</span>
-        </div>
-
-        <section class="section" id="tasks">
-          <h2 class="section-title">Task complexity levels</h2>
-          <table class="benchmark-table">
-            <thead><tr><th>Level</th><th>Task</th><th>Objects</th><th>Success metric</th></tr></thead>
-            <tbody>
-              <tr><td>L1</td><td>Pick and place</td><td>1</td><td>Object at target ± 2 cm</td></tr>
-              <tr><td>L2</td><td>Color-conditioned pick</td><td>3</td><td>Correct object at target</td></tr>
-              <tr><td>L3</td><td>Block stacking</td><td>2–3</td><td>Stable stack, correct order</td></tr>
-              <tr><td>L4</td><td>Color sorting into bins</td><td>4–6</td><td>All in correct bins</td></tr>
-              <tr><td>L5</td><td>Complex language instruction</td><td>3+</td><td>All sub-tasks completed</td></tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section class="section" id="approach">
-          <h2 class="section-title">Technical approach</h2>
-          <ul>
-            <li><strong>Environment:</strong> 7-DoF Franka Panda arm on 60×60 cm tabletop in MuJoCo. 20 Hz control, randomized object spawning.</li>
-            <li><strong>VLM planner:</strong> Overhead camera image + instruction → JSON sub-task sequence. Prompt-engineered for primitive actions (pick, place, move_to, place_on).</li>
-            <li><strong>Object grounding:</strong> DINOv2-small features + nearest-neighbor matching to map descriptions to object poses.</li>
-            <li><strong>RL policies:</strong> SAC with automatic entropy tuning. One policy per primitive. 500K env steps per policy (~4 hrs on T4).</li>
-            <li><strong>Baselines:</strong> Scripted planner + PD controller (upper bound on planning), random policy (sanity check), end-to-end RL (no hierarchy).</li>
-          </ul>
-        </section>
-
-        <section class="section" id="benchmarks">
-          <h2 class="section-title">Benchmarks</h2>
-          <p>100 eval episodes per task, randomized initial placement. Max 200 steps per episode. 95% Wilson CI.</p>
-          <table class="benchmark-table">
-            <thead><tr><th>Task</th><th>Random</th><th>Scripted</th><th>Mean Return (Scripted)</th></tr></thead>
-            <tbody>
-              <tr><td>L1 — Pick &amp; Place</td><td>0.0% ± 1.8%</td><td>0.0% ± 1.8%</td><td>-53.2 (2.6× random)</td></tr>
-              <tr><td>L2 — Color Pick</td><td>0.0% ± 1.8%</td><td>—</td><td>—</td></tr>
-              <tr><td>L3 — Stack</td><td>0.0% ± 1.8%</td><td>—</td><td>—</td></tr>
-              <tr><td>L4 — Sort</td><td>0.0% ± 1.8%</td><td>—</td><td>—</td></tr>
-              <tr><td>L5 — Language</td><td>4.0% ± 4.1%</td><td>—</td><td>—</td></tr>
-              <tr><td>Move To</td><td>0.0% ± 1.8%</td><td>20.0% ± 7.8%</td><td>-260.3 (2.8× random)</td></tr>
-            </tbody>
-          </table>
-          <table class="benchmark-table" style="margin-top: 14px;">
-            <thead><tr><th>Pipeline Component</th><th>Accuracy</th><th>Coverage</th></tr></thead>
-            <tbody>
-              <tr><td>VLM decomposition (MockVLM)</td><td>100% (20+ scenarios)</td><td>6 primitive types</td></tr>
-              <tr><td>Object grounding (SimGrounder)</td><td>100% (20+ queries)</td><td>15+ color aliases, 9 shape aliases</td></tr>
-              <tr><td>Hierarchical executor</td><td>End-to-end tested</td><td>L1–L5 tasks</td></tr>
-            </tbody>
-          </table>
-          <p style="font-size: 12px; color: #9ca3af; font-style: italic;">
-            Scripted MoveTo achieves 20% SR with P-controller. Multi-phase tasks (L1-L5) require
-            trained RL policies or curriculum learning for higher success rates.
-            288 tests pass across the full codebase.
-          </p>
-        </section>
-
-        <section class="section" id="architecture">
-          <h2 class="section-title">System diagram</h2>
-          <div class="mermaid-block">
-            <div class="mermaid">flowchart TB
-  User["User instruction<br/><i>'Stack red on blue'</i>"] --> VLM["VLM Planner<br/><i>PaliGemma-3B (4-bit)</i>"]
-  Camera["Overhead camera<br/><i>128×128 RGB</i>"] --> VLM
-  VLM --> Tasks["Sub-task sequence<br/><i>[pick(red), place_on(blue)]</i>"]
-  Tasks --> Policy["RL Policy Head<br/><i>SAC-trained per primitive</i>"]
-  Policy --> Env["MuJoCo Simulation<br/><i>7-DoF Franka Panda</i>"]
-  Env --> Camera
-
-  style VLM fill:#eff6ff,stroke:#2563eb,color:#0f172a
-  style Policy fill:#eff6ff,stroke:#2563eb,color:#0f172a
-  style Env fill:#eff6ff,stroke:#2563eb,color:#0f172a</div>
-          </div>
-        </section>
-
-        <div style="margin-top: 18px; font-size: 13px;">
-          <a href="/blog/hierarchical-vlm-rl-manipulation.html"
-             style="color: var(--accent); text-decoration: none; font-weight: 500;">
-            Read the full technical write-up →
-          </a>
-        </div>
-
+        <div class="tech-stack"><span class="tech-pill">MuJoCo</span><span class="tech-pill">PyTorch</span><span class="tech-pill">SAC</span><span class="tech-pill">Simulation</span></div>
+        <section class="section" id="overview"><h2 class="section-title">Problem and scope</h2>
+<p>A successful plan is only useful if the robot can execute it. RoboLLM separates instruction parsing, object grounding and motor control so each component can be inspected independently. Its existing mock backend makes integration tests inexpensive; it does not measure a vision-language model’s understanding of a camera image.</p>
+</section>
+<section class="section" id="tasks"><h2 class="section-title">Task progression</h2>
+<table class="benchmark-table"><thead><tr><th>Task</th><th>What it exercises</th></tr></thead><tbody>
+<tr><td>Pick and place</td><td>Grasping, transport and release</td></tr>
+<tr><td>Color-conditioned pick</td><td>Object selection before manipulation</td></tr>
+<tr><td>Stacking</td><td>Placement and sequential precision</td></tr>
+<tr><td>Sorting</td><td>Repeated object-to-zone assignment</td></tr>
+<tr><td>Language instructions</td><td>Composition of task conditions</td></tr>
+<tr><td>Move to</td><td>Reaching as a simpler control baseline</td></tr>
+</tbody></table>
+</section>
+<section class="section" id="approach"><h2 class="section-title">Implemented and experimental components</h2>
+<ul>
+<li><strong>Environment:</strong> a Franka-inspired seven-joint arm in MuJoCo with a tabletop, randomized objects and bounded episodes.</li>
+<li><strong>Tested planning path:</strong> MockVLM performs keyword matching; SimGrounder reads privileged simulator state. Passing these tests is not visual grounding accuracy.</li>
+<li><strong>Motor control:</strong> scripted controllers support pipeline tests. SAC training and checkpoint evaluation are separate components; successful learned manipulation is not established by the baseline archive.</li>
+<li><strong>Extension points:</strong> a Transformers VLM adapter exists. DINOv2-based visual grounding remains a proposed extension in the reviewed source.</li>
+</ul><p><a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/planner">Planner and grounding source</a> · <a href="https://github.com/ajliouat/robollm/blob/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/evaluation/pipeline.py">Hierarchical executor</a> · <a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/policies">Policy implementations</a></p>
+</section>
+<section class="section" id="benchmarks"><h2 class="section-title">Historical baseline evidence</h2>
+<p>The <a href="https://github.com/ajliouat/robollm/blob/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/evaluation/results/benchmark_results.json">archived evaluation dated 22 February 2026</a> records 100 episodes per task/policy pair, with a 200-step limit. The intervals below are Wilson 95% intervals recalculated from the recorded counts (z = 1.96), not new simulation results.</p><table class="benchmark-table"><thead><tr><th>Task</th><th>Policy</th><th>Successes</th><th>95% interval</th><th>Mean return</th></tr></thead><tbody>
+<tr><td>Pick &amp; place</td><td>Random</td><td>0 / 100</td><td>0–3.70%</td><td>−142.37</td></tr>
+<tr><td>Pick &amp; place</td><td>Scripted</td><td>0 / 100</td><td>0–3.70%</td><td>−53.17</td></tr>
+<tr><td>Move to</td><td>Random</td><td>0 / 100</td><td>0–3.70%</td><td>−715.76</td></tr>
+<tr><td>Move to</td><td>Scripted</td><td>20 / 100</td><td>13.34–28.88%</td><td>−260.33</td></tr>
+<tr><td>Language task</td><td>Random</td><td>4 / 100</td><td>1.57–9.84%</td><td>−955.20</td></tr>
+</tbody></table><p>Language-task success checks final scene predicates, which can already hold at reset; 4/100 does not demonstrate language understanding. The other archived random baselines—color pick, stacking and sorting—each report 0/100 successes. A dash or an absent run is not a zero result. Less-negative shaped return does not imply a multiplicative improvement or successful manipulation.</p><p>The original archive does not contain per-episode traces or complete environment/version provenance, and the evaluator did not seed the random action space. These records establish what was reported, not an exactly reproducible run or a learned-policy benchmark.</p>
+</section>
+<section class="section" id="architecture"><h2 class="section-title">Current test pipeline</h2>
+<div class="mermaid-block"><div class="mermaid">flowchart TB
+  Instruction["Instruction"] --&gt; Mock["MockVLM keyword planner"]
+  Mock --&gt; Parser["Validated task sequence"]
+  Scene["Privileged simulator state"] --&gt; Ground["SimGrounder"]
+  Parser --&gt; Ground
+  Ground --&gt; Exec["Hierarchical executor + scripted policies"]
+  Exec --&gt; Env["MuJoCo tabletop"]
+  Env --&gt; Scene
+  Future["Real VLM, visual grounding and learned control: separate validation"]</div></div>
+</section>
+<section class="section" id="validation"><h2 class="section-title">Validation update · 26 September 2026</h2>
+<p><strong>Reproducible evaluation export.</strong> The evaluator repair seeds both environment and actions, records per-episode outcomes and provenance, exports Wilson endpoints, and validates reports before replacing saved files. Focused checks include repeatable seeded MuJoCo rollouts and artifact-preservation regressions. A 24-episode CLI smoke checks the export path; it is not a performance reproduction.</p>
+<p><a href="https://github.com/ajliouat/robollm/blob/0c4738f19f9eca802b1246ac82df4b7bdc027e0d/evaluation/README.md">Inspect the tested revision and validation details</a>. This repair is available on a review branch; the repository’s main branch has not yet been updated.</p>
+</section>
+<section class="section" id="reproduce"><h2 class="section-title">Validation and next experiment</h2>
+<p>A useful next run must retain the code revision, dependency versions, action and environment seeds, individual outcomes and both confidence-interval endpoints. Keep mock integration tests separate from actual VLM evaluation and motor-policy success.</p><p>The <a href="https://github.com/ajliouat/robollm/blob/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/evaluation/results/pick_training_summary.json">archived training summary</a> is not evidence that more training reliably solves the task. A next control experiment should first reproduce a reaching baseline, then isolate grasping and reward/success-condition behavior.</p><p><a href="https://github.com/ajliouat/robollm/tree/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/tests">Inspect the tests</a> and <a href="https://github.com/ajliouat/robollm/blob/a4b0660930ee9077fbcfe0f83e2a08114ce9ddc1/evaluation/benchmark.py">evaluation entry point</a> at the reviewed revision. No new learned-policy or GPU training result is claimed here.</p>
+</section>
+        <p><a href="/blog/hierarchical-vlm-rl-manipulation.html">Read the technical note →</a></p>
         <div class="footer-actions">
           <a href="/projects/" class="back-link"><span>←</span><span>Back to projects</span></a>
-          <a href="https://github.com/ajliouat/robollm" target="_blank" class="github-link"><span>★</span><span>View on GitHub</span></a>
+          <a href="https://github.com/ajliouat/robollm" class="github-link"><span>View on GitHub</span></a>
         </div>
       </article>
     </section>

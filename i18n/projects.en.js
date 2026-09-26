@@ -4,8 +4,8 @@
   var t = window.I18N.en
 
   t['projects.badge'] = 'Flagship Projects'
-  t['projects.title'] = 'Four deep systems across six interests'
+  t['projects.title'] = "Four projects, with code and open questions"
   t['projects.subtitle'] =
-    'Each project spans 2–3 domains — LLM, robotics, quantum AI, energy systems, brain-computer interfaces, and GPU compute — with real benchmarks, profiling artifacts, and reproducible code.'
+    "GPU inference, robotics, EEG and energy optimization: explore the implementations, available evidence and next validation steps."
 })()
 

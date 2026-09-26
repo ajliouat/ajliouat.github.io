@@ -3,18 +3,18 @@
   window.I18N.fr = window.I18N.fr || {}
   var t = window.I18N.fr
 
-  t['home.hero_badge'] = "Ingénierie de systèmes d'IA"
+  t['home.hero_badge'] = "IA appliquée et ingénierie des systèmes"
   t['home.hero_title'] =
-    "Systèmes profonds à l'intersection des LLM, de la robotique, de l'IA quantique et du GPU"
+    "Des systèmes d’IA, de la recherche à la production."
   t['home.hero_subtitle'] =
-    "Conception de projets reproductibles et mesurés à l'intersection des grands modèles de langage, de la manipulation robotique, des interfaces cerveau–ordinateur, de l'optimisation quantique et des systèmes énergétiques."
+    "Je conçois des systèmes d’IA efficaces et fiables, des kernels GPU à l’apprentissage robotique. Je partage ici le code, les expériences et les décisions techniques qui accompagnent mon travail."
 
-  t['home.focus_title'] = 'Axes de travail'
-  t['home.focus_subtitle'] = "Construire à l'intersection de six domaines."
+  t['home.focus_title'] = "Mes axes de travail"
+  t['home.focus_subtitle'] = "Trois domaines liés par la recherche appliquée et l’ingénierie."
 
-  t['home.projects_title'] = 'Projets phares'
+  t['home.projects_title'] = "Une sélection de projets"
   t['home.projects_subtitle'] =
-    "Des systèmes profonds et reproductibles à l'intersection des LLM, de la robotique, de l'IA quantique, des BCI et du calcul GPU."
+    "L’architecture, les expériences et le code de quatre systèmes à explorer."
 
   t['home.experience_title'] = 'Expérience'
   t['home.experience_subtitle'] =
@@ -36,33 +36,33 @@
 
   t['home.flash_title'] = 'FlashKernel'
   t['home.flash_body'] =
-    'Kernels CUDA C++ et Triton sur mesure pour l’inférence de transformeurs — FlashAttention tilé, GeLU fusionné, RoPE, KV-cache paginé — profilés avec Nsight Compute sur T4.'
+    "Kernels CUDA et Triton pour l’attention, la fusion d’activations et le cache. Implémentation, limites de validité et protocole de vérification sur GPU."
   t['home.flash_tag_cuda'] = 'CUDA C++'
   t['home.flash_tag_triton'] = 'Triton'
   t['home.flash_tag_nsight'] = 'Nsight Compute'
 
   t['home.robo_title'] = 'RoboLLM'
   t['home.robo_body'] =
-    "Manipulation robotique guidée par le langage — un planificateur VLM décompose les instructions en sous‑tâches, des politiques RL exécutent chaque étape dans une simulation MuJoCo."
+    "Un environnement MuJoCo avec planification simulée, contrôleurs scriptés et expériences SAC. Ce qui est testé et ce qui reste à apprendre."
   t['home.robo_tag_mujoco'] = 'MuJoCo'
-  t['home.robo_tag_paligemma'] = 'PaliGemma-3B'
+  t['home.robo_tag_paligemma'] = "Contrôleurs scriptés"
   t['home.robo_tag_sac'] = 'SAC'
 
   t['home.neuro_title'] = 'NeuroLLM'
   t['home.neuro_body'] =
-    'Modèle de fondation pour le décodage de signaux neuronaux — pré‑entraînement d’un transformeur sur des EEG à grande échelle, puis fine‑tuning pour BCI motrice avec attention par bandes de fréquences.'
+    "Un prototype de transformeur EEG pour la reconstruction masquée et l’imagerie motrice. Priorités actuelles : séparation des données et évaluation."
   t['home.neuro_tag_pytorch'] = 'PyTorch'
-  t['home.neuro_tag_mne'] = 'MNE-Python'
+  t['home.neuro_tag_mne'] = "NumPy/SciPy"
   t['home.neuro_tag_eeg'] = 'EEG'
 
   t['home.quantum_title'] = 'QuantumGrid'
   t['home.quantum_body'] =
-    'Optimisation hybride quantique‑classique pour les réseaux électriques — QAOA et VQE appliqués au unit commitment sur données réelles ENTSO-E, comparés à des solveurs MILP.'
+    "Des expériences de planification électrique sur données synthétiques, avec QUBO, QAOA, VQE et solveurs classiques. Formulation et comparaison équitable."
   t['home.quantum_tag_pennylane'] = 'PennyLane'
   t['home.quantum_tag_qaoa'] = 'QAOA/VQE'
   t['home.quantum_tag_ortools'] = 'OR-Tools'
 
-  t['home.card_link'] = 'Voir le projet →'
+  t['home.card_link'] = "Voir le projet en anglais →"
 
   t['home.exp1_role'] = 'Founder @AKIOUD AI, Paris'
   t['home.exp1_meta'] =

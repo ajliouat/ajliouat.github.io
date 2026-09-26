@@ -3,17 +3,17 @@
   window.I18N.en = window.I18N.en || {}
   var t = window.I18N.en
 
-  t['home.hero_badge'] = 'AI systems engineering'
-  t['home.hero_title'] = 'Deep systems across LLM, robotics, quantum AI, and GPU compute'
+  t['home.hero_badge'] = "Applied AI & systems engineering"
+  t['home.hero_title'] = "AI systems, from research to production."
   t['home.hero_subtitle'] =
-    'Building reproducible, benchmarked projects at the intersection of large language models, robotic manipulation, brain–computer interfaces, quantum optimization, and energy systems.'
+    "I build efficient, reliable AI systems — from GPU kernels to robotic learning. Here I share the code, experiments and engineering decisions behind my work."
 
-  t['home.focus_title'] = 'Focus areas'
-  t['home.focus_subtitle'] = 'Building at the intersection of six domains.'
+  t['home.focus_title'] = "What I work on"
+  t['home.focus_subtitle'] = "Three connected areas of applied research and engineering."
 
-  t['home.projects_title'] = 'Flagship projects'
+  t['home.projects_title'] = "Selected projects"
   t['home.projects_subtitle'] =
-    'Deep, reproducible systems at the intersection of LLM, robotics, quantum AI, BCI, and GPU compute.'
+    "Explore the architecture, experiments and source code behind four systems."
 
   t['home.experience_title'] = 'Experience'
   t['home.experience_subtitle'] = 'Leading applied ML and AI systems across finance, banking, startups, and NGOs.'
@@ -34,28 +34,28 @@
 
   t['home.flash_title'] = 'FlashKernel'
   t['home.flash_body'] =
-    'Custom CUDA C++ and Triton kernels for transformer inference — tiled FlashAttention, fused GeLU, RoPE, paged KV-cache — benchmarked with Nsight Compute on T4.'
+    "CUDA and Triton kernels for attention, activation fusion and cache operations. Explore the implementation, correctness boundaries and GPU validation requirements."
   t['home.flash_tag_cuda'] = 'CUDA C++'
   t['home.flash_tag_triton'] = 'Triton'
   t['home.flash_tag_nsight'] = 'Nsight Compute'
 
   t['home.robo_title'] = 'RoboLLM'
   t['home.robo_body'] =
-    'Language-grounded robotic manipulation — VLM planner decomposes instructions into sub-tasks, RL policies execute each step in MuJoCo simulation.'
+    "A MuJoCo manipulation testbed with mock planning, scripted baselines and SAC experiments. Explore what is tested and what remains to be learned."
   t['home.robo_tag_mujoco'] = 'MuJoCo'
-  t['home.robo_tag_paligemma'] = 'PaliGemma-3B'
+  t['home.robo_tag_paligemma'] = "Scripted baselines"
   t['home.robo_tag_sac'] = 'SAC'
 
   t['home.neuro_title'] = 'NeuroLLM'
   t['home.neuro_body'] =
-    'Foundation model for neural signal decoding — pre-train a transformer on large-scale EEG, fine-tune for motor imagery BCI with frequency-band attention.'
+    "An EEG transformer prototype for masked reconstruction and motor-imagery classification, with data separation and evaluation as the current priorities."
   t['home.neuro_tag_pytorch'] = 'PyTorch'
-  t['home.neuro_tag_mne'] = 'MNE-Python'
+  t['home.neuro_tag_mne'] = "NumPy/SciPy"
   t['home.neuro_tag_eeg'] = 'EEG'
 
   t['home.quantum_title'] = 'QuantumGrid'
   t['home.quantum_body'] =
-    'Quantum-classical hybrid optimization for energy grids — QAOA and VQE applied to unit commitment on real ENTSO-E data, benchmarked against MILP solvers.'
+    "Synthetic unit-commitment experiments using QUBO, QAOA, VQE and classical solvers. Explore the formulation and requirements for a fair comparison."
   t['home.quantum_tag_pennylane'] = 'PennyLane'
   t['home.quantum_tag_qaoa'] = 'QAOA/VQE'
   t['home.quantum_tag_ortools'] = 'OR-Tools'

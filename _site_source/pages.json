@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-09-06T00:00:00Z",
+  "feedUpdated": "2026-09-26T07:30:54+00:00",
   "pages": [
     {
       "path": "index.html",
@@ -36,7 +36,7 @@
       "path": "projects/flashkernel.html",
       "section": "projects",
       "title": "FlashKernel — Custom CUDA Kernels for Transformer Inference | Abdeljalil Jliouat",
-      "description": "Custom CUDA and Triton kernels for transformer inference, profiled with Nsight Compute on NVIDIA T4. Architecture, benchmarks and reproduction commands."
+      "description": "Experimental CUDA and Triton kernels: implementation, correctness boundaries, GPT-2 integration and requirements for verifiable GPU measurements."
     },
     {
       "path": "projects/index.html",
@@ -52,19 +52,19 @@
       "path": "projects/neurollm.html",
       "section": "projects",
       "title": "NeuroLLM — Neural Signal Decoding via Transformer Pre-training | Abdeljalil Jliouat",
-      "description": "Transformer pre-training for EEG decoding and motor-imagery classification. Explore NeuroLLM’s datasets, architecture, benchmarks and source code."
+      "description": "An EEG transformer prototype for masked pre-training and motor imagery. Model components, data boundaries and requirements for a valid evaluation."
     },
     {
       "path": "projects/quantumgrid.html",
       "section": "projects",
       "title": "QuantumGrid — Quantum-Classical Hybrid for Energy Optimization | Abdeljalil Jliouat",
-      "description": "QAOA and VQE for energy grid unit commitment, compared with classical MILP and other baselines. Explore the formulation, limits and reproducible code."
+      "description": "Synthetic unit-commitment experiments with QUBO, QAOA, VQE and classical solvers. Formulation limits and requirements for comparable evaluation."
     },
     {
       "path": "projects/robollm.html",
       "section": "projects",
       "title": "RoboLLM — Language-Grounded Robotic Manipulation | Abdeljalil Jliouat",
-      "description": "A hierarchical VLM and reinforcement learning system for robotic manipulation in MuJoCo. Explore the architecture, tasks, benchmarks and source code."
+      "description": "A MuJoCo manipulation prototype with mock planning, scripted baselines and SAC experiments. Inspect the source, archived results and evaluation limits."
     },
     {
       "path": "blog/foundations-for-robotic-learning.html",
@@ -80,10 +80,10 @@
       "path": "blog/hierarchical-vlm-rl-manipulation.html",
       "section": "blog",
       "title": "Building a hierarchical VLM+RL manipulation system | Abdeljalil Jliouat",
-      "description": "Inside RoboLLM: a vision-language planner, object grounding and learned motor policies for hierarchical manipulation tasks in MuJoCo simulation.",
+      "description": "Inside RoboLLM: mock planning, privileged grounding, scripted control and the distinction between integration tests and learned manipulation results.",
       "article": true,
       "headline": "Building a hierarchical VLM+RL manipulation system",
-      "updated": "2026-02-22T14:58:19+01:00",
+      "updated": "2026-09-26T07:30:54+00:00",
       "year": "2025"
     },
     {
@@ -100,10 +100,10 @@
       "path": "blog/neural-signal-decoding-transformer-pretraining.html",
       "section": "blog",
       "title": "Neural signal decoding via transformer pre-training | Abdeljalil Jliouat",
-      "description": "Building NeuroLLM: masked EEG pre-training, motor-imagery fine-tuning, frequency-band attention and comparisons with classical BCI baselines.",
+      "description": "NeuroLLM: EEG transformer components, disjoint data sessions, explicit synthetic inputs and the requirements for evaluating pre-training.",
       "article": true,
       "headline": "Neural signal decoding via transformer pre-training",
-      "updated": "2026-05-20T20:21:50+02:00",
+      "updated": "2026-09-26T07:30:54+00:00",
       "year": "2026"
     },
     {
@@ -140,10 +140,10 @@
       "path": "blog/quantum-classical-hybrid-energy-grid-optimization.html",
       "section": "blog",
       "title": "Quantum-classical hybrid optimisation for energy grids | Abdeljalil Jliouat",
-      "description": "Building QuantumGrid: unit commitment as QUBO and Ising models, QAOA and VQE experiments, classical baselines, penalty tuning and scaling limits.",
+      "description": "QuantumGrid: why encoded energy, feasibility and physical cost must be separated before comparing quantum and classical scheduling solvers.",
       "article": true,
       "headline": "Quantum-classical hybrid optimisation for energy grids",
-      "updated": "2026-02-22T18:52:33+01:00",
+      "updated": "2026-09-26T07:30:54+00:00",
       "year": "2026"
     },
     {
@@ -170,10 +170,10 @@
       "path": "blog/writing-cuda-kernels-for-transformer-inference.html",
       "section": "blog",
       "title": "Writing CUDA kernels for transformer inference on T4 | Abdeljalil Jliouat",
-      "description": "Implementing FlashAttention, fused GeLU, RoPE and paged KV-cache in CUDA and Triton, and interpreting NVIDIA T4 results with the roofline model.",
+      "description": "CUDA and Triton kernel design, numerical correctness, GPT-2 integration boundaries and a protocol for trustworthy GPU performance measurements.",
       "article": true,
       "headline": "Writing CUDA kernels for transformer inference on T4",
-      "updated": "2026-02-22T14:58:19+01:00",
+      "updated": "2026-09-26T07:30:54+00:00",
       "year": "2026"
     }
   ]

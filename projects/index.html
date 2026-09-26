@@ -260,7 +260,7 @@
       color: var(--accent);
     }
 
-</style><link rel="stylesheet" href="/assets/site.css?v=8b744f503b"><script src="/nav.js?v=54d2593347"></script>
+</style><link rel="stylesheet" href="/assets/site.css?v=04260c1703"><script src="/nav.js?v=54d2593347"></script>
 </head><body><a class="skip-link" href="#main-content">Skip to content</a>
 <div id="site-nav-root"><header class="site-nav"><div class="nav-inner"><a href="/" class="nav-brand">Abdeljalil Jliouat</a><nav class="nav-links" aria-label="Main navigation"><a href="/" class="nav-link">Home</a>
 <a href="/about.html" class="nav-link">About</a>
@@ -270,18 +270,15 @@
 <main class="page" id="main-content" tabindex="-1">
     <section class="section-header">
       <div class="section-badge" data-i18n="projects.badge">Flagship Projects</div>
-      <h1 class="section-title" data-i18n="projects.title">Four projects, from models to working systems</h1>
-      <p class="section-subtitle" data-i18n="projects.subtitle">Open-source work in GPU inference, robotics, EEG decoding and energy optimization. Each project includes an architecture overview, experiments and source code.</p>
+      <h1 class="section-title" data-i18n="projects.title">Four projects, with code and open questions</h1>
+      <p class="section-subtitle" data-i18n="projects.subtitle">GPU inference, robotics, EEG and energy optimization: explore the implementations, available evidence and next validation steps.</p>
     </section>
 
     <div class="card-grid">
       <article class="card">
         <div class="card-badge"><span class="card-badge-dot"></span> Hardware/GPU × LLM</div>
         <h3 class="card-title">FlashKernel</h3>
-        <p class="card-body">
-          Custom CUDA C++ and Triton kernels for transformer inference — tiled FlashAttention,
-          fused GeLU+Linear, RoPE, paged KV-cache — benchmarked with Nsight Compute on NVIDIA T4.
-        </p>
+        <p class="card-body" data-i18n="home.flash_body">CUDA and Triton kernels for attention, activation fusion and cache operations. Explore the implementation, correctness boundaries and GPU validation requirements.</p>
         <div class="card-tags">
           <span class="card-tag">CUDA C++</span>
           <span class="card-tag">Triton</span>
@@ -290,69 +287,60 @@
         </div>
         <div class="card-footer">
           <a href="/projects/flashkernel.html" class="card-link">View details →</a>
-          <span class="card-status"><span class="status-dot status-complete"></span> Complete</span>
+          <span class="card-status" data-i18n="projects.status">Experimental</span>
         </div>
       </article>
 
       <article class="card">
         <div class="card-badge"><span class="card-badge-dot"></span> LLM × Robotics × GPU</div>
         <h3 class="card-title">RoboLLM</h3>
-        <p class="card-body">
-          Language-grounded robotic manipulation — a VLM planner decomposes natural language
-          instructions into sub-tasks, and RL-trained policies execute each step in MuJoCo simulation.
-        </p>
+        <p class="card-body" data-i18n="home.robo_body">A MuJoCo manipulation testbed with mock planning, scripted baselines and SAC experiments. Explore what is tested and what remains to be learned.</p>
         <div class="card-tags">
           <span class="card-tag">MuJoCo</span>
-          <span class="card-tag">PaliGemma-3B</span>
-          <span class="card-tag">SAC/PPO</span>
+          <span class="card-tag">Scripted control</span>
+          <span class="card-tag">SAC</span>
           <span class="card-tag">PyTorch</span>
         </div>
         <div class="card-footer">
           <a href="/projects/robollm.html" class="card-link">View details →</a>
-          <span class="card-status"><span class="status-dot status-complete"></span> Complete</span>
+          <span class="card-status" data-i18n="projects.status">Experimental</span>
         </div>
       </article>
 
       <article class="card">
         <div class="card-badge"><span class="card-badge-dot"></span> BCI × LLM × GPU</div>
         <h3 class="card-title">NeuroLLM</h3>
-        <p class="card-body">
-          Foundation model for neural signal decoding — pre-train a transformer on large-scale EEG data,
-          fine-tune for motor imagery BCI with a custom frequency-band attention kernel.
-        </p>
+        <p class="card-body" data-i18n="home.neuro_body">An EEG transformer prototype for masked reconstruction and motor-imagery classification, with data separation and evaluation as the current priorities.</p>
         <div class="card-tags">
           <span class="card-tag">PyTorch</span>
-          <span class="card-tag">MNE-Python</span>
-          <span class="card-tag">CUDA</span>
+          <span class="card-tag">NumPy/SciPy</span>
+          <span class="card-tag">Transformers</span>
           <span class="card-tag">EEG</span>
         </div>
         <div class="card-footer">
           <a href="/projects/neurollm.html" class="card-link">View details →</a>
-          <span class="card-status"><span class="status-dot status-complete"></span> Complete</span>
+          <span class="card-status" data-i18n="projects.status">Experimental</span>
         </div>
       </article>
 
       <article class="card">
         <div class="card-badge"><span class="card-badge-dot"></span> Quantum AI × Energy</div>
         <h3 class="card-title">QuantumGrid</h3>
-        <p class="card-body">
-          Quantum-classical hybrid optimization for energy grids — QAOA and VQE circuits applied to
-          unit commitment on real ENTSO-E data, benchmarked against classical MILP solvers.
-        </p>
+        <p class="card-body" data-i18n="home.quantum_body">Synthetic unit-commitment experiments using QUBO, QAOA, VQE and classical solvers. Explore the formulation and requirements for a fair comparison.</p>
         <div class="card-tags">
           <span class="card-tag">PennyLane</span>
           <span class="card-tag">QAOA/VQE</span>
           <span class="card-tag">OR-Tools</span>
-          <span class="card-tag">ENTSO-E</span>
+          <span class="card-tag">QUBO</span>
         </div>
         <div class="card-footer">
           <a href="/projects/quantumgrid.html" class="card-link">View details →</a>
-          <span class="card-status"><span class="status-dot status-complete"></span> Complete</span>
+          <span class="card-status" data-i18n="projects.status">Experimental</span>
         </div>
       </article>
     </div>
   </main>
 
-<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-left"><span class="site-footer-brand">Abdeljalil Jliouat</span><span>Building production AI systems across LLMs, robotics, quantum, and energy.</span><span>Based in Paris · Available across Europe and remote</span></div><div class="site-footer-right"><a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a><a href="/feed.xml">Subscribe via RSS</a><a href="https://github.com/ajliouat">GitHub</a></div></div></footer>
+<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-left"><span class="site-footer-brand">Abdeljalil Jliouat</span><span>Applied AI and systems engineering. Code, experiments and technical notes.</span><span>Based in Paris · Available across Europe and remote</span></div><div class="site-footer-right"><a href="mailto:contact@ajliouat.com">contact@ajliouat.com</a><a href="/feed.xml">Subscribe via RSS</a><a href="https://github.com/ajliouat">GitHub</a></div></div></footer>
 
 </body></html>
