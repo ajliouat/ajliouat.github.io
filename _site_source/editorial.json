@@ -28,7 +28,9 @@
     "home.robo_tag_paligemma": "Scripted baselines",
     "projects.status": "Experimental",
     "home.neuro_tag_mne": "NumPy/SciPy",
-    "footer.tagline": "Applied AI and systems engineering. Code, experiments and technical notes."
+    "footer.tagline": "Applied AI and systems engineering. Code, experiments and technical notes.",
+    "home.reading_label": "Recent study",
+    "home.reading_link": "RoboLLM: fixing target selection, measuring control →"
   },
   "fr": {
     "experience.present": "aujourd’hui",
@@ -60,7 +62,9 @@
     "home.robo_tag_paligemma": "Contrôleurs scriptés",
     "projects.status": "Expérimental",
     "home.neuro_tag_mne": "NumPy/SciPy",
-    "footer.tagline": "IA appliquée et ingénierie des systèmes. Code, expériences et notes techniques."
+    "footer.tagline": "IA appliquée et ingénierie des systèmes. Code, expériences et notes techniques.",
+    "home.reading_label": "Étude récente",
+    "home.reading_link": "RoboLLM : corriger le ciblage, mesurer le contrôle (en anglais) →"
   },
   "articles": {
     "writing-cuda-kernels-for-transformer-inference": {

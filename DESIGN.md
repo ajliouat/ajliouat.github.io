@@ -1,162 +1,50 @@
-## Design philosophy
+# Presentation and reading
 
-This site is designed to feel like a credible, production-grade research portfolio: clear hierarchy, low-noise visuals, and layouts that could plausibly ship as part of a serious product or lab website.
+The site uses a system typeface, a narrow neutral-and-blue palette and static pages. Shared presentation lives in `assets/site.css`; page content and local layout rules live in `_site_source/pages/`. Make changes there and regenerate the public HTML with `_tools/build.mjs`.
 
-The core principles:
+## Typography and layout
 
-- Emphasize reading: typography and spacing are tuned for long-form reading rather than marketing.
-- Show, don’t shout: color is used sparingly to highlight structure and key actions, not as decoration.
-- Feel “engineered”: cards, diagrams, and code-like blocks borrow from developer tools rather than generic blog themes.
-- Light by default, with an optional dark theme that remembers the reader’s preference.
+- Main content is constrained to about 960 px. Long articles use a narrower reading column.
+- The home headline uses regular weight, 24 px on small screens and up to 30 px on desktop, with a 1.35 line height.
+- Project section headings use 18 px, medium weight and the primary text color. Project prose uses 15 px with a 1.8 line height.
+- Page introductions use short category labels, proportionate titles and muted descriptions.
+- Project details have an unboxed reading column and a right-hand contents list on desktop. At 840 px and below, the contents list appears above the text in two columns.
+- Overview entries are separated by thin rules and whitespace. They have no enclosing card surface, elevation or movement on hover.
 
----
+## Color and themes
 
-## Color system
+| Role | Light | Dark |
+|---|---|---|
+| Page background | `#ffffff` | `#020617` |
+| Primary text | `#0f172a` | `#e5e7eb` |
+| Secondary text | `#6b7280` | `#9ca3af` |
+| Borders | `#e5e7eb` | `#1f2937` |
+| Link accent | `#2563eb` | `#38bdf8` |
 
-The palette is intentionally narrow and stable:
+Use the shared `--bg`, `--surface`, `--border`, `--text`, `--muted` and `--accent` variables. Page backgrounds are flat. Category labels and technology lists are plain, muted text; decorative dots and tag outlines are suppressed. Links within prose remain underlined so color is not their only distinguishing feature.
 
-- **Neutrals**
-  - Light: background `#ffffff` with subtle radial gradients (`#f9fafb` → `#f3f4f6`).
-  - Dark: background `#020617` (near-black) with surfaces at `#020617`–`#111827`.
-  - Borders: `#e5e7eb` (light) and `#1f2937` (dark) to keep structure visible without heavy outlines.
-- **Accent (blue-only)**
-  - Primary accent: `#2563eb` / `#1d4ed8` (links, badges, emphasis).
-  - Secondary accent: `#0ea5e9` / `#38bdf8` (underlines, edges in diagrams).
-  - Soft backgrounds: `#eff6ff` / `#bfdbfe` to give depth without high saturation.
+Light is the default. `nav.js` reads the reader's saved preference before painting and the theme control updates `data-theme` on the root element. Both themes use the same content and layout.
 
-All pages define shared CSS variables:
+## Navigation and actions
 
-- `--bg`, `--surface`, `--border` for backgrounds and structure.
-- `--text`, `--muted` for primary and secondary text.
-- `--accent` for links and highlight elements.
+Navigation and the footer are generated into every page and work without JavaScript. The header stays at the top; a blue underline identifies the active section. The keyboard skip link and visible focus outlines must remain usable.
 
-The dark theme overrides these via `html[data-theme='dark']` so the same markup works in both modes.
+Functional controls retain rounded shapes:
 
----
+- Home actions have pill corners, a 40 px minimum height and content-sized widths.
+- Theme, language and profile controls stay compact and rounded.
+- Project footer actions retain pill shapes. The GitHub action uses a solid, contrasting surface without a gradient, shadow or hover movement.
 
-## Layout and hierarchy
+The home page links directly to a recent technical study. Counts of projects or articles are not displayed as achievements.
 
-Across pages, the layout rules are:
+## Code, tables and diagrams
 
-- **Max width**: main content constrained to `~960px` to keep line length readable.
-- **Vertical rhythm**:
-  - Top padding around `3.5–4rem`.
-  - Section spacing tuned so headers, subheaders, and bodies form clear blocks.
-- **Grid usage**:
-  - Two-column grids (`minmax(0, 1.6fr)` + `minmax(0, 1fr)`) for project detail pages.
-  - Card grids (2 columns) for the projects index.
+Code and diagrams keep their bounded surfaces where these help distinguish technical material from prose. Long code blocks and tables scroll within their own containers instead of widening the page.
 
-Header sections typically include:
+`mermaid.js` renders diagrams using the system font and the current light or dark theme. It preserves diagram sources and serializes redraws when the theme changes. Diagram colors use the same neutral and blue family as the site.
 
-- A small badge chip (all blue, uppercase, subtle border).
-- A medium-weight title with slight negative letter spacing.
-- A muted subtitle capped to ~640px width.
+## Build and review
 
----
+Run `node _tools/build.mjs` and `python3 _tools/check.py` from this repository. The build refreshes stylesheet cache references across all generated pages.
 
-## Navigation system
-
-The navigation and footer are generated into every page by `_tools/build.mjs`. They work without JavaScript. Their shared styles live in `assets/site.css`.
-
-Key behaviors:
-
-- Sticky at the top with a subtle blur (`backdrop-filter: blur(12px)`).
-- Link underline is a blue gradient line that animates on hover.
-- Active section is highlighted via a `nav-link-active` class, driven by the current path.
-
-Implementation details:
-
-- `_site_source/pages/` contains page content and page-specific styles.
-- `_site_source/pages.json` defines public URLs, metadata and available translations.
-- `_tools/build.mjs` produces complete HTML, language links, the feed and sitemap.
-- `nav.js` reads the saved theme before the page paints, then attaches the theme control.
-- `nav.html` and the runtime translation files remain for older cached pages; the generated site does not fetch them.
-
----
-
-## Dark/light theming
-
-The theming model is deliberately simple:
-
-- The `<html>` element carries `data-theme="dark"` or `data-theme="light"`.
-- `nav.js`:
-  - Reads a stored theme from `localStorage` if present.
-  - Defaults to **light** if nothing is stored.
-  - Toggles the `data-theme` attribute and persists the new value.
-- `assets/site.css` holds the dark-theme overrides:
-  - Sets `--bg`, `--surface`, `--border`, `--text`, `--muted`, `--accent` for dark mode.
-  - Adjusts the nav background and link colors to remain legible.
-  - Tweaks specific components (like `.tech-tag`) so text remains readable on dark surfaces.
-
-The toggle itself:
-
-- Compact pill button next to the nav links.
-- Shows “Dark” with a moon icon when the site is in light mode, and “Light” with a sun icon in dark mode.
-
-Both themes must stay readable. Light is the initial view; a reader’s saved theme takes precedence.
-
----
-
-## Components and patterns
-
-**Cards**
-
-- Used on the projects index and similar overview pages.
-- Structure:
-  - Small uppercase badge row (domain tags like “Hardware/GPU × LLM”).
-  - Title, short explanatory body, and tags.
-  - Footer with a primary link and status indicator.
-- Visual:
-  - Rounded corners, subtle border, and a faint radial gradient.
-  - Hover adds elevation and a slight upward translation, mimicking modern dashboard UIs.
-
-**Tech tags**
-
-- Implemented as small pill elements (`.tech-tag`).
-- In light mode:
-  - Neutral background (`#f9fafb`), muted text, light border.
-- In dark mode:
-  - Dark pill background (`rgba(15, 23, 42, 0.7)`).
-  - Light text (`#e5e7eb`) and a slightly stronger border.
-
-**Back / GitHub actions**
-
-- Consistent pattern at the bottom of project pages:
-  - “Back to projects” button with a light pill style.
-  - A heavier, dark gradient button for GitHub links.
-- Emphasizes GitHub as the primary action while keeping navigation obvious.
-
----
-
-## Diagrams (Mermaid)
-
-Mermaid is centralized through a shared script (`mermaid.js`) instead of per-page inline initialization.
-
-Configuration:
-
-- Theme: `dark` with a custom blue palette.
-- Fonts: system UI stack, font size around `13px` for readability.
-- Nodes:
-  - Fill `#0b1120`, border `#1d4ed8`, text `#e5e7eb`.
-- Edges:
-  - `#38bdf8`, matching the rest of the accent system.
-
-Integration:
-
-- Pages simply include `<script src="/mermaid.js"></script>`.
-- Diagram containers reuse the same “code card” visual: dark background, subtle border, rounded corners.
-
-This makes the diagrams feel like part of the UI rather than foreign iframes.
-
----
-
-## Content tone
-
-The visual language is deliberately understated:
-
-- No heavy gradients or neon colors; blue is the only chromatic accent.
-- Cards and diagrams read as tools and artifacts, not marketing widgets.
-- Typography skews slightly more “product” than “blog” to keep the portfolio feeling like a live engineering surface.
-
-Overall, the design target is “10/10 credible”: something that a staff-level engineer or researcher could show to a hiring committee or a collaborator and have it feel like a serious, thoughtfully engineered system rather than a throwaway personal site.
-
+Inspect affected pages on mobile first, then desktop, in both themes. Check translated main pages, long titles, contents links, focus indicators, table containment and image loading. Keep existing public paths and anchors stable. Generated pages use static language links; legacy runtime translation files are retained only for older cached pages.
