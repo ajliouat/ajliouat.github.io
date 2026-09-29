@@ -5,7 +5,7 @@ Static portfolio and technical articles at [ajliouat.com](https://ajliouat.com).
 ## Editing and publishing
 
 1. Edit page content and page-specific styles in `_site_source/pages/`.
-2. Edit titles and descriptions in `_site_source/pages.json`. It explicitly lists the public pages and the five pages with French equivalents.
+2. Edit titles and descriptions in `_site_source/pages.json`. It explicitly lists the public pages and the six pages with French equivalents.
 3. Shared editorial text and French article summaries are in `_site_source/editorial.json`. Existing page translations are in `i18n/*.en.js` and `i18n/*.fr.js`; these files are used during the build, not loaded by the generated pages.
 4. Run `node _tools/build.mjs`, then `python3 _tools/check.py`.
 5. Preview with `python3 -m http.server 8765 --bind 127.0.0.1`, review the changes and commit the source and generated files together. Pushing `main` triggers GitHub Pages.

@@ -1,0 +1,463 @@
+<style>
+
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    .post-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 12px;
+    }
+
+    .post-body th, .post-body td {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .post-body th {
+      background: rgba(148, 163, 184, 0.08);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 11px;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+      border-radius: 0.75rem;
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+    }
+
+    .mermaid svg {
+      min-width: 540px;
+    }
+
+    .post-figure {
+      margin: 1.5rem 0 1.75rem;
+    }
+
+    .post-figure a {
+      display: block;
+    }
+
+    .post-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 0.6rem;
+    }
+
+    .post-figure figcaption {
+      margin-top: 0.6rem;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .site-footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .site-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .site-footer-brand {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 12px;
+    }
+
+    .site-footer-right a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+
+</style>
+<main class="page">
+    <section class="section-header">
+      <div class="section-badge">LLM systems · Real-time tool calls</div>
+      <h1 class="section-title">What “stop” does to an in-flight tool call on Gemini 3.8 Live</h1>
+      <p class="section-subtitle">A scripted user asks a Live API assistant to book a slot, then says “stop” while the booking runs. In 18 recorded sessions, the server never sent a tool-call cancellation.</p>
+      <div class="post-meta">Field test · 29 September 2026</div>
+    </section>
+    <section class="toc"><div class="toc-title">On this page</div><ul>
+      <li><a href="#question">The question</a></li>
+      <li><a href="#setup">Setup and scenarios</a></li>
+      <li><a href="#findings">Findings</a></li>
+      <li><a href="#application">What it means for an application</a></li>
+      <li><a href="#limits">Limits</a></li>
+      <li><a href="#sources">Sources, code and data</a></li>
+    </ul></section>
+    <section class="post-body">
+      <h2 id="question">Where the commit point goes when the user says stop</h2>
+      <p>A Live API assistant starts booking a slot through a tool, and a second later the user says “actually, stop”. Whether a booking exists afterwards depends on what the API tells the application, and on where the application commits the side effect. I first raised this as a question on <a href="https://www.reddit.com/r/FrontierOnGCP/">r/FrontierOnGCP</a>; the harness described here answers it with timestamps.</p>
+      <p>The protocol defines a message for this case. In the <a href="https://ai.google.dev/api/live">Live API reference</a>, <code>toolCallCancellation</code> lists earlier tool calls that should not have been executed, and it is sent “only in cases where the clients interrupt server turns”. On <code>gemini-3.8-live</code>, asynchronous function calling (<code>NON_BLOCKING</code>) is the default, so the conversation can continue while the function runs. Does the server ever cancel a pending call of that kind?</p>
+
+      <h2 id="setup">One tool, a slow fake service and a scripted user</h2>
+      <p>The model is <code>gemini-3.8-live</code> on the Gemini API, through the AI Studio endpoint, with the <code>google-genai</code> Python SDK 2.25.0. It has one tool, <code>book_slot(slot)</code>, backed by a fake in-process booking service that commits 4 s after the call arrives. The tool response goes out as soon as the job commits. A scripted user sends “Book me the 3pm slot tomorrow, please.” as text, then “Actually, stop. Don’t book it.” Every server message is logged with a millisecond timestamp from session start.</p>
+      <p>A text-only session was rejected with websocket close code 1007, so sessions used audio output with output transcription; the quotations below are those transcriptions. The system prompt asks the model to call the tool immediately, say that it is booking and, if told to stop, say plainly whether the booking was made. Each scenario ran three times on 29 September 2026.</p>
+      <table><thead><tr><th>Scenario</th><th>Tool behavior</th><th>Stop sent</th><th>Honor cancellation</th><th>Response scheduling</th></tr></thead><tbody>
+        <tr><td>A</td><td>Unset (model default)</td><td>1.0 s after the call</td><td>No</td><td>Not set</td></tr>
+        <tr><td>B</td><td>Unset</td><td>1.0 s after the call</td><td>Yes</td><td>Not set</td></tr>
+        <tr><td>C</td><td><code>BLOCKING</code></td><td>1.0 s after the call</td><td>Yes</td><td>Not set</td></tr>
+        <tr><td>D</td><td>Unset</td><td>5.5 s after the call, after the commit</td><td>Yes</td><td>Not set</td></tr>
+        <tr><td>E</td><td>Unset</td><td>1.0 s after the call</td><td>Yes</td><td><code>SILENT</code></td></tr>
+        <tr><td>F</td><td>Unset</td><td>0.3 s after the request, before any call</td><td>Yes</td><td>Not set</td></tr>
+      </tbody></table>
+      <p>Honoring cancellation means that a <code>toolCallCancellation</code> naming the call id cancels the job before it commits. <code>SILENT</code> is a scheduling value for responses to non-blocking calls, defined in the <a href="https://ai.google.dev/gemini-api/docs/live-tools">Live API tool use guide</a>. The findings count 18 sessions: A, B, C, E, F and a re-run of D; the first pass of D is excluded, as explained under limits.</p>
+      <p>The sequence below shows one default-mode run.</p>
+      <div class="mermaid-block">
+        <div class="code-label">Default mode, one run</div>
+        <div class="mermaid">%%{init: {"sequence": {"width": 100, "actorMargin": 30, "messageMargin": 28, "noteMargin": 8, "boxMargin": 6, "mirrorActors": false}}}%%
+sequenceDiagram
+  participant U as User
+  participant A as App
+  participant L as Live API
+  participant B as Booking&lt;br/&gt;service
+  U->>A: "Book me&lt;br/&gt;the 3pm slot"
+  A->>L: text&lt;br/&gt;(send_realtime_input)
+  L->>A: toolCall&lt;br/&gt;book_slot (id)
+  A->>B: start job (4 s)
+  Note over L: turn complete,&lt;br/&gt;no speech
+  U->>A: "Actually, stop"&lt;br/&gt;(call + 1 s)
+  A->>L: text
+  Note over A,L: no toolCallCancellation,&lt;br/&gt;no interrupted
+  L->>A: "the booking was&lt;br/&gt;already made"&lt;br/&gt;(stop + 0.5 to 0.9 s)
+  B->>A: committed&lt;br/&gt;(call + 4 s)
+  A->>L: toolResponse</div>
+      </div>
+
+      <h2 id="findings">What arrived, and when</h2>
+      <p><strong>No <code>toolCallCancellation</code> in any of the 18 sessions</strong>, whatever the mode, scheduling or stop timing. In the nine default-mode runs of A, B and E, the model’s first turn contained only the function call and completed within 4 ms of it, without speech. When the stop arrived a second later, no server turn was in progress, no <code>interrupted</code> event was sent and the model answered the stop as a new user message, consistent with the condition in the reference. In all 18 sessions, the model spoke first either after the tool response or in reply to the stop, although the system prompt asked it to announce the booking. With nothing to honor, B behaved like A.</p>
+      <figure class="post-figure">
+        <a href="https://github.com/frontier-on-cloud/gemini-live-stop-test/blob/main/results/figures/stop-timeline-A1-C1.png"><img src="/assets/gemini-live-stop-timeline-1600.webp" srcset="/assets/gemini-live-stop-timeline-800.webp 800w, /assets/gemini-live-stop-timeline-1600.webp 1600w" sizes="(max-width: 720px) calc(100vw - 2.5rem), 672px" width="1600" height="900" loading="lazy" decoding="async" alt="Timeline of run 1 in the default mode and run 1 in BLOCKING mode: the stop at about 1.8 to 1.9 s, no cancellation, and in BLOCKING a second tool call and two committed bookings"></a>
+        <figcaption>Run 1 of scenarios A and C. Times in seconds since session start. No <code>toolCallCancellation</code> was received in any session.</figcaption>
+      </figure>
+      <p><strong>The model said the booking was made before it was.</strong> In A, B and E, the model answered the stop 0.5 to 0.9 s after it was sent, and in all nine runs said the booking had already been made or confirmed. In one run of A, the model said: “I’m sorry, but the booking was already made before you asked to stop.” No tool response had been sent, and the fake service, which committed about 3.0 s after the stop, was still about 2 s from committing.</p>
+      <p><strong><code>BLOCKING</code> mode booked twice.</strong> In C, <code>interrupted</code> arrived 16 to 18 ms after the stop, without a cancellation. Then, 0.6 to 0.8 s after the stop, the model issued a second <code>book_slot</code> call with a new id and the same slot. The harness executed both, both fake bookings committed, and the model said the slot was already booked, in three runs out of three. If the server discarded the first call internally, no message visible to the client said so.</p>
+      <p><strong>After the commit, the same sentence was true.</strong> In the D re-run, the stop came about 1.5 s after the tool response, while the model’s turn announcing the booking was still in progress. <code>interrupted</code> came 15 to 16 ms after the stop, again without a cancellation. Between 0.5 and 0.7 s after the stop, the model said the booking was already made, which was now correct. It is the same kind of sentence as in A, B and E, where it was false; the transcript alone cannot tell them apart.</p>
+      <p><strong>A stop before the call did not reliably prevent it.</strong> In F, the stop was sent 0.3 s after the booking request, before any function call, and no run produced <code>interrupted</code> or a cancellation. In one run no call arrived, and the model said: “I haven’t made that booking for you.” In the other two, <code>book_slot</code> arrived 1.05 s and 1.12 s after the stop, the fake booking committed, and the model then said the booking was already made.</p>
+
+      <h2 id="application">Keep the commit decision in the application</h2>
+      <p>Without a cancellation signal, “stop” has to be handled by the application, which holds the call id and runs the job. These are design consequences, not measured results.</p>
+      <ul>
+        <li><strong>Delay the irreversible step.</strong> Hold the side effect for a short grace window, or until the model’s next turn completes, and let a stop that arrives in that interval cancel the job.</li>
+        <li><strong>Deduplicate repeated calls.</strong> Key the booking on the user and slot, not the call id: the second call in C had a new id.</li>
+        <li><strong>Report the real status.</strong> Give the model and the interface the booking status held by the service, for example in the tool response, instead of relying on the model’s sentence.</li>
+        <li><strong>Do not wait for <code>toolCallCancellation</code>.</strong> The protocol ties it to interrupting a server turn, not to a pending tool call. In the default mode, the model’s turn had already ended with the function call.</li>
+      </ul>
+
+      <h2 id="limits">What this test does not establish</h2>
+      <ul>
+        <li>Input was typed text, not speech. Voice activity detection and barge-in, which decide when the server sees a spoken stop, were not exercised.</li>
+        <li>The booking service is a fake in-process job with a fixed 4 s latency, not a real backend.</li>
+        <li>The sessions used the AI Studio endpoint, not Vertex AI, with one model and no session resumption.</li>
+        <li>N=3 per scenario on one day shows what can happen, not how often. The model’s wording varied between runs.</li>
+        <li>The system prompt asked the model to say plainly whether the booking was made. A different prompt may change the wording; that was not tested.</li>
+        <li>The first pass of D (3 sessions) is excluded: a harness bug ended those runs 13 to 23 ms after the stop, so a late cancellation could have been missed. The bug was fixed and D re-run; the first pass is kept and marked in the results.</li>
+        <li>What the model said after the stop includes output generated just before it that arrived afterwards.</li>
+      </ul>
+
+      <h2 id="sources">Sources, code and raw data</h2>
+      <p>The harness, its README with all findings and caveats, the raw JSONL timelines and <code>results/summary.md</code> are in <a href="https://github.com/frontier-on-cloud/gemini-live-stop-test">frontier-on-cloud/gemini-live-stop-test</a>. <code>./run_all.sh</code> reruns scenarios A to F with your own API key. The documentation was checked on 29 September 2026: the <a href="https://ai.google.dev/api/live">Live API reference</a>, the <a href="https://ai.google.dev/gemini-api/docs/live-tools">Live API tool use guide</a> and the <a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live">Gemini 3.8 Live model page</a>.</p>
+      <p>An AI coding agent wrote the harness under my direction; I am responsible for the setup and for the claims in this article.</p>
+      <p><a href="/communities.html">About the Frontier communities →</a></p>
+    </section>
+  </main>

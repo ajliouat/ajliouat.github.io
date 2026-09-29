@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-09-26T12:57:43+00:00",
+  "feedUpdated": "2026-09-29T08:53:16+02:00",
   "pages": [
     {
       "path": "index.html",
@@ -30,6 +30,16 @@
       "fr": {
         "title": "Contact — Abdeljalil Jliouat",
         "description": "Discutons de vos projets d’IA, de performance des modèles ou de mise en production. Basé à Paris, disponible en Europe et à distance."
+      }
+    },
+    {
+      "path": "communities.html",
+      "section": "communities",
+      "title": "Frontier communities — Abdeljalil Jliouat",
+      "description": "Independent engineering communities on Reddit for assessing new cloud capabilities on Google Cloud, AWS and Azure through tests, sourced analysis and discussion.",
+      "fr": {
+        "title": "Communautés Frontier — Abdeljalil Jliouat",
+        "description": "Communautés d’ingénierie indépendantes sur Reddit pour évaluer les nouvelles capacités de Google Cloud, AWS et Azure par des tests, des analyses sourcées et des discussions."
       }
     },
     {
@@ -184,6 +194,16 @@
       "article": true,
       "headline": "Writing CUDA kernels for transformer inference on T4",
       "updated": "2026-09-26T07:30:54+00:00",
+      "year": "2026"
+    },
+    {
+      "path": "blog/gemini-live-stop-tool-call-cancellation.html",
+      "section": "blog",
+      "title": "What “stop” does to an in-flight tool call on Gemini 3.8 Live | Abdeljalil Jliouat",
+      "description": "Eighteen recorded Gemini 3.8 Live sessions: no tool-call cancellation arrived for a pending booking, and BLOCKING mode booked twice. Method, timings and limits.",
+      "article": true,
+      "headline": "What “stop” does to an in-flight tool call on Gemini 3.8 Live",
+      "updated": "2026-09-29T08:53:16+02:00",
       "year": "2026"
     }
   ]

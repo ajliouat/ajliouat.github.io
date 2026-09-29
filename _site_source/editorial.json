@@ -32,7 +32,21 @@
     "home.flash_link": "Explore FlashKernel →",
     "home.robo_link": "Explore RoboLLM →",
     "home.neuro_link": "Explore NeuroLLM →",
-    "home.quantum_link": "Explore QuantumGrid →"
+    "home.quantum_link": "Explore QuantumGrid →",
+    "communities.badge": "Communities",
+    "communities.title": "Frontier communities",
+    "communities.intro": "I run the Frontier communities, independent engineering communities on Reddit for assessing new cloud capabilities through tests, sourced analysis and discussion. They are not affiliated with Google, Amazon or Microsoft.",
+    "communities.list_title": "One community per cloud",
+    "communities.status_active": "Active",
+    "communities.status_later": "Created, opening later",
+    "communities.scope_gcp": "GenAI, agents, RAG and security on Google Cloud: releases, hands-on tests, architectures, costs and limits.",
+    "communities.scope_aws": "GenAI, agents, RAG and security on AWS: releases, hands-on tests, architectures, costs and limits.",
+    "communities.scope_azure": "GenAI, agents, RAG and security on Microsoft Azure: releases, hands-on tests, architectures, costs and limits.",
+    "communities.code_note": "Code and raw data for the tests are published in the GitHub organization",
+    "communities.notes_title": "Field notes",
+    "communities.notes_intro": "Related articles on this site, with the full method and its limits.",
+    "communities.note_live_stop_title": "What “stop” does to an in-flight tool call on Gemini 3.8 Live",
+    "communities.note_live_stop_summary": "A measured test of the Gemini Live API: no cancellation arrived for a pending tool call in 18 sessions, and BLOCKING mode booked twice."
   },
   "fr": {
     "experience.present": "aujourd’hui",
@@ -67,7 +81,21 @@
     "home.flash_link": "Explorer FlashKernel en anglais →",
     "home.robo_link": "Explorer RoboLLM en anglais →",
     "home.neuro_link": "Explorer NeuroLLM en anglais →",
-    "home.quantum_link": "Explorer QuantumGrid en anglais →"
+    "home.quantum_link": "Explorer QuantumGrid en anglais →",
+    "communities.badge": "Communautés",
+    "communities.title": "Communautés Frontier",
+    "communities.intro": "J’anime les communautés Frontier, des communautés d’ingénierie indépendantes sur Reddit pour évaluer les nouvelles capacités du cloud par des tests, des analyses sourcées et des discussions. Elles ne sont affiliées ni à Google, ni à Amazon, ni à Microsoft.",
+    "communities.list_title": "Une communauté par cloud",
+    "communities.status_active": "Active",
+    "communities.status_later": "Créée, ouverture ultérieure",
+    "communities.scope_gcp": "IA générative, agents, RAG et sécurité sur Google Cloud : nouveautés, tests pratiques, architectures, coûts et limites.",
+    "communities.scope_aws": "IA générative, agents, RAG et sécurité sur AWS : nouveautés, tests pratiques, architectures, coûts et limites.",
+    "communities.scope_azure": "IA générative, agents, RAG et sécurité sur Microsoft Azure : nouveautés, tests pratiques, architectures, coûts et limites.",
+    "communities.code_note": "Le code et les données brutes des tests sont publiés dans l’organisation GitHub",
+    "communities.notes_title": "Notes de terrain",
+    "communities.notes_intro": "Articles de ce site liés à ces communautés, avec la méthode complète et ses limites.",
+    "communities.note_live_stop_title": "Ce que « stop » fait à un appel d’outil en cours sur Gemini 3.8 Live (en anglais)",
+    "communities.note_live_stop_summary": "Un test mesuré de l’API Gemini Live : en 18 sessions, aucune annulation n’est arrivée pour un appel d’outil en cours, et le mode BLOCKING a réservé deux fois."
   },
   "articles": {
     "writing-cuda-kernels-for-transformer-inference": {
@@ -124,6 +152,11 @@
       "title": "RoboLLM : atteindre une cible fixe sans perturber la scène",
       "summary": "Un maintien d’une seconde, des collisions contrôlées et 100 scènes identiques : 88/100 réussites avec un trajet planifié contre 29/100 en commande directe. Traces et limites explicites.",
       "topic": "Robotique et signaux"
+    },
+    "gemini-live-stop-tool-call-cancellation": {
+      "title": "Ce que « stop » fait à un appel d’outil en cours sur Gemini 3.8 Live",
+      "summary": "Dix-huit sessions Gemini 3.8 Live enregistrées : aucune annulation n’est arrivée pour un appel d’outil en cours, et le mode BLOCKING a réservé deux fois. Méthode, mesures et limites.",
+      "topic": "Calcul et inférence"
     }
   }
 }

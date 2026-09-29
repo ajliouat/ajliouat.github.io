@@ -7,6 +7,7 @@
   t['nav.about'] = 'À propos'
   t['nav.projects'] = 'Projets'
   t['nav.blog'] = 'Blog'
+  t['nav.communities'] = 'Communautés'
   t['nav.contact'] = 'Contact'
 
   t['footer.brand'] = 'Abdeljalil Jliouat'

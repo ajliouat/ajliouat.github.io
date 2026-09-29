@@ -47,7 +47,7 @@ function translate(html, lang) {
 }
 function nav(p, lang) {
   const t = dictionaries[lang]
-  const destinations = [['home', 'index.html'], ['about', 'about.html'], ['projects', 'projects/index.html'], ['blog', 'blog/index.html'], ['contact', 'contact.html']]
+  const destinations = [['home', 'index.html'], ['about', 'about.html'], ['projects', 'projects/index.html'], ['blog', 'blog/index.html'], ['communities', 'communities.html'], ['contact', 'contact.html']]
   const links = destinations.map(([key, file]) => `<a href="${local(file, lang)}" class="nav-link${p.section === key ? ' nav-link-active' : ''}"${p.section === key ? ' aria-current="page"' : ''}>${esc(t[`nav.${key}`])}</a>`).join('\n')
   const other = lang === 'fr' ? 'en' : 'fr'
   const language = p.fr ? `<a class="lang-toggle" href="${local(p.path, other)}" lang="${other}" hreflang="${other}" aria-label="${other === 'fr' ? 'Lire cette page en français' : 'Read this page in English'}">${other.toUpperCase()}</a>` : '<span class="language-note" title="This page is available in English">EN</span>'

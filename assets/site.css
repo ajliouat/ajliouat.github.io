@@ -312,7 +312,7 @@ main pre, main .code-block { max-width: 100%; }
 .post-excerpt { line-height: 1.75; }
 html[data-theme='dark'] .lang-toggle { color: #e5e7eb; background: #0f172a; }
 html[data-theme='dark'] .button-secondary { background: #0f172a; }
-@media (max-width: 800px) {
+@media (max-width: 880px) {
   .nav-inner { flex-wrap: wrap; column-gap: 1rem; }
   .nav-brand { flex: 1 1 auto; }
   .nav-toggles { margin-left: auto; }
