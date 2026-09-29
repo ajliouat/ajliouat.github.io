@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-09-29T08:53:16+02:00",
+  "feedUpdated": "2026-09-29T09:55:50+02:00",
   "pages": [
     {
       "path": "index.html",
@@ -200,10 +200,10 @@
       "path": "blog/gemini-live-stop-tool-call-cancellation.html",
       "section": "blog",
       "title": "What “stop” does to an in-flight tool call on Gemini 3.8 Live | Abdeljalil Jliouat",
-      "description": "Eighteen recorded Gemini 3.8 Live sessions: no tool-call cancellation arrived for a pending booking, and BLOCKING mode booked twice. Method, timings and limits.",
+      "description": "Thirty Gemini 3.8 Live sessions, with text and speech: no tool-call cancellation arrived for a pending booking, and BLOCKING mode booked twice. Method, timings, limits.",
       "article": true,
       "headline": "What “stop” does to an in-flight tool call on Gemini 3.8 Live",
-      "updated": "2026-09-29T08:53:16+02:00",
+      "updated": "2026-09-29T09:55:50+02:00",
       "year": "2026"
     }
   ]

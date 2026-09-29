@@ -46,7 +46,7 @@
     "communities.notes_title": "Field notes",
     "communities.notes_intro": "Related articles on this site, with the full method and its limits.",
     "communities.note_live_stop_title": "What “stop” does to an in-flight tool call on Gemini 3.8 Live",
-    "communities.note_live_stop_summary": "A measured test of the Gemini Live API: no cancellation arrived for a pending tool call in 18 sessions, and BLOCKING mode booked twice."
+    "communities.note_live_stop_summary": "A measured test of the Gemini Live API: in 30 sessions, with text and speech, no cancellation arrived for a pending tool call, and BLOCKING mode booked twice."
   },
   "fr": {
     "experience.present": "aujourd’hui",
@@ -95,7 +95,7 @@
     "communities.notes_title": "Notes de terrain",
     "communities.notes_intro": "Articles de ce site liés à ces communautés, avec la méthode complète et ses limites.",
     "communities.note_live_stop_title": "Ce que « stop » fait à un appel d’outil en cours sur Gemini 3.8 Live (en anglais)",
-    "communities.note_live_stop_summary": "Un test mesuré de l’API Gemini Live : en 18 sessions, aucune annulation n’est arrivée pour un appel d’outil en cours, et le mode BLOCKING a réservé deux fois."
+    "communities.note_live_stop_summary": "Un test mesuré de l’API Gemini Live : en 30 sessions, en texte et en parole, aucune annulation n’est arrivée pour un appel d’outil en cours, et le mode BLOCKING a réservé deux fois."
   },
   "articles": {
     "writing-cuda-kernels-for-transformer-inference": {
@@ -155,7 +155,7 @@
     },
     "gemini-live-stop-tool-call-cancellation": {
       "title": "Ce que « stop » fait à un appel d’outil en cours sur Gemini 3.8 Live",
-      "summary": "Dix-huit sessions Gemini 3.8 Live enregistrées : aucune annulation n’est arrivée pour un appel d’outil en cours, et le mode BLOCKING a réservé deux fois. Méthode, mesures et limites.",
+      "summary": "Trente sessions Gemini 3.8 Live, en texte et en parole : aucune annulation n’est arrivée pour un appel d’outil en cours, et le mode BLOCKING a réservé deux fois. Méthode, mesures et limites.",
       "topic": "Calcul et inférence"
     }
   }
