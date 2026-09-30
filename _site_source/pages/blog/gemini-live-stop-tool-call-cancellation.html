@@ -298,12 +298,17 @@
       display: block;
     }
 
-    .post-figure img {
+    .post-figure img,
+    .post-figure video {
       display: block;
       width: 100%;
       height: auto;
       border: 1px solid var(--border);
       border-radius: 0.6rem;
+    }
+
+    .post-figure video {
+      aspect-ratio: 16 / 9;
     }
 
     .post-figure figcaption {
@@ -441,6 +446,11 @@ sequenceDiagram
       <p><strong>Speech onset was reported early.</strong> In the nine runs of A, C and D, the server sent <code>voiceActivity</code> <code>ACTIVITY_START</code> 139 to 154 ms after the stop clip began; in the first run of A, at 5273 ms for a clip started at 5123 ms. In C and D, <code>interrupted</code> arrived 139 to 152 ms after the stop clip began, within a millisecond of that onset message. In A, with the call pending, no <code>interrupted</code> arrived, as with text.</p>
       <p><strong>With a 2.2 s stop, the answer came after the commit.</strong> The end-of-speech signal and the input transcript of the stop arrived 1.2 to 1.3 s after the clip ended; in the first run of A, <code>ACTIVITY_END</code> at 8604 ms and the transcript at 8603 ms. The model answered at 9.1 to 9.2 s, after the fake service had committed (8.07 to 8.12 s) and after the tool response. With speech and a 4 s service, “the booking was already made” was therefore true when said, in 3 of 3 A runs. In D, with the stop after the commit, the model’s statement was also correct. Whether the model would say it before the commit with a slower service was not tested.</p>
       <p><strong>BLOCKING with speech: one double booking, and two runs where the model said nothing was booked.</strong> In run 2 of C, a second <code>book_slot</code> call arrived at 8835 ms, the second booking committed at 12836 ms, and the model then said the booking was already made. In runs 1 and 3, one booking committed, at 8083 and 8123 ms, and a tool response reporting it as booked was sent at 8090 and 8124 ms. The model then said “I have not booked the slot. It has been canceled as requested.” (8715 ms) and “I’ve stopped the process, and the booking booking was not made.” (8916 ms, transcript verbatim). The booking existed in both cases, and no cancellation message preceded either sentence.</p>
+      <p>C was run three more times with speech on 30 September to capture the model’s own audio: one run double-booked again, and two committed once while the model said the booking was not made. The clip below is the first of those runs, with the model’s reply arriving 1.3 s after the commit and 1.2 s after the tool response that reported the slot as booked.</p>
+      <figure class="post-figure">
+        <video controls preload="none" playsinline poster="/assets/gemini-live-stop-test-C1-poster.jpg" width="1280" height="720"><source src="/assets/gemini-live-stop-test-C1.mp4" type="video/mp4"></video>
+        <figcaption>Run 1 of a speech re-run of scenario C (30 September), real time. The user says stop at 5.2 s, the fake service commits at 8.2 s, the model then says the booking was not made. Audio: the synthesized user speech as sent and the model’s own output.</figcaption>
+      </figure>
       <p><strong>A stop 0.3 s after the request did not get its own turn.</strong> In F, the stop clip started 0.3 s after the booking clip ended. The server reported no separate speech onset for it: voice activity ended once, after the stop clip, and the input transcript contained both sentences as one utterance. <code>book_slot</code> arrived at that point, about 3.5 s after the stop clip began, in 3 of 3 runs (text: 2 of 3). The booking committed, and the model then said it was already made.</p>
 
       <h2 id="application">Keep the commit decision in the application</h2>

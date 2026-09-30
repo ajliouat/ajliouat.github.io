@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-09-29T09:55:50+02:00",
+  "feedUpdated": "2026-09-30T22:30:20+02:00",
   "pages": [
     {
       "path": "index.html",
@@ -203,7 +203,7 @@
       "description": "Thirty Gemini 3.8 Live sessions, with text and speech: no tool-call cancellation arrived for a pending booking, and BLOCKING mode booked twice. Method, timings, limits.",
       "article": true,
       "headline": "What “stop” does to an in-flight tool call on Gemini 3.8 Live",
-      "updated": "2026-09-29T09:55:50+02:00",
+      "updated": "2026-09-30T22:30:20+02:00",
       "year": "2026"
     }
   ]

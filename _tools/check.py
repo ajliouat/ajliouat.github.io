@@ -93,7 +93,7 @@ for file, page in scanned.items():
     current = SITE + '/' + str(file.relative_to(ROOT))
     refs = []
     for tag, attrs in page.elements:
-        for key in ['href', 'src']:
+        for key in ['href', 'src', 'poster']:
             if attrs.get(key):
                 refs.append(attrs[key])
         for entry in attrs.get('srcset', '').split(','):
