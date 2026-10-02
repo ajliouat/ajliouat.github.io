@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-09-30T22:30:20+02:00",
+  "feedUpdated": "2026-10-01T09:28:11+02:00",
   "pages": [
     {
       "path": "index.html",
@@ -204,6 +204,16 @@
       "article": true,
       "headline": "What “stop” does to an in-flight tool call on Gemini 3.8 Live",
       "updated": "2026-09-30T22:30:20+02:00",
+      "year": "2026"
+    },
+    {
+      "path": "blog/gemini-live-commit-guard.html",
+      "section": "blog",
+      "title": "Making “stop” work on Gemini 3.8 Live: a client-side commit guard, measured | Abdeljalil Jliouat",
+      "description": "A client-side guard for in-flight tool calls on Gemini 3.8 Live, tested with speech: bookings after “stop” fell from 12 of 12 runs to 0 of 12. Design, ablations, limits.",
+      "article": true,
+      "headline": "Making “stop” work on Gemini 3.8 Live: a client-side commit guard, measured",
+      "updated": "2026-10-01T09:28:11+02:00",
       "year": "2026"
     }
   ]

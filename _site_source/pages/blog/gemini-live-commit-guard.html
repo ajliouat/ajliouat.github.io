@@ -1,0 +1,469 @@
+<style>
+
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    .post-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 12px;
+    }
+
+    .post-body th, .post-body td {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .post-body th {
+      background: rgba(148, 163, 184, 0.08);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 11px;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+      border-radius: 0.75rem;
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+    }
+
+    .mermaid svg {
+      min-width: 540px;
+    }
+
+    .post-figure {
+      margin: 1.5rem 0 1.75rem;
+    }
+
+    .post-figure a {
+      display: block;
+    }
+
+    .post-figure img,
+    .post-figure video {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 0.6rem;
+    }
+
+    .post-figure video {
+      aspect-ratio: 16 / 9;
+    }
+
+    .post-figure figcaption {
+      margin-top: 0.6rem;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .site-footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .site-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .site-footer-brand {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 12px;
+    }
+
+    .site-footer-right a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+
+</style>
+<main class="page">
+    <section class="section-header">
+      <div class="section-badge">LLM systems · Real-time tool calls</div>
+      <h1 class="section-title">Making “stop” work on Gemini 3.8 Live: a client-side commit guard, measured</h1>
+      <p class="section-subtitle">Part two of the stop test. A small guard in the application holds the irreversible step of a tool call until it knows what the user said. With speech input, bookings made after “stop” went from 12 of 12 runs to 0 of 12.</p>
+      <div class="post-meta">Field test · 1 October 2026</div>
+    </section>
+    <section class="toc"><div class="toc-title">On this page</div><ul>
+      <li><a href="#part-one">Where part one left off</a></li>
+      <li><a href="#design">The design</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#ablations">Ablations</a></li>
+      <li><a href="#caution">A caution for client implementers</a></li>
+      <li><a href="#limits">Limits</a></li>
+      <li><a href="#sources">Sources, code and data</a></li>
+    </ul></section>
+    <section class="post-body">
+      <h2 id="part-one">Where part one left off: the client is on its own</h2>
+      <p>In <a href="/blog/gemini-live-stop-tool-call-cancellation.html">part one</a>, a scripted user asked a <code>gemini-3.8-live</code> assistant to book a slot through a tool, then said “stop” while the booking ran. No <code>toolCallCancellation</code> ever arrived, with text or with speech. The model’s statements about the booking were not reliable: with text it said the booking was already made before it was, and in BLOCKING mode with speech it said nothing was booked after a tool response reporting the booking. BLOCKING mode also booked twice. The fix has to live in the application, which holds the call id and runs the job.</p>
+
+      <h2 id="design">Four behaviors around a two-phase service</h2>
+      <p>The guard, <code>commit_guard.py</code>, sits in the application’s receive loop and sees every server message. It needs a service it can stop: <code>prepare()</code> does the slow, reversible part (here a wait standing in for an availability check and a hold), then either <code>commit()</code> performs the irreversible side effect or <code>cancel()</code> releases the job. The guard decides which of the two runs, and when.</p>
+      <p><strong>Hold on speech onset.</strong> In part one, the earliest sign of a spoken stop was <code>voiceActivity</code> <code>ACTIVITY_START</code>, about 150 ms in. After <code>prepare()</code>, the guard waits a 1.5 s grace window and commits only if no user utterance is open. If the user speaks while a job is pending, the commit waits for that utterance’s transcript, and a keyword check (stop, cancel, don’t, wait and a few others) decides. The utterance that triggered the call is checked too, because a quick stop can reach the server merged with the request. With no transcript within 3 s, the default is to cancel. This answers the missing cancellation.</p>
+      <p><strong>Deduplicate by business key.</strong> The key is the tool name plus the arguments reduced to what they mean: for <code>book_slot</code>, a day and a 24-hour time, <code>tomorrow 15:00</code>. A matching call within 30 s gets the existing job’s result and is never executed. An idempotency key built from the raw arguments would have missed: in one guarded BLOCKING run the first call said <code>tomorrow at 3pm</code> and the re-issue, with a new call id, <code>tomorrow 3pm</code>. Two of the seven re-issues in this test changed the wording. A real application would key on the resolved date-time or slot id. This answers the double booking.</p>
+      <p><strong>Authoritative status note.</strong> After a cancel, or a commit that happened despite a stop, the guard sends the model a short user turn with <code>send_client_content</code> and <code>turn_complete=True</code>: “System note: the booking for tomorrow 3pm was cancelled before it was committed. Nothing is scheduled.” The <code>FunctionResponse</code> still carries the real status. This answers the unreliable statements.</p>
+      <p><strong>Abandoned BLOCKING calls.</strong> In part one, after <code>interrupted</code> arrived during a pending BLOCKING call, the model acted as if the call no longer existed: it re-issued it, or ignored the response that reported the booking. The guard marks such a call abandoned, holds its commit and does not answer the dead id. Deduplication answers a re-issue, on its live id, with the existing job’s status. This answers both BLOCKING failures.</p>
+      <div class="mermaid-block">
+        <div class="code-label">Scenario A with the guard on, run 3</div>
+        <div class="mermaid">%%{init: {"sequence": {"width": 100, "actorMargin": 30, "messageMargin": 28, "noteMargin": 8, "boxMargin": 6, "mirrorActors": false}}}%%
+sequenceDiagram
+  participant U as User
+  participant G as App and&lt;br/&gt;guard
+  participant L as Live API
+  participant B as Booking&lt;br/&gt;service
+  U->>G: "Book me&lt;br/&gt;the 3pm slot"
+  G->>L: audio
+  L->>G: toolCall&lt;br/&gt;book_slot (id)
+  G->>B: prepare (4 s)
+  U->>G: "Actually, stop"&lt;br/&gt;(call + 1 s)
+  G->>L: audio
+  L->>G: voiceActivity START&lt;br/&gt;(stop + 147 ms)
+  Note over G: hold, utterance open
+  B->>G: prepared&lt;br/&gt;(call + 4 s)
+  L->>G: input transcript&lt;br/&gt;(stop + 3.48 s)
+  G->>B: cancel
+  G->>L: toolResponse&lt;br/&gt;(cancelled)
+  G->>L: status note
+  L->>G: "The booking was cancelled,&lt;br/&gt;so nothing is scheduled."&lt;br/&gt;(note + 0.81 s)</div>
+      </div>
+
+      <h2 id="results">Unwanted bookings: 12 of 12 without the guard, 0 of 12 with it</h2>
+      <p>The harness reuses part one’s setup: <code>gemini-3.8-live</code> on the AI Studio endpoint, <code>google-genai</code> 2.25.0, the same prompt and synthesized speech clips streamed in real time; the stop clip lasts 2.2 s. With the guard off, the service prepares and commits at once. On 1 October 2026, each scenario ran three times off and three times on. A: default mode, stop 1.0 s after the call, 4 s prepare. C: the same in BLOCKING mode. G2: a follow-up question makes the model speak while the call is pending, the stop comes 1 s into that speech, 7 s prepare. F: stop 0.3 s after the request ends, before any call, 4 s prepare. As in part one, no <code>toolCallCancellation</code> arrived in any of the 36 sessions.</p>
+      <figure class="post-figure">
+        <a href="/assets/gemini-live-commit-guard-before-after-1600.webp"><img src="/assets/gemini-live-commit-guard-before-after-1600.webp" srcset="/assets/gemini-live-commit-guard-before-after-800.webp 800w, /assets/gemini-live-commit-guard-before-after-1600.webp 1600w" sizes="(max-width: 720px) calc(100vw - 2.5rem), 672px" width="1600" height="900" loading="lazy" decoding="async" alt="Dot matrix, one dot per run: with the guard off, a booking was committed after the stop in 3 of 3 runs of A, C, G2 and F, and C booked twice in 2 of 3; with the guard on, 0 of 3 everywhere. Without the status note, the first reply matched the booking state in 0 of 3 runs of A, 3 of 3 of C and 0 of 3 of G2; with the full guard, 3 of 3 each."></a>
+        <figcaption>One dot per run. Left: a booking committed after the stop clip had started, and C runs with two bookings. Right: the model’s first claim after the stop matched the service, with only the status note switched off, against the full guard. Data: <code>results/summary.md</code>.</figcaption>
+      </figure>
+      <table><thead><tr><th>Scenario</th><th>Unwanted commit, off → on</th><th>Double booking, off → on</th><th>Statement consistent, on</th></tr></thead><tbody>
+        <tr><td>A, default mode</td><td>3/3 → 0/3</td><td>0/3 → 0/3</td><td>3/3</td></tr>
+        <tr><td>C, BLOCKING</td><td>3/3 → 0/3</td><td>2/3 → 0/3</td><td>3/3</td></tr>
+        <tr><td>G2, model speaking</td><td>3/3 → 0/3</td><td>0/3 → 0/3</td><td>3/3</td></tr>
+        <tr><td>F, stop before the call</td><td>3/3 → 0/3</td><td>0/3 → 0/3</td><td>3/3</td></tr>
+      </tbody></table>
+      <p>“Statement consistent” compares the transcript after the stop with the fake service. It flatters the guard-off runs, where “already made” was true, even when C booked twice. With the guard on, first and last claims were right in all 12 runs.</p>
+      <p>The hold prevented all 12 unwanted commits, in three ways. In A and C, the stop transcript arrived before the grace window ran out, so the window alone would have sufficed. In G2, it arrived 0.67 s after the window had ended: only the hold on the open utterance kept the commit back. In F, the check on the triggering utterance cancelled the job during <code>prepare()</code>.</p>
+      <p><strong>The decision comes about 3.5 s after the user starts saying stop</strong>: 3.46 to 3.51 s in A, C and G2, up to 3.83 s in F. That is the 2.2 s utterance plus the transcript, which arrived in one chunk with <code>ACTIVITY_END</code>, 1.26 to 1.31 s after the audio ended; no interim transcription arrived. The hold covers that gap from the onset on.</p>
+
+      <h2 id="ablations">The hold protects the booking, the note protects the sentence</h2>
+      <p>I ran two ablations the same morning, three runs each, with the guard’s runtime code unchanged.</p>
+      <p><strong>Without the status note</strong>, the hold still prevented every commit. In A and G2, both in the default mode, the <code>FunctionResponse</code> saying <code>cancelled</code> went out 0.32 to 0.46 s before the model’s first words in A, and within 61 ms of them in G2. The first reply was false in all six runs. In A run 3, the model said “The booking was already made and cannot be canceled.”, then “I have stopped the process, and the slot was not booked.” In G2 run 2: “It’s too late; the booking was already made.”, then “Actually, the booking was cancelled and was never made.” Each correction began 2.4 to 4.8 s after the false reply. In C, the model re-issued the call in 3 of 3 runs, deduplication answered each new id with <code>cancelled</code>, and all three first replies were right: a response on a live BLOCKING call carried the status.</p>
+      <p><strong>Without the hold and without abandon handling</strong>, which would otherwise hold a BLOCKING commit by itself, the commit in C went through in 3 of 3 runs. The guard’s note followed the stop transcript: “System note: booking BK-1001 for tomorrow 3pm is confirmed. The user asked to stop after it was committed. Tell them it is confirmed and offer to cancel it.” All three replies matched the committed state and offered to cancel; in run 1 the model said “The booking was already confirmed. Should I go ahead and cancel it for you?” The 12 guard-off sessions offered to cancel 0 times.</p>
+      <p>The two halves are separate. The hold protects the side effect; the note protects what the user is told. A tool response alone did neither: it cannot undo a commit, and in the default mode the model’s first reply contradicted it.</p>
+
+      <h2 id="caution">A status note can cut a reply in half</h2>
+      <p>The note is a full user turn, and the <a href="https://ai.google.dev/gemini-api/docs/live-guide">Live guide</a> says that <code>turn_complete=true</code> “unconditionally interrupts generation”. The model is often already answering the stop when the guard decides: in 8 of the 12 full-guard runs, <code>interrupted</code> arrived 12 to 78 ms after the note. In C run 3 the reply was split across two turns, “I have not” and “booked that slot for you.” Joined, the transcript is right. But none of the first turn’s audio had arrived, and a client that drops queued audio on <code>interrupted</code>, as Live clients do to stop talking over the user, would play only “booked that slot for you.”, the opposite of what happened. Two options, neither tested: send the note only while the model is idle, or carry the status in a <code>FunctionResponse</code> with a scheduling mode.</p>
+
+      <h2 id="limits">What this test does not establish</h2>
+      <ul>
+        <li>The service is a fake: <code>prepare()</code> is a sleep and <code>cancel()</code> always succeeds. A real backend needs its own reservation, expiry and idempotency. The grace window adds 1.5 s to every commit.</li>
+        <li>Speech was one synthetic voice, without noise or echo. With real microphones, <code>ACTIVITY_START</code> can fire on noise or on the model’s own audio; the guard would hold, then cancel without a transcript.</li>
+        <li>The intent check is a keyword list: “wait, make it 4pm” would cancel the booking.</li>
+        <li>One model, one prompt and the AI Studio endpoint; no Vertex AI, no session resumption.</li>
+        <li>N=3 per cell on one morning shows what can happen, not how often.</li>
+        <li>Consistency is scored on transcripts, with rules tuned on 51 statements from this prompt. What a listener hears was not verified.</li>
+      </ul>
+      <p>Most of this guard replaces signals the API does not send. A server-side cancellation for pending calls, or a documented signal that a BLOCKING call was dropped, would make most of it unnecessary.</p>
+
+      <h2 id="sources">Sources, code and raw data</h2>
+      <p>The guard, the harness, the raw JSONL timelines and <code>results/summary.md</code> are in <a href="https://github.com/frontier-on-cloud/gemini-live-commit-guard/tree/20330de">frontier-on-cloud/gemini-live-commit-guard</a> at commit <code>20330de</code>. <code>./run_guard.sh</code> reruns the 24 before/after sessions with your own API key. Part one’s harness and data are in <a href="https://github.com/frontier-on-cloud/gemini-live-stop-test">frontier-on-cloud/gemini-live-stop-test</a>. Documentation: the <a href="https://ai.google.dev/api/live">Live API reference</a>, the <a href="https://ai.google.dev/gemini-api/docs/live-tools">Live API tool use guide</a>, the <a href="https://ai.google.dev/gemini-api/docs/live-guide">Live guide</a> and the <a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live">Gemini 3.8 Live model page</a>.</p>
+      <p>An AI coding agent wrote the guard and the harness under my direction; I am responsible for the design and for the claims in this article.</p>
+      <p><a href="/communities.html">About the Frontier communities →</a></p>
+    </section>
+  </main>
