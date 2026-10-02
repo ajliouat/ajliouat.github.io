@@ -405,7 +405,7 @@
       <div class="section-badge">LLM systems · Real-time tool calls</div>
       <h1 class="section-title">Making “stop” work on Gemini 3.8 Live: a client-side commit guard, measured</h1>
       <p class="section-subtitle">Part two of the stop test. A small guard in the application holds the irreversible step of a tool call until it knows what the user said. With speech input, bookings made after “stop” went from 12 of 12 runs to 0 of 12.</p>
-      <div class="post-meta">Field test · 1 October 2026 · 8 min read</div>
+      <div class="post-meta">Field test · 1 October 2026 · 9 min read</div>
     </section>
     <section class="toc"><div class="toc-title">On this page</div><ul>
       <li><a href="#part-one">Where part one left off</a></li>
@@ -452,6 +452,11 @@ sequenceDiagram
 
       <h2 id="results">Unwanted bookings: 12 of 12 without the guard, 0 of 12 with it</h2>
       <p>The harness reuses part one’s setup: <code>gemini-3.8-live</code> on the AI Studio endpoint, <code>google-genai</code> 2.25.0, the same prompt and synthesized speech clips streamed in real time; the stop clip lasts 2.2 s. With the guard off, the service prepares and commits at once. On 1 October 2026, each scenario ran three times off and three times on. A: default mode, stop 1.0 s after the call, 4 s prepare. C: the same in BLOCKING mode. G2: a follow-up question makes the model speak while the call is pending, the stop comes 1 s into that speech, 7 s prepare. F: stop 0.3 s after the request ends, before any call, 4 s prepare. As in part one, no <code>toolCallCancellation</code> arrived in any of the 36 sessions.</p>
+      <figure class="post-figure">
+        <video controls preload="none" playsinline poster="/assets/gemini-live-commit-guard-before-after-poster.jpg" width="1280" height="720"><source src="/assets/gemini-live-commit-guard-before-after.mp4" type="video/mp4"></video>
+        <figcaption>Scenario C with speech, real time, without and with the guard. Without it, the booking commits and the model says it was not made. With it, the commit is held, the stop transcript cancels it, and the model says nothing is scheduled. The second half is one session recorded on 2 October for this clip and is not counted in the tables. Audio: the synthesized user speech as sent and the model’s own output.</figcaption>
+      </figure>
+
       <figure class="post-figure">
         <a href="/assets/gemini-live-commit-guard-before-after-1600.webp"><img src="/assets/gemini-live-commit-guard-before-after-1600.webp" srcset="/assets/gemini-live-commit-guard-before-after-800.webp 800w, /assets/gemini-live-commit-guard-before-after-1600.webp 1600w" sizes="(max-width: 720px) calc(100vw - 2.5rem), 672px" width="1600" height="900" loading="lazy" decoding="async" alt="Dot matrix, one dot per run: with the guard off, a booking was committed after the stop in 3 of 3 runs of A, C, G2 and F, and C booked twice in 2 of 3; with the guard on, 0 of 3 everywhere. Without the status note, the first reply matched the booking state in 0 of 3 runs of A, 3 of 3 of C and 0 of 3 of G2; with the full guard, 3 of 3 each."></a>
         <figcaption>One dot per run. Left: a booking committed after the stop clip had started, and C runs with two bookings. Right: the model’s first claim after the stop matched the service, with only the status note switched off, against the full guard. Data: <code>results/summary.md</code>.</figcaption>
