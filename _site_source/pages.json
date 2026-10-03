@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-10-01T09:28:11+02:00",
+  "feedUpdated": "2026-10-03T12:48:04+02:00",
   "pages": [
     {
       "path": "index.html",
@@ -214,6 +214,16 @@
       "article": true,
       "headline": "Making “stop” work on Gemini 3.8 Live: a client-side commit guard, measured",
       "updated": "2026-10-01T09:28:11+02:00",
+      "year": "2026"
+    },
+    {
+      "path": "blog/gemini-live-session-resumption.html",
+      "section": "blog",
+      "title": "When the connection drops mid-booking: session resumption on Gemini Live, measured | Abdeljalil Jliouat",
+      "description": "A pending tool call survives a working resume on Gemini 3.8 Live, but after a silent loss every resume was refused for 15 minutes. A client-side recovery, measured.",
+      "article": true,
+      "headline": "When the connection drops mid-booking: session resumption on Gemini Live, measured",
+      "updated": "2026-10-03T12:48:04+02:00",
       "year": "2026"
     }
   ]

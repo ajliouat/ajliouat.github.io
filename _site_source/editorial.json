@@ -48,7 +48,9 @@
     "communities.note_live_stop_title": "What “stop” does to an in-flight tool call on Gemini 3.8 Live",
     "communities.note_live_stop_summary": "A measured test of the Gemini Live API: in 30 sessions, with text and speech, no cancellation arrived for a pending tool call, and BLOCKING mode booked twice.",
     "communities.note_commit_guard_title": "Making “stop” work on Gemini 3.8 Live: a client-side commit guard, measured",
-    "communities.note_commit_guard_summary": "Part two: a client-side guard holds the irreversible step of a tool call until it knows what the user said. With speech input, bookings after “stop” fell from 12 of 12 runs to 0 of 12."
+    "communities.note_commit_guard_summary": "Part two: a client-side guard holds the irreversible step of a tool call until it knows what the user said. With speech input, bookings after “stop” fell from 12 of 12 runs to 0 of 12.",
+    "communities.note_resumption_title": "When the connection drops mid-booking: session resumption on Gemini Live, measured",
+    "communities.note_resumption_summary": "Part three: a pending tool call survives a resume that works, but after a silent loss every resume was refused for 15 minutes. A client-side fallback told the user 6 to 7 s after the loss."
   },
   "fr": {
     "experience.present": "aujourd’hui",
@@ -99,7 +101,9 @@
     "communities.note_live_stop_title": "Ce que « stop » fait à un appel d’outil en cours sur Gemini 3.8 Live (en anglais)",
     "communities.note_live_stop_summary": "Un test mesuré de l’API Gemini Live : en 30 sessions, en texte et en parole, aucune annulation n’est arrivée pour un appel d’outil en cours, et le mode BLOCKING a réservé deux fois.",
     "communities.note_commit_guard_title": "Faire fonctionner « stop » sur Gemini 3.8 Live : un garde-fou côté client, mesuré (en anglais)",
-    "communities.note_commit_guard_summary": "Deuxième partie : un garde-fou côté client retient l’étape irréversible d’un appel d’outil jusqu’à savoir ce que l’utilisateur a dit. En parole, les réservations après « stop » passent de 12 sur 12 à 0 sur 12."
+    "communities.note_commit_guard_summary": "Deuxième partie : un garde-fou côté client retient l’étape irréversible d’un appel d’outil jusqu’à savoir ce que l’utilisateur a dit. En parole, les réservations après « stop » passent de 12 sur 12 à 0 sur 12.",
+    "communities.note_resumption_title": "Quand la connexion tombe en pleine réservation : la reprise de session sur Gemini Live, mesurée (en anglais)",
+    "communities.note_resumption_summary": "Troisième partie : un appel d’outil en attente survit à une reprise qui réussit, mais après une perte silencieuse, chaque reprise a été refusée pendant 15 minutes. Un repli côté client a informé l’utilisateur 6 à 7 s après la perte."
   },
   "articles": {
     "writing-cuda-kernels-for-transformer-inference": {
@@ -165,6 +169,11 @@
     "gemini-live-commit-guard": {
       "title": "Faire fonctionner « stop » sur Gemini 3.8 Live : un garde-fou côté client, mesuré",
       "summary": "Un garde-fou côté client pour les appels d’outil en cours sur Gemini 3.8 Live, testé en parole : les réservations après « stop » passent de 12 sur 12 à 0 sur 12. Conception, ablations et limites.",
+      "topic": "Calcul et inférence"
+    },
+    "gemini-live-session-resumption": {
+      "title": "Quand la connexion tombe en pleine réservation : la reprise de session sur Gemini Live, mesurée",
+      "summary": "Un appel d’outil en attente survit à une reprise qui réussit sur Gemini 3.8 Live, mais après une perte silencieuse, chaque reprise a été refusée pendant 15 minutes. Un repli côté client, mesuré : méthode, chiffres et limites.",
       "topic": "Calcul et inférence"
     }
   }

@@ -1,0 +1,465 @@
+<style>
+
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #f9fafb 0, #ffffff 52%, #f3f4f6 100%);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.18s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 1.5px;
+      transform: scaleX(0);
+      transform-origin: center;
+      background: linear-gradient(to right, #1d4ed8, #0ea5e9);
+      transition: transform 0.18s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link-active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-link-active::after {
+      transform: scaleX(1);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      background-color: #eff6ff;
+    }
+
+    .section-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #1d4ed8);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+    }
+
+    .section-title {
+      margin-top: 1rem;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      max-width: 540px;
+      margin: 0.75rem auto 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .post-meta {
+      margin-top: 1rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toc {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 0.9rem 1rem;
+      font-size: 13px;
+      margin-top: 2.2rem;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 0.5rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li + li {
+      margin-top: 0.25rem;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .post-body {
+      margin-top: 2.5rem;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .post-body p {
+      margin: 0 0 1rem;
+    }
+
+    .post-body h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 2rem 0 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-body ul {
+      margin: 0.5rem 0 1.5rem;
+      padding-left: 1.1rem;
+    }
+
+    .post-body li {
+      margin-bottom: 0.35rem;
+    }
+
+    .post-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 12px;
+    }
+
+    .post-body th, .post-body td {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .post-body th {
+      background: rgba(148, 163, 184, 0.08);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 11px;
+    }
+
+    pre {
+      margin: 1.5rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      background-color: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .code-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .mermaid-block {
+      margin: 1.75rem 0;
+      border-radius: 0.75rem;
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+    }
+
+    .mermaid-block .code-label {
+      margin-bottom: 0.4rem;
+    }
+
+    .mermaid {
+      margin: 0;
+    }
+
+    .mermaid svg {
+      min-width: 540px;
+    }
+
+    .post-figure {
+      margin: 1.5rem 0 1.75rem;
+    }
+
+    .post-figure a {
+      display: block;
+    }
+
+    .post-figure img,
+    .post-figure video {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 0.6rem;
+    }
+
+    .post-figure video {
+      aspect-ratio: 16 / 9;
+    }
+
+    .post-figure figcaption {
+      margin-top: 0.6rem;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .site-footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .site-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .site-footer-brand {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 12px;
+    }
+
+    .site-footer-right a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        font-size: 12px;
+      }
+
+      .page {
+        padding-inline: 1.25rem;
+        padding-top: 3rem;
+      }
+    }
+
+</style>
+<main class="page">
+    <section class="section-header">
+      <div class="section-badge">LLM systems · Real-time tool calls</div>
+      <h1 class="section-title">When the connection drops mid-booking: session resumption on Gemini Live, measured</h1>
+      <p class="section-subtitle">Part three of the Gemini Live field notes. A voice assistant loses its connection while a booking is pending. A resume that works keeps the call; after a silent loss, every resume was refused for 15 minutes, and only a new session got the truth to the user.</p>
+      <div class="post-meta">Field test · 3 October 2026</div>
+    </section>
+    <section class="toc"><div class="toc-title">On this page</div><ul>
+      <li><a href="#why">Why the connection matters</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#resume">What a resume keeps</a></li>
+      <li><a href="#lockout">The lockout after a silent loss</a></li>
+      <li><a href="#recovery">A client-side recovery</a></li>
+      <li><a href="#client">What a client must do</a></li>
+      <li><a href="#limits">Limits</a></li>
+      <li><a href="#sources">Sources, code and data</a></li>
+    </ul></section>
+    <section class="post-body">
+      <h2 id="why">After “stop”, the connection itself</h2>
+      <p>In <a href="/blog/gemini-live-stop-tool-call-cancellation.html">part one</a>, a user said “stop” while a <code>gemini-3.8-live</code> assistant was booking a slot, and no <code>toolCallCancellation</code> arrived. In <a href="/blog/gemini-live-commit-guard.html">part two</a>, a client-side guard held the irreversible step until the application knew what the user had said. Both assumed the WebSocket stayed up, which it does not on a phone leaving Wi-Fi range. The Live API offers session resumption for this, but its documentation does not say what happens to a tool call pending at the disconnect, how soon a resume can succeed, or which errors it returns.</p>
+
+      <h2 id="method">Four ways to lose a connection, 43 sessions</h2>
+      <p>The assistant is the one from parts one and two: <code>gemini-3.8-live</code> on the AI Studio endpoint, <code>google-genai</code> 2.25.0, session resumption on from the start. A synthesized voice says “Book me the 3pm slot tomorrow, please.”, the model calls <code>book_slot</code>, and a fake backend commits 4 s later (7 s when the model is speaking). The connection is lost before the result reaches the model; the client resumes if it can, sends the result and asks “Did you book it?”, and the answer is compared with the backend. The sessions ran on 2 and 3 October 2026.</p>
+      <table><thead><tr><th>Round</th><th>How the connection is lost</th><th>Sessions</th></tr></thead><tbody>
+        <tr><td>1</td><td>The client aborts its own TCP connection, so the server sees it close</td><td>17</td></tr>
+        <tr><td>2</td><td>An application-level freeze: a local proxy stops forwarding bytes and closes nothing</td><td>9</td></tr>
+        <tr><td>3</td><td>Real packet loss: iptables drops the flow both ways in a Linux container, nothing is closed</td><td>6</td></tr>
+        <tr><td>Stage 2</td><td>Round 3’s packet loss, with a client-side recovery</td><td>11</td></tr>
+      </tbody></table>
+      <p>The client detects a silent loss itself: a WebSocket ping every 0.5 s, and the link is lost after 2 s without a frame or a pong, which fired 1.5 to 2.0 s after the loss. The container ran on Colima started with <code>--network-address --network-preferred-route</code>, because its default network let a Mac process terminate Google’s TCP connection and keep acknowledging for a dead client.</p>
+
+      <h2 id="resume">What a resume keeps, and the 1011 right after an idle drop</h2>
+      <p><strong>A pending call survives a resume that works.</strong> In all 14 runs with a pending call and a successful resume, the resumed session accepted the <code>FunctionResponse</code> for the call id issued before the drop. No re-issued call, no <code>toolCallCancellation</code>, no error, one booking per run, and the call stayed answerable for as long as the session could be resumed: up to 154 s. The model only knows what the last tool response told it. In 3 of 3 runs where the client resumed but never sent the result, the model still said the booking was in progress, 2.9 to 3.1 s after the commit; in run 1, “I’m booking the 3 pm slot for you now.”</p>
+      <p><strong>The immediate resume after an idle drop is refused.</strong> When the client aborted its connection with the model idle, a resume sent at once was closed with <code>1011 Internal error encountered.</code> in 12 of 12 runs; one about 1.5 s after the drop worked in 12 of 12. With the model speaking at the drop, the immediate attempt worked in 3 of 3. That early 1011 is not a dead handle.</p>
+
+      <h2 id="lockout">After a silent loss, the session stays locked</h2>
+      <p>A silent loss is what a phone sees when it drops off Wi-Fi: packets stop, and no close frame, FIN or RST reaches the server. Round 3 dropped the live connection’s packets with iptables, while new connections passed.</p>
+      <figure class="post-figure">
+        <a href="/assets/gemini-live-resume-lockout-1600.webp"><img src="/assets/gemini-live-resume-lockout-1600.webp" srcset="/assets/gemini-live-resume-lockout-800.webp 800w, /assets/gemini-live-resume-lockout-1600.webp 1600w" sizes="(max-width: 720px) calc(100vw - 2.5rem), 672px" width="1600" height="900" loading="lazy" decoding="async" alt="Top: five runs with real packet loss on a log time axis up to 15 minutes. Every resume attempt, one every 10 s, is refused with 1011; the booking commits 1 to 3 s after the loss; the server's last TCP retransmission comes after about 2 minutes (model speaking) or 10 minutes (model idle); no resume is accepted. Bottom: four recovery runs. The loss is detected after 1.5 to 2 s, four resumes are refused in the window, a new session opens, and the model speaks 6.1 to 7.1 s after the loss, saying the booking is made in 4 of 4 runs."></a>
+        <figcaption>Top: the five round-3 runs where the old path never came back (B1, model idle; B2, speaking). Bottom: the four BR1 recovery runs. Data: <code>results/B1.jsonl</code>, <code>B2.jsonl</code>, <code>BR1.jsonl</code>.</figcaption>
+      </figure>
+      <p>In those five runs, 450 of 450 resume attempts, made at detection and then every 10 s, were refused with the same 1011 for as long as I tried: 15 minutes. None hung. With the model idle, the server sent nothing for 479 s: no WebSocket ping, no TCP keepalive. With unacknowledged data in flight, its TCP gave up retransmitting after about 2 minutes, and the session stayed locked anyway. Round 2’s freeze showed the same: 40 of 40 attempts refused up to 133 s, nothing in a 12.8-minute probe.</p>
+      <p>What unlocks the session is a close. When the path came back and the client closed the old connection, the next resume worked 0.5 to 0.6 s later (6 of 6, rounds 2 and 3). The path coming back was not enough (N=1): with the old connection open again, attempts were refused until the client closed it.</p>
+      <p>The common real case is the one where no close can arrive: a phone that moves from Wi-Fi to cellular gets a new address and never reaches the server on the old connection again. In every silent-loss run, the booking committed 1 to 3 s after the loss. Where the old path never came back, the booking was made and the user was never told. The repository has a minimal reproduction for a laptop, and the lockout is filed as <a href="https://github.com/google-gemini/gemini-live-api-examples/issues/60">issue 60</a> on Google’s Live API examples repository.</p>
+
+      <h2 id="recovery">A client-side recovery: four steps, the user told 6 to 7 s after the loss</h2>
+      <p><code>recovery.py</code> is a reference pattern for that case.</p>
+      <ul>
+        <li><strong>Detect</strong> the loss with the ping rule above.</li>
+        <li><strong>Resume briefly:</strong> one attempt at detection, then one per second, none after 4 s, with a close queued on the old socket.</li>
+        <li><strong>Fall back</strong> to a new session without a handle and send one <code>send_client_content</code>: the last turns of the client’s own transcript, then a “System note” with one status line per side effect, from the backend, not the model. The old call id is never answered.</li>
+        <li><strong>Deduplicate:</strong> a <code>book_slot</code> issued again is matched by business key and answered from the existing job.</li>
+      </ul>
+      <p>In 9 of 9 recovered runs, the answer to “Did you book it?” matched the backend, with one booking each. The resume window never helped: 36 of 36 attempts were refused. With the status note, the model’s first sentence already said the booking was made, for example “Of course, your 3:00 p.m. slot for tomorrow has been successfully booked.”, and it never re-issued the call (0 of 7). From the loss to the new session’s first audio took 6.1 to 7.1 s, of which the resume window, useless on a dead path, took 3.55 to 3.6 s. The queued close never left the client. A plain resume loop without the fallback got 118 refusals out of 118 in 60 s and never told the user (N=2).</p>
+      <figure class="post-figure">
+        <video controls preload="none" playsinline poster="/assets/gemini-live-resume-lockout-recovery-poster.jpg" width="1280" height="720"><source src="/assets/gemini-live-resume-lockout-recovery.mp4" type="video/mp4"></video>
+        <figcaption>Without recovery (B1 run 1): the booking commits, every resume is refused, and the clip skips the next 14 min 39 s, which are not shown. With recovery: one BR1 session recorded on 3 October for this clip, not counted above. Four refusals, a new session with the note, and the model’s own voice; its first reply stops playing when the user speaks. Audio: the synthesized user speech as sent and the model’s output.</figcaption>
+      </figure>
+      <p><strong>Without the note, only the dedupe prevented a double booking.</strong> In 2 of 2 runs that restored only the transcript, the model first re-issued <code>book_slot</code>, with a new id. The client matched the business key and answered from the committed job, so there was still one booking, but the model then said “I’m booking the 3:00 p.m. slot tomorrow for you.”, 3.6 to 3.8 s after the commit.</p>
+
+      <h2 id="client">What a client must do</h2>
+      <p>These follow from what I measured; they are not guarantees from the API.</p>
+      <ul>
+        <li>Keep a ledger of tool calls by call id across connections. After a resume, send the result for the old id, even if the side effect finished during the gap.</li>
+        <li>Retry a refused resume after an idle drop: the 1011 cleared in about 1.5 s. Keep the handle you have; only one arrives per connection.</li>
+        <li>Detect the loss yourself with pings; a healthy idle connection is silent for seconds.</li>
+        <li>Get a close to the server when you can. If the path comes back, close the old connection before resuming.</li>
+        <li>Put a short cut-off on resuming and fall back to a new session.</li>
+        <li>In the new session, restore each side effect’s status from the backend and deduplicate by business key.</li>
+        <li>Do not count on transparent mode or <code>goAway</code>: the SDK refuses <code>transparent</code> on the Gemini Developer API, and no <code>goAway</code> arrived in any session.</li>
+      </ul>
+
+      <h2 id="limits">What this test does not establish</h2>
+      <ul>
+        <li>One endpoint: the Gemini Developer API through AI Studio, not Vertex AI (now Gemini Enterprise Agent Platform), whose documentation describes a transparent resumption mode.</li>
+        <li>Synthetic speech, one macOS voice, and a fake in-process backend.</li>
+        <li>Small N: 1 to 4 runs per scenario, one model, one network path, two days. It shows what can happen, not how often.</li>
+        <li>No real device. The loss was iptables in a container behind three packet-level NATs (Docker’s, Apple’s, the home router’s), not a phone changing networks; the server saw a dead peer either way.</li>
+        <li>One wording of the note, and the commit always landed inside the resume window.</li>
+        <li>Not tested: a path that comes back after the server’s own close, a second loss after a fallback, a new session opened in parallel with the resume attempts.</li>
+      </ul>
+
+      <h2 id="sources">Sources, code and raw data</h2>
+      <p>The harness, <code>recovery.py</code>, the raw JSONL timelines, <code>FINDINGS.md</code> with every table and verbatim transcript, and the minimal reproduction are in <a href="https://github.com/frontier-on-cloud/gemini-live-resume-test/tree/687b1af">frontier-on-cloud/gemini-live-resume-test</a> at commit <code>687b1af</code>; <code>make_figure.py</code> and <code>make_clip.py</code> in the same repository rebuild the figure and the clip from the JSONL. Google report: <a href="https://github.com/google-gemini/gemini-live-api-examples/issues/60">gemini-live-api-examples issue 60</a>. Documentation, read on 2 October 2026: <a href="https://ai.google.dev/gemini-api/docs/live-api/session-management">Session management with Live API</a>, the <a href="https://ai.google.dev/api/live">Live API reference</a>, <a href="https://ai.google.dev/gemini-api/docs/live-api/capabilities">Live API capabilities</a>, <a href="https://ai.google.dev/gemini-api/docs/live-api/tools">Tool use with Live API</a>, the <a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live">Gemini 3.8 Live model page</a>, and on Google Cloud, <a href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/live-api/start-manage-session">Start and manage live sessions</a> and <a href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/live-api/best-practices">Best practices with Gemini Live API</a>. The figure, the clip and the session recorded for it are at commit <a href="https://github.com/frontier-on-cloud/gemini-live-resume-test/tree/a2bc678">a2bc678</a>.</p>
+      <p>An AI coding agent wrote the harness under my direction; I am responsible for the design and for the claims in this article.</p>
+      <p><a href="/communities.html">About the Frontier communities →</a></p>
+    </section>
+  </main>
