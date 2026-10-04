@@ -34,8 +34,8 @@
     "home.neuro_link": "Explore NeuroLLM →",
     "home.quantum_link": "Explore QuantumGrid →",
     "communities.badge": "Communities",
-    "communities.title": "Frontier communities",
-    "communities.intro": "I run the Frontier communities, independent engineering communities on Reddit for assessing new cloud capabilities through tests, sourced analysis and discussion. They are not affiliated with Google, Amazon or Microsoft.",
+    "communities.title": "Frontier on Cloud",
+    "communities.intro": "I run Frontier on Cloud, independent engineering communities that test new cloud AI capabilities and publish the measurements, one community per cloud. They are not affiliated with Google, Amazon or Microsoft.",
     "communities.list_title": "One community per cloud",
     "communities.status_active": "Active",
     "communities.status_later": "Created, opening later",
@@ -50,7 +50,8 @@
     "communities.note_commit_guard_title": "Making “stop” work on Gemini 3.8 Live: a client-side commit guard, measured",
     "communities.note_commit_guard_summary": "Part two: a client-side guard holds the irreversible step of a tool call until it knows what the user said. With speech input, bookings after “stop” fell from 12 of 12 runs to 0 of 12.",
     "communities.note_resumption_title": "When the connection drops mid-booking: session resumption on Gemini Live, measured",
-    "communities.note_resumption_summary": "Part three: a pending tool call survives a resume that works, but after a silent loss every resume was refused for 15 minutes. A client-side fallback told the user 6 to 7 s after the loss."
+    "communities.note_resumption_summary": "Part three: a pending tool call survives a resume that works, but after a silent loss every resume was refused for 15 minutes. A client-side fallback told the user 6 to 7 s after the loss.",
+    "communities.home_note": "The communities’ home, with every test, its numbers and its commit:"
   },
   "fr": {
     "experience.present": "aujourd’hui",
@@ -87,8 +88,8 @@
     "home.neuro_link": "Explorer NeuroLLM en anglais →",
     "home.quantum_link": "Explorer QuantumGrid en anglais →",
     "communities.badge": "Communautés",
-    "communities.title": "Communautés Frontier",
-    "communities.intro": "J’anime les communautés Frontier, des communautés d’ingénierie indépendantes sur Reddit pour évaluer les nouvelles capacités du cloud par des tests, des analyses sourcées et des discussions. Elles ne sont affiliées ni à Google, ni à Amazon, ni à Microsoft.",
+    "communities.title": "Frontier on Cloud",
+    "communities.intro": "J’anime Frontier on Cloud, des communautés d’ingénierie indépendantes qui testent les nouvelles capacités d’IA du cloud et publient les mesures, une communauté par cloud. Elles ne sont affiliées ni à Google, ni à Amazon, ni à Microsoft.",
     "communities.list_title": "Une communauté par cloud",
     "communities.status_active": "Active",
     "communities.status_later": "Créée, ouverture ultérieure",
@@ -103,7 +104,8 @@
     "communities.note_commit_guard_title": "Faire fonctionner « stop » sur Gemini 3.8 Live : un garde-fou côté client, mesuré (en anglais)",
     "communities.note_commit_guard_summary": "Deuxième partie : un garde-fou côté client retient l’étape irréversible d’un appel d’outil jusqu’à savoir ce que l’utilisateur a dit. En parole, les réservations après « stop » passent de 12 sur 12 à 0 sur 12.",
     "communities.note_resumption_title": "Quand la connexion tombe en pleine réservation : la reprise de session sur Gemini Live, mesurée (en anglais)",
-    "communities.note_resumption_summary": "Troisième partie : un appel d’outil en attente survit à une reprise qui réussit, mais après une perte silencieuse, chaque reprise a été refusée pendant 15 minutes. Un repli côté client a informé l’utilisateur 6 à 7 s après la perte."
+    "communities.note_resumption_summary": "Troisième partie : un appel d’outil en attente survit à une reprise qui réussit, mais après une perte silencieuse, chaque reprise a été refusée pendant 15 minutes. Un repli côté client a informé l’utilisateur 6 à 7 s après la perte.",
+    "communities.home_note": "La maison des communautés, avec chaque test, ses chiffres et son commit :"
   },
   "articles": {
     "writing-cuda-kernels-for-transformer-inference": {

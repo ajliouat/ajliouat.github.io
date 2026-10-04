@@ -4,22 +4,27 @@
   var t = window.I18N.en
 
   t['about.badge'] = 'Profile'
-  t['about.title'] = 'Applied AI Scientist'
+  t['about.title'] =
+    'Senior Applied AI Engineer'
   t['about.subtitle'] =
     'Working at the intersection of model design, optimization, and deployment to take research-grade ideas into production.'
 
   t['about.short_title'] = 'Bio'
   t['about.short_p1'] =
-    'Machine learning engineer and AI founder with 10+ years building and scaling production AI across banking, tech startups, and NGOs. I work end to end, from strategy and productization to deployment at scale.'
+    'I build AI systems that companies can run in production and answer for.'
   t['about.short_p2'] =
-    'My focus is on GPU-level systems work (CUDA, Triton), language-grounded robotics, brain–computer interfaces, quantum optimization for energy, and the infrastructure to deploy these systems reliably.'
+    'I founded AKIOUD AI in Paris in 2024. We help organizations take AI into production and build the infrastructure that keeps it under control: Akios, an open-source runtime that sandboxes AI agents, and tooling for the evidence that the EU AI Act and GDPR require. I have spent 12 years in production machine learning, six of them at Société Générale, from data scientist to lead.'
+
+  t['about.short_p3'] =
+    'I work in the open. I run Frontier on Cloud, communities that publish measured, reproducible tests of cloud AI products, and I explore GPU kernels, language-grounded robotics, neural signal decoding and quantum optimization as open projects, each with its code and its limits.'
 
   t['about.interests_title'] = 'Interests'
   t['about.interests_body'] =
     'Applied AI, robotics, quantum AI, energy systems, brain–computer interfaces, and compute hardware.'
 
   t['about.profile_name'] = 'Abdeljalil Jliouat'
-  t['about.profile_role'] = 'Applied AI Scientist'
+  t['about.profile_role'] =
+    'Senior Applied AI Engineer'
 
   t['about.stack_title'] = 'Core stack'
   t['about.stack_python'] = 'Python'
@@ -82,6 +87,10 @@
     'Filed with INPI (Jan 2026, under examination).'
 
   t['about.community_title'] = 'Community & activities'
+  t['about.frontier_meta'] =
+    'Communities that publish measured, reproducible tests of cloud AI products, with the code and raw data for every test.'
+  t['about.frontier_title'] =
+    'Founder and maintainer, Frontier on Cloud'
   t['about.gdg_title'] = 'Member, Google Developer Group'
   t['about.gdg_meta'] =
     'Participating in Google Developer Group events and discussions around AI and developer tooling.'

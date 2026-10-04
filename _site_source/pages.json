@@ -15,11 +15,11 @@
     {
       "path": "about.html",
       "section": "about",
-      "title": "About Abdeljalil Jliouat — Applied AI Scientist",
-      "description": "Meet Abdeljalil Jliouat: applied AI scientist and founder with experience in production ML, GPU optimization, robotics and AI systems engineering.",
+      "title": "About Abdeljalil Jliouat — Senior Applied AI Engineer",
+      "description": "Abdeljalil Jliouat: senior applied AI engineer and founder of AKIOUD AI, with 12 years in production machine learning, open projects and the Frontier on Cloud communities.",
       "fr": {
         "title": "À propos — Abdeljalil Jliouat",
-        "description": "Parcours d’Abdeljalil Jliouat, chercheur en IA appliquée et fondateur : expérience, formation, projets et centres d’intérêt."
+        "description": "Parcours d’Abdeljalil Jliouat, ingénieur senior en IA appliquée et fondateur d’AKIOUD AI : douze ans d’IA en production, projets ouverts et communautés Frontier on Cloud."
       }
     },
     {
@@ -35,11 +35,11 @@
     {
       "path": "communities.html",
       "section": "communities",
-      "title": "Frontier communities — Abdeljalil Jliouat",
-      "description": "Independent engineering communities on Reddit for assessing new cloud capabilities on Google Cloud, AWS and Azure through tests, sourced analysis and discussion.",
+      "title": "Frontier on Cloud — Abdeljalil Jliouat",
+      "description": "Frontier on Cloud: independent engineering communities that test new cloud AI capabilities on Google Cloud, AWS and Azure and publish the measurements.",
       "fr": {
-        "title": "Communautés Frontier — Abdeljalil Jliouat",
-        "description": "Communautés d’ingénierie indépendantes sur Reddit pour évaluer les nouvelles capacités de Google Cloud, AWS et Azure par des tests, des analyses sourcées et des discussions."
+        "title": "Frontier on Cloud — Abdeljalil Jliouat",
+        "description": "Frontier on Cloud : des communautés d’ingénierie indépendantes qui testent les nouvelles capacités d’IA de Google Cloud, AWS et Azure et publient les mesures."
       }
     },
     {

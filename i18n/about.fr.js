@@ -4,22 +4,27 @@
   var t = window.I18N.fr
 
   t['about.badge'] = 'Profil'
-  t['about.title'] = 'Applied AI Scientist'
+  t['about.title'] =
+    'Senior Applied AI Engineer'
   t['about.subtitle'] =
     "Travail à l'intersection de la conception de modèles, de l'optimisation et du déploiement pour transformer des idées de recherche en systèmes mis en production."
 
   t['about.short_title'] = 'Bio'
   t['about.short_p1'] =
-    "Ingénieur en apprentissage automatique et fondateur en IA avec plus de 10 ans d'expérience dans la construction et la mise à l'échelle de systèmes d'IA en production pour la banque, les startups tech et les ONG. J'interviens de bout en bout, de la stratégie et la productisation jusqu'au déploiement à grande échelle."
+    'Je construis des systèmes d’IA que les entreprises peuvent exploiter en production et dont elles peuvent répondre.'
   t['about.short_p2'] =
-    "Mon travail se concentre sur les systèmes bas niveau GPU (CUDA, Triton), la robotique guidée par le langage, les interfaces cerveau–ordinateur, l'optimisation quantique pour l'énergie, et l'infrastructure nécessaire pour déployer ces systèmes de manière fiable."
+    'J’ai fondé AKIOUD AI à Paris en 2024. Nous aidons les organisations à mettre l’IA en production et nous construisons l’infrastructure qui la garde sous contrôle : Akios, un runtime open source qui isole les agents d’IA, et des outils pour produire les preuves qu’exigent l’AI Act européen et le RGPD. J’ai passé douze ans à faire de l’apprentissage automatique en production, dont six à la Société Générale, de data scientist à lead.'
+
+  t['about.short_p3'] =
+    'Mon travail est public. J’anime Frontier on Cloud, des communautés qui publient des tests mesurés et reproductibles de produits d’IA du cloud, et j’explore en projets ouverts les noyaux GPU, la robotique guidée par le langage, le décodage de signaux neuronaux et l’optimisation quantique, chacun avec son code et ses limites.'
 
   t['about.interests_title'] = 'Centres d’intérêt'
   t['about.interests_body'] =
     "IA appliquée, robotique, IA quantique, systèmes énergétiques, interfaces cerveau–ordinateur et matériel de calcul."
 
   t['about.profile_name'] = 'Abdeljalil Jliouat'
-  t['about.profile_role'] = 'Applied AI Scientist'
+  t['about.profile_role'] =
+    'Senior Applied AI Engineer'
 
   t['about.stack_title'] = 'Stack technique'
   t['about.stack_python'] = 'Python'
@@ -84,6 +89,10 @@
     "Brevet déposé auprès de l'INPI (jan. 2026, en instruction)."
 
   t['about.community_title'] = 'Communauté et activités'
+  t['about.frontier_meta'] =
+    'Des communautés qui publient des tests mesurés et reproductibles de produits d’IA du cloud, avec le code et les données brutes de chaque test.'
+  t['about.frontier_title'] =
+    'Fondateur et animateur, Frontier on Cloud'
   t['about.gdg_title'] = 'Membre, Google Developer Group'
   t['about.gdg_meta'] =
     "Participation aux événements Google Developer Group et échanges autour de l'IA et des outils pour développeurs."
