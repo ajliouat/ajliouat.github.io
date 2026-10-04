@@ -5,7 +5,7 @@ The site uses a system typeface, a narrow neutral-and-blue palette and static pa
 ## Typography and layout
 
 - Main content is constrained to about 960 px. Long articles use a narrower reading column.
-- The home H1 is the owner’s name beside the portrait, followed by a short professional introduction. It uses regular weight, 24 px on small screens and up to 30 px on desktop, with a 1.35 line height.
+- The home H1 is the owner’s name beside a small 56 px portrait, with the role line under it and a short introduction below. It uses medium weight, 24 px on desktop and 22 px on small screens. Home content sits in a single reading column of about 42 rem.
 - Project section headings use 18 px, medium weight and the primary text color. Project prose uses 15 px with a 1.8 line height.
 - Page introductions use short category labels, proportionate titles and muted descriptions.
 - Project details have an unboxed reading column and a right-hand contents list on desktop. At 840 px and below, the contents list appears above the text in two columns.
@@ -29,13 +29,11 @@ Light is the default. `nav.js` reads the reader's saved preference before painti
 
 Navigation and the footer are generated into every page and work without JavaScript. The header stays at the top; a blue underline identifies the active section. The keyboard skip link and visible focus outlines must remain usable.
 
-Functional controls retain rounded shapes:
-
-- Home actions have pill corners, a 40 px minimum height and content-sized widths.
-- Theme, language and profile controls stay compact and rounded.
+- The theme, language and profile controls are plain, muted uppercase text with no outline or fill. They keep a 32 px touch target and underline on hover.
+- The home page has no buttons, only plain links.
 - Project footer actions retain pill shapes. The GitHub action uses a solid, contrasting surface without a gradient, shadow or hover movement.
 
-The home page starts with the owner’s current roles, then a featured study with its question, method and finding. The study link follows that evidence in reading order. Open projects and experiments follow, with experience and contact below. Project titles are linked, and action links identify their destination by name. Counts of projects or articles are not displayed as achievements.
+The home page reads in this order: name and role line; a short introduction with links to About and Contact; AKIOUD AI and its patents; dated field notes, newest first, with the Frontier on Cloud line; open projects as a compact list; experience; contact. Entry dates use the ISO format and each entry links to its article or project page. Counts of projects or articles are not displayed as achievements.
 
 ## Code, tables and diagrams
 

@@ -113,7 +113,7 @@ function renderBody(p, lang) {
 function metadata(p, lang) {
   const detail = lang === 'fr' ? p.fr : p
   const canonical = url(p.path, lang), image = `${site}/assets/social-card.png`
-  const person = { '@type': 'Person', '@id': `${site}/#person`, name: 'Abdeljalil Jliouat', url: `${site}/about.html`, jobTitle: 'Applied AI Scientist', image: `${site}/assets/avatar-320.webp`, sameAs: ['https://github.com/ajliouat', 'https://www.linkedin.com/in/a-jliouat/'] }
+  const person = { '@type': 'Person', '@id': `${site}/#person`, name: 'Abdeljalil Jliouat', url: `${site}/about.html`, jobTitle: 'Senior Applied AI Engineer', image: `${site}/assets/avatar-320.webp`, sameAs: ['https://github.com/ajliouat', 'https://www.linkedin.com/in/a-jliouat/'] }
   const item = { '@type': p.article ? 'BlogPosting' : p.section === 'about' ? 'ProfilePage' : 'WebPage', '@id': canonical, url: canonical, name: detail.title, description: detail.description, inLanguage: lang }
   if (p.article) Object.assign(item, { headline: p.headline, author: { '@id': person['@id'] }, dateModified: p.updated, image: [image], mainEntityOfPage: canonical })
   if (p.section === 'about') item.mainEntity = { '@id': person['@id'] }
