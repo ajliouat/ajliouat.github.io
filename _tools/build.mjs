@@ -80,6 +80,9 @@ function related(p) {
 function renderBody(p, lang) {
   const css = p.source.match(/<style>([\s\S]*?)<\/style>/)[1]
   let body = p.source.replace(/<style>[\s\S]*?<\/style>\s*/, '')
+  // Inline scripts are code, not markup: set them aside so the link, table and translation rewrites cannot alter them.
+  const scripts = []
+  body = body.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, script => `<!--script:${scripts.push(script) - 1}-->`)
   body = translate(body, lang).replaceAll('{{articleCount}}', articles.length)
   body = body.replace(/<main\b([^>]*)>/, '<main$1 id="main-content" tabindex="-1">')
   body = body.replace(/<img src="avatar\.png[^"]*"[^>]*>/, '<img src="/assets/avatar-160.webp" srcset="/assets/avatar-160.webp 160w, /assets/avatar-320.webp 320w" sizes="80px" alt="Abdeljalil Jliouat" class="profile-image" width="80" height="80" decoding="async">')
@@ -112,6 +115,7 @@ function renderBody(p, lang) {
   }
   if (!p.fr && p.section === 'projects') body = body.replace('</main>', '<section class="next-reading"><h2>Building a similar system?</h2><p><a href="/contact.html">Get in touch about your project.</a></p></section>\n</main>')
   if (lang === 'fr') body = body.replace('aria-label="Work at a glance"', 'aria-label="Mon travail en bref"')
+  body = body.replace(/<!--script:(\d+)-->/g, (_, index) => scripts[index])
   return { css, body }
 }
 function metadata(p, lang) {
