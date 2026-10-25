@@ -20,7 +20,9 @@ To add an article, add its HTML source under `_site_source/pages/blog/` and a co
 
 The feed uses stable article URLs as IDs. The imported articles' `updated` values come from their last recorded Git modification. They are not asserted to be original publication dates. Preserve the known years; do not invent exact publication dates. Set `updated` when revising an article and `feedUpdated` when updating the feed.
 
-The main pages have English URLs and real French equivalents under `/fr/`, with reciprocal `hreflang` links and self-canonicals. Technical project pages and articles currently remain in English. Their language is declared correctly and they do not offer a nonexistent French translation. French indexes provide translated summaries and label links to English content.
+The main pages have English URLs and real French equivalents under `/fr/`, with reciprocal `hreflang` links and self-canonicals. Technical project pages and most articles remain in English. Their language is declared correctly and they do not offer a nonexistent French translation. French indexes provide translated summaries and label links to English content.
+
+An article with a full French translation keeps its French source next to the English one, as `_site_source/pages/blog/<slug>.fr.html`, and adds a `fr` object to its `pages.json` entry with `title`, `description` and `headline` (and `updated` if the French text is revised on its own). The build publishes it at `/fr/blog/<slug>.html`, with reciprocal `hreflang` links, the language switch, its own reading time and French related reading. The French index links to it instead of the English article, and the feed has one entry per language, each with `xml:lang`. Its `editorial.json` entry keeps only the topic: the French title and summary come from `pages.json`, and the build stops if both define them.
 
 ## Assets
 

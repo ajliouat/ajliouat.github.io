@@ -114,7 +114,7 @@ for relative, (lang, canonical, item) in expected.items():
     for img in page.tags('img'):
         require(bool(img.get('alt')) and 'width' in img and 'height' in img, relative + ': image accessibility/dimensions')
     if item.get('article'):
-        source = (ROOT / '_site_source/pages' / item['path']).read_text()
+        source = (ROOT / '_site_source/pages' / (item['path'].removesuffix('.html') + '.fr.html' if lang == 'fr' else item['path'])).read_text()
         shown = re.search(r'<div class="post-meta">[\s\S]*?(\d+) min (?:read|de lecture)</div>', text)
         require(bool(shown) and int(shown[1]) == Prose(source).minutes(), relative + ': reading time does not match the prose')
 
@@ -151,6 +151,13 @@ for entry in entries:
         require(bool(entry.findtext('a:' + field, namespaces=atom)), 'Atom entry missing ' + field)
     datetime.fromisoformat(entry.findtext('a:updated', namespaces=atom).replace('Z', '+00:00'))
     require(entry.find('a:link', atom).get('href') in article_urls, 'Atom link mismatch')
+    entry_id = entry.findtext('a:id', namespaces=atom) or ''
+    require(entry.get('{http://www.w3.org/XML/1998/namespace}lang') == expected.get(entry_id.removeprefix(SITE + '/'), ('',))[0], 'Atom entry language must match its article: ' + entry_id)
+fr_index = scanned.get((ROOT / 'fr/blog/index.html').resolve())
+fr_index_links = {a.get('href') for a in fr_index.tags('a')} if fr_index else set()
+for item in config['pages']:
+    if item.get('article') and item.get('fr'):
+        require('/fr/' + item['path'] in fr_index_links and '/' + item['path'] not in fr_index_links, 'French index must link to the French article: ' + item['path'])
 locations = [el.text for el in ET.parse(ROOT / 'sitemap.xml').findall('{http://www.sitemaps.org/schemas/sitemap/0.9}url/{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
 require(set(locations) == {v[1] for v in expected.values()} and len(locations) == len(set(locations)), 'Sitemap must cover all public pages exactly once')
 require('Sitemap: ' + SITE + '/sitemap.xml' in (ROOT / 'robots.txt').read_text(), 'Sitemap missing from robots.txt')

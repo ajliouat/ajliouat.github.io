@@ -36,13 +36,22 @@ const readingMinutes = source => {
   const prose = source.replace(/<(style|script|svg)\b[^>]*>[\s\S]*?<\/\1>/g, ' ').replace(/<div class="mermaid">[\s\S]*?<\/div>/g, ' ')
   return Math.max(1, Math.ceil(plain(prose).split(/\s+/).length / 220))
 }
+// A translated article has a full French source next to the English one and is published at the same path under /fr/.
+const frSourcePath = p => p.path.replace(/\.html$/, '.fr.html')
 for (const p of pages) {
   p.source = read(`_site_source/pages/${p.path}`)
   if (p.article) {
     p.minutes = readingMinutes(p.source)
     p.topic = editorial.articles[stem(p)]?.topic || 'Calcul et inférence'
+    if (p.fr) {
+      p.fr.source = read(`_site_source/pages/${frSourcePath(p)}`)
+      p.fr.minutes = readingMinutes(p.fr.source)
+      const index = editorial.articles[stem(p)] || {}
+      if (index.title || index.summary) throw new Error(`${p.path}: a translated article takes its French title and summary from pages.json; remove them from editorial.json`)
+    }
   }
 }
+const sourceOf = (p, lang) => lang === 'fr' && p.fr?.source ? p.fr.source : p.source
 function translate(html, lang) {
   return html.replace(/<([\w-]+)([^>]*\bdata-i18n="([^"]+)"[^>]*)>[\s\S]*?<\/\1>/g, (_, tag, attrs, key) => {
     if (dictionaries[lang][key] === undefined) throw new Error(`Missing ${lang} translation: ${key}`)
@@ -67,19 +76,26 @@ function articleList(lang, source) {
   const ordered = [...new Set([...order, ...articles.map(p => p.path)])].map(file => articles.find(p => p.path === file)).filter(Boolean)
   const topics = { 'Calcul et inférence': 'Compute & inference', 'Robotique et signaux': 'Robotics & neural signals', 'Optimisation et énergie': 'Optimization & energy' }
   return ordered.map(p => {
-    const fr = editorial.articles[stem(p)]
+    const fr = p.fr ? { title: p.fr.headline, summary: p.fr.description } : editorial.articles[stem(p)]
     const title = lang === 'fr' && fr ? fr.title : p.headline
     const summary = lang === 'fr' && fr ? fr.summary : p.description
-    return `<article class="post-card"><div class="post-meta"><span>${p.year}</span><span>${esc(lang === 'fr' ? p.topic : topics[p.topic])}</span><span>${p.minutes} min${lang === 'en' ? ' read' : ' de lecture'}</span></div><h2 class="post-title"><a href="${route(p.path)}">${esc(title)}</a></h2><p class="post-excerpt">${esc(summary)}</p><a href="${route(p.path)}" class="post-link">${lang === 'fr' ? 'Lire l’article en anglais →' : 'Read article →'}</a></article>`
+    const translated = lang === 'fr' && p.fr, href = translated ? local(p.path, 'fr') : route(p.path)
+    const action = lang === 'en' ? 'Read article →' : translated ? 'Lire l’article →' : 'Lire l’article en anglais →'
+    return `<article class="post-card"><div class="post-meta"><span>${p.year}</span><span>${esc(lang === 'fr' ? p.topic : topics[p.topic])}</span><span>${translated ? p.fr.minutes : p.minutes} min${lang === 'en' ? ' read' : ' de lecture'}</span></div><h2 class="post-title"><a href="${href}">${esc(title)}</a></h2><p class="post-excerpt">${esc(summary)}</p><a href="${href}" class="post-link">${action}</a></article>`
   }).join('\n')
 }
-function related(p) {
+function related(p, lang) {
   const choices = articles.filter(a => a.path !== p.path).sort((a, b) => Number(b.topic === p.topic) - Number(a.topic === p.topic)).slice(0, 2)
+  if (lang === 'fr') {
+    const item = a => a.fr ? `<li><a href="${local(a.path, 'fr')}">${esc(a.fr.headline)}</a></li>` : `<li><a href="${route(a.path)}" hreflang="en">${esc(editorial.articles[stem(a)]?.title || a.headline)}</a> (en anglais)</li>`
+    return `<section class="next-reading" aria-labelledby="next-reading-title"><h2 id="next-reading-title">Pour aller plus loin</h2><ul>${choices.map(item).join('')}</ul><p>Vous travaillez sur un problème similaire ? <a href="/fr/contact.html">Parlons-en.</a></p><a href="/feed.xml">Recevoir les nouveaux articles via RSS</a></section>`
+  }
   return `<section class="next-reading" aria-labelledby="next-reading-title"><h2 id="next-reading-title">Keep exploring</h2><ul>${choices.map(a => `<li><a href="${route(a.path)}">${esc(a.headline)}</a></li>`).join('')}</ul><p>Working on a similar problem? <a href="/contact.html">Let’s discuss it.</a></p><a href="/feed.xml">Get new articles via RSS</a></section>`
 }
 function renderBody(p, lang) {
-  const css = p.source.match(/<style>([\s\S]*?)<\/style>/)[1]
-  let body = p.source.replace(/<style>[\s\S]*?<\/style>\s*/, '')
+  const source = sourceOf(p, lang)
+  const css = source.match(/<style>([\s\S]*?)<\/style>/)[1]
+  let body = source.replace(/<style>[\s\S]*?<\/style>\s*/, '')
   // Inline scripts are code, not markup: set them aside so the link, table and translation rewrites cannot alter them.
   const scripts = []
   body = body.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, script => `<!--script:${scripts.push(script) - 1}-->`)
@@ -92,6 +108,8 @@ function renderBody(p, lang) {
     if (lang === 'fr' && bilingual.has(resolved.pathname)) resolved.pathname = '/fr' + resolved.pathname
     return `href="${resolved.pathname}${resolved.search}${resolved.hash}"`
   })
+  // A link that now leads to a French page no longer points to English content.
+  if (lang === 'fr') body = body.replace(/<a\b[^>]*\bhref="\/fr\/[^"]*"[^>]*>/g, tag => tag.replace(/\s+hreflang="en"/, ''))
   body = body.replace(/<table\b[^>]*>[\s\S]*?<\/table>/g, (table, offset) => {
     const headings = [...body.slice(0, offset).matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/g)]
     const label = headings.length ? plain(headings.at(-1)[1]) : 'Data table'
@@ -110,20 +128,22 @@ function renderBody(p, lang) {
   }
 
   if (p.article) {
-    body = body.replace(/(<div class="post-meta">)([\s\S]*?)(<\/div>)/, `$1$2 · ${p.minutes} min read$3`)
-    body = body.replace('</main>', related(p) + '\n</main>')
+    const minutes = lang === 'fr' && p.fr ? `${p.fr.minutes} min de lecture` : `${p.minutes} min read`
+    body = body.replace(/(<div class="post-meta">)([\s\S]*?)(<\/div>)/, `$1$2 · ${minutes}$3`)
+    body = body.replace('</main>', related(p, lang) + '\n</main>')
   }
   if (!p.fr && p.section === 'projects') body = body.replace('</main>', '<section class="next-reading"><h2>Building a similar system?</h2><p><a href="/contact.html">Get in touch about your project.</a></p></section>\n</main>')
   if (lang === 'fr') body = body.replace('aria-label="Work at a glance"', 'aria-label="Mon travail en bref"')
   body = body.replace(/<!--script:(\d+)-->/g, (_, index) => scripts[index])
   return { css, body }
 }
+const updatedOf = (p, lang) => (lang === 'fr' && p.fr.updated) || p.updated
 function metadata(p, lang) {
   const detail = lang === 'fr' ? p.fr : p
   const canonical = url(p.path, lang), image = `${site}/assets/social-card.png`
   const person = { '@type': 'Person', '@id': `${site}/#person`, name: 'Abdeljalil Jliouat', url: `${site}/about.html`, jobTitle: 'Senior Applied AI Engineer', image: `${site}/assets/avatar-320.webp`, sameAs: ['https://github.com/ajliouat', 'https://www.linkedin.com/in/a-jliouat/'] }
   const item = { '@type': p.article ? 'BlogPosting' : p.section === 'about' ? 'ProfilePage' : 'WebPage', '@id': canonical, url: canonical, name: detail.title, description: detail.description, inLanguage: lang }
-  if (p.article) Object.assign(item, { headline: p.headline, author: { '@id': person['@id'] }, dateModified: p.updated, image: [image], mainEntityOfPage: canonical })
+  if (p.article) Object.assign(item, { headline: detail.headline, author: { '@id': person['@id'] }, dateModified: updatedOf(p, lang), image: [image], mainEntityOfPage: canonical })
   if (p.section === 'about') item.mainEntity = { '@id': person['@id'] }
   const alternates = p.fr ? ['en', 'fr', 'x-default'].map(l => `<link rel="alternate" hreflang="${l}" href="${url(p.path, l === 'fr' ? 'fr' : 'en')}">`).join('\n') : ''
   const metas = { 'og:type': p.article ? 'article' : 'website', 'og:site_name': 'Abdeljalil Jliouat', 'og:locale': lang === 'fr' ? 'fr_FR' : 'en_US', 'og:title': detail.title, 'og:description': detail.description, 'og:url': canonical, 'og:image': image, 'og:image:width': '1200', 'og:image:height': '630', 'og:image:alt': 'Abdeljalil Jliouat — Applied AI and systems engineering' }
@@ -138,7 +158,7 @@ for (const p of pages) {
   for (const lang of p.fr ? ['en', 'fr'] : ['en']) {
     const { css, body } = renderBody(p, lang)
     write((lang === 'fr' ? 'fr/' : '') + p.path, `<!DOCTYPE html>
-<!-- Generated by _tools/build.mjs; edit _site_source/pages/${p.path}. -->
+<!-- Generated by _tools/build.mjs; edit _site_source/pages/${lang === 'fr' && p.fr?.source ? frSourcePath(p) : p.path}. -->
 <html lang="${lang}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 ${metadata(p, lang)}
 <style>${css}</style><link rel="stylesheet" href="/assets/site.css?v=${version('assets/site.css')}"><script src="/nav.js?v=${version('nav.js')}"></script>
@@ -150,7 +170,10 @@ ${body.includes('class="mermaid"') ? `<script src="/mermaid.js?v=${version('merm
 }
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `<url><loc>${esc(u)}</loc></url>`).join('\n')}\n</urlset>\n`)
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\n`)
-const entries = [...articles].sort((a, b) => new Date(b.updated) - new Date(a.updated)).map(p => `<entry><id>${url(p.path)}</id><title>${esc(p.headline)}</title><link href="${url(p.path)}"/><updated>${esc(p.updated)}</updated><summary>${esc(p.description)}</summary></entry>`)
+// One entry per article and language, each declaring its language.
+const entries = articles.flatMap(p => (p.fr ? ['en', 'fr'] : ['en']).map(lang => ({ p, lang, detail: lang === 'fr' ? p.fr : p, updated: updatedOf(p, lang) })))
+  .sort((a, b) => new Date(b.updated) - new Date(a.updated))
+  .map(({ p, lang, detail, updated }) => `<entry xml:lang="${lang}"><id>${url(p.path, lang)}</id><title>${esc(detail.headline)}</title><link href="${url(p.path, lang)}"/><updated>${esc(updated)}</updated><summary>${esc(detail.description)}</summary></entry>`)
 write('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><id>${site}/feed.xml</id><title>Abdeljalil Jliouat — Applied AI &amp; Systems Engineering</title><subtitle>Code, experiments and engineering notes on production AI.</subtitle><link rel="self" href="${site}/feed.xml"/><link href="${site}/blog/"/><updated>${config.feedUpdated}</updated><author><name>Abdeljalil Jliouat</name><uri>${site}/about.html</uri></author>\n${entries.join('\n')}\n</feed>\n`)
 console.log(`Built ${urls.length} pages, ${entries.length} feed entries and a sitemap.`)
