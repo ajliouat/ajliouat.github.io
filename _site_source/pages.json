@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-10-03T12:48:04+02:00",
+  "feedUpdated": "2026-10-25T22:51:49+01:00",
   "pages": [
     {
       "path": "index.html",
@@ -224,6 +224,16 @@
       "article": true,
       "headline": "When the connection drops mid-booking: session resumption on Gemini Live, measured",
       "updated": "2026-10-03T12:48:04+02:00",
+      "year": "2026"
+    },
+    {
+      "path": "blog/synthetic-film-open-weights.html",
+      "section": "blog",
+      "title": "Synthetic film from open weights: memory, compute and licences, stage by stage | Abdeljalil Jliouat",
+      "description": "Generating film from open models, stage by stage: tokens per clip, GPU memory, compute time and the licence matrix, with interactive calculators.",
+      "article": true,
+      "headline": "Synthetic film from open weights: memory, compute and licences, stage by stage",
+      "updated": "2026-10-25T22:51:49+01:00",
       "year": "2026"
     }
   ]

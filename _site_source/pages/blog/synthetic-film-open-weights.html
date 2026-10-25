@@ -1,0 +1,651 @@
+<style>
+    :root { --bg: #ffffff; --surface: #ffffff; --border: #e5e7eb; --text: #0f172a; --muted: #6b7280; --accent: #2563eb; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, -system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    .page { --sf-tint: color-mix(in srgb, var(--text) 5%, var(--bg)); --sf-sound: color-mix(in srgb, var(--accent) 55%, var(--text)); max-width: 720px; margin: 0 auto; padding: 3.5rem 1rem 4rem; }
+    .section-header { text-align: center; margin-bottom: 2rem; }
+    .section-badge { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .section-title { margin-top: 1rem; font-size: 24px; font-weight: 500; letter-spacing: -.02em; line-height: 1.35; }
+    .section-subtitle { max-width: 560px; margin: .75rem auto 0; font-size: 14px; line-height: 1.7; color: var(--muted); }
+    .post-meta { justify-content: center; margin-top: 1rem; font-size: 12px; color: var(--muted); }
+    .toc { border: 1px solid var(--border); border-radius: .75rem; padding: .9rem 1rem; font-size: 13px; margin-top: 2rem; }
+    .toc-title { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .5rem; }
+    .toc ul { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 2rem; }
+    .toc li { margin: .2rem 0; break-inside: avoid; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .post-body { margin-top: 2.5rem; line-height: 1.8; color: var(--text); }
+    .post-body p { margin: 0 0 1rem; }
+    .post-body h2 { font-size: 18px; font-weight: 500; margin: 2.6rem 0 .8rem; }
+    .post-body ul { padding-left: 1.2rem; margin: 0 0 1rem; }
+    .post-body li { margin: .3rem 0; }
+    .post-body a { color: var(--accent); text-decoration: underline; text-underline-offset: .2em; }
+    .post-body code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; background: var(--sf-tint); padding: 1px 5px; border-radius: 4px; }
+    .sf-formula { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; background: var(--sf-tint); border-radius: 8px; padding: .7rem .9rem; margin: 0 0 1rem; overflow-x: auto; white-space: pre; line-height: 1.7; }
+    .sf-fig { margin: 1.6rem 0 2rem; border: 1px solid var(--border); border-radius: .75rem; padding: 14px; }
+    .sf-fig.sf-hero { padding: 0; overflow: hidden; margin-top: 0; }
+    .sf-fig.sf-hero figcaption { padding: 0 14px 12px; }
+    .sf-fig canvas { display: block; width: 100%; height: auto; border-radius: .5rem; }
+    .sf-fig figcaption { font-size: 12px; line-height: 1.6; color: var(--muted); margin-top: 10px; }
+    .sf-fig-title { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+    .sf-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px 16px; margin: 10px 0 6px; font-size: 12.5px; }
+    .sf-controls label { display: flex; flex-direction: column; gap: 4px; color: var(--muted); }
+    .sf-controls label.sf-check { flex-direction: row; align-items: center; gap: 8px; }
+    .sf-controls output { color: var(--text); font-variant-numeric: tabular-nums; }
+    .sf-controls select { font: inherit; font-size: 12.5px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 5px 6px; min-height: 32px; }
+    .sf-controls input[type=range] { width: 100%; accent-color: var(--accent); }
+    .sf-btns { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+    .sf-btn { font: inherit; font-size: 12px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 6px 12px; min-height: 32px; cursor: pointer; }
+    .sf-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 10px; }
+    .sf-stat { background: var(--sf-tint); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; }
+    .sf-stat .k { font-size: 11px; color: var(--muted); line-height: 1.4; }
+    .sf-stat .v { font-size: 16px; font-variant-numeric: tabular-nums; margin-top: 2px; }
+    .sf-stat .v.bad { color: var(--accent); font-weight: 600; }
+    .sf-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .sf-svg, .sf-pipe svg { display: block; width: 100%; min-width: 600px; height: auto; margin-top: 8px; }
+    #sf-diff-chart { min-width: 0; }
+    .sf-svg text, .sf-pipe svg text { font-size: 11px; fill: var(--text); }
+    .sf-svg text.m { fill: var(--muted); }
+    .sf-svg .c-accent { fill: var(--accent); } .sf-svg .c-border { fill: var(--border); } .sf-svg .c-muted { fill: var(--muted); } .sf-svg .c-sound { fill: var(--sf-sound); }
+    .sf-svg .grid { stroke: var(--border); stroke-width: 1; }
+    .sf-svg .limit { stroke: var(--text); stroke-width: 2; } .sf-svg .limit.over { stroke: var(--accent); stroke-dasharray: 4 3; }
+    .sf-svg .load { fill: url(#sf-hatch); stroke: var(--muted); stroke-width: .6; }
+    .sf-svg .hatch-bg { fill: var(--bg); } .sf-svg .hatch-line { stroke: var(--muted); stroke-width: 3; }
+    .sf-svg .sig { fill: none; stroke: var(--accent); stroke-width: 2; } .sf-svg .noi { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 5 4; }
+    .sf-svg .cursor { stroke: var(--muted); stroke-dasharray: 3 3; } .sf-svg text.s-sig { fill: var(--accent); }
+    .sf-pipe .node rect { fill: var(--sf-tint); stroke-width: 1.4; cursor: pointer; }
+    .sf-pipe .node:hover rect, .sf-pipe .node.sel rect { stroke-width: 2.8; }
+    .sf-pipe .node:focus { outline: none; } .sf-pipe .node:focus-visible rect { stroke-width: 3.2; stroke-dasharray: none; }
+    .sf-pipe .node text.sub { font-size: 9px; fill: var(--muted); }
+    .sf-pipe .node text { pointer-events: none; }
+    .sf-pipe .picture rect { stroke: var(--accent); } .sf-pipe .sound rect { stroke: var(--accent); stroke-dasharray: 5 3; }
+    .sf-pipe .language rect { stroke: var(--muted); } .sf-pipe .assembly rect { stroke: var(--text); }
+    .sf-pipe .edge { fill: none; stroke: var(--muted); stroke-opacity: .7; stroke-width: 1.2; stroke-dasharray: 4 5; animation: sf-flow 1.6s linear infinite; }
+    @keyframes sf-flow { to { stroke-dashoffset: -18; } }
+    .sf-pipe .edge.hot { stroke: var(--accent); stroke-opacity: 1; stroke-width: 1.8; }
+    .sf-pipe .arrow { fill: var(--muted); } .sf-pipe .arrow.hot { fill: var(--accent); }
+    .sf-pipe .lane { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; fill: var(--muted); }
+    .sf-panel { margin-top: 10px; background: var(--sf-tint); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 12.5px; line-height: 1.65; }
+    .sf-panel h3 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+    .sf-panel dl { margin: 6px 0 0; display: grid; grid-template-columns: 88px 1fr; gap: 3px 10px; }
+    .sf-panel dt { color: var(--muted); }
+    .sf-panel dd { margin: 0; }
+    .sf-table { overflow-x: auto; margin: 0 0 1rem; }
+    .sf-table table { border-collapse: collapse; font-size: 12.5px; width: 100%; min-width: 600px; }
+    .sf-table .table-scroll table { min-width: 600px; }
+    .sf-table th, .sf-table td { text-align: left; border-bottom: 1px solid var(--border); padding: 6px 8px; vertical-align: top; line-height: 1.55; }
+    .sf-table th { font-weight: 500; color: var(--muted); }
+    .sf-no { font-weight: 600; } .sf-cond { font-style: italic; }
+    .sf-noscript { font-size: 12px; color: var(--muted); }
+    .sf-fig audio { display: block; width: 100%; margin: 4px 0 12px; }
+    .sf-media { display: block; width: 100%; height: auto; border-radius: .5rem; margin: 6px 0 10px; }
+    .sf-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .sf-shot.wide { grid-column: 1 / -1; }
+    .sf-shot .sf-media { margin: 0 0 4px; }
+    .sf-shot-label { font-size: 11.5px; line-height: 1.5; color: var(--muted); margin: 0 0 6px; }
+    @media (max-width: 560px) { .sf-shots { grid-template-columns: 1fr; } }
+    .sf-sample-text { font-size: 13px; color: var(--text); margin: 0 0 4px; }
+    .sf-spec { position: relative; height: 88px; margin: -6px 0 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--sf-tint); overflow: hidden; cursor: pointer; }
+    .sf-spec-img { position: absolute; inset: 0; background: var(--accent); -webkit-mask-image: var(--spec); mask-image: var(--spec); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+    .sf-spec-axis { position: absolute; left: 6px; top: 3px; font-size: 10px; color: var(--muted); }
+    .sf-spec-axis.low { top: auto; bottom: 3px; }
+    .sf-playhead { position: absolute; top: 0; bottom: 0; left: 0; width: 2px; background: var(--text); opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { .sf-pipe .edge { animation: none; } }
+    @media (max-width: 560px) {
+      .toc ul { columns: 1; } .sf-panel dl { grid-template-columns: 1fr; }
+      #sf-diff-chart text { font-size: 24px; }
+      #sf-cp-mem .sf-svg { min-width: 0; } #sf-cp-mem .sf-svg text { font-size: 26px; }
+    }
+</style>
+<main class="page">
+    <section class="section-header">
+      <div class="section-badge">Generative media · Inference systems</div>
+      <h1 class="section-title">Synthetic film from open weights: memory, compute and licences, stage by stage</h1>
+      <p class="section-subtitle">Part one of Synthetic film, two ways. A minute of generated film is a systems problem before it is a creative one: tens of gigabytes of weights per stage, hours of GPU per clip, a licence matrix with holes, and a review loop no metric replaces. Every estimate here is derived from published configurations, and the figures let you change the assumptions.</p>
+      <div class="post-meta">Engineering notes · October 2026</div>
+    </section>
+
+    <figure class="sf-fig sf-hero" hidden><canvas id="sf-hero" width="1440" height="520" role="img" aria-label="A generative drawing: 900 strokes following a slowly changing flow field"></canvas><figcaption>Drawn in your browser: 900 strokes following a slowly changing flow field. Figure 1 applies a diffusion noise schedule to a drawing made the same way.</figcaption></figure>
+
+    <section class="toc"><div class="toc-title">On this page</div><ul>
+      <li><a href="#minute">A minute of film</a></li>
+      <li><a href="#diffusion">How a video model makes a frame</a></li>
+      <li><a href="#tokens">The token count of one clip</a></li>
+      <li><a href="#stack">The open-weights stack</a></li>
+      <li><a href="#compute">Memory and compute per clip</a></li>
+      <li><a href="#swaps">One GPU, many models</a></li>
+      <li><a href="#licences">The licence matrix</a></li>
+      <li><a href="#gap">How far behind is open</a></li>
+      <li><a href="#samples">Samples made for this article</a></li>
+      <li><a href="#quality">The part you cannot download</a></li>
+      <li><a href="#agent">What a coding agent changes</a></li>
+      <li><a href="#next">The second way</a></li>
+      <li><a href="#limits">Limits</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ul></section>
+
+    <section class="post-body">
+      <h2 id="minute">A minute of film</h2>
+      <p>Generative models have become an artistic medium: voices that were never recorded, scores composed from a sentence, shots that no camera filmed. The same models now make product films and internal explainers. Watching a good result, it is tempting to think the hard part is a prompt, or a script that a coding agent could write in an afternoon.</p>
+      <p>It is not. Sixty seconds of 720p video at 24 frames per second is 1,440 frames, or 1.33 billion pixels. Open video models do not generate a minute. They generate clips of about five seconds, each one a long computation on a large GPU, and each one has to agree with the next. Around them sit separate models for speech, music, lip movement, frame interpolation and upscaling, each with its own weights, memory footprint, failure modes and licence.</p>
+      <p>This part walks through that open-weights stack, the first way, with the arithmetic in the open. Part two takes the second way: the managed services that run comparable stacks behind an API.</p>
+
+      <h2 id="diffusion">How a video model makes a frame</h2>
+      <p>A diffusion model learns to undo noise. Training mixes a clean example <code>x₀</code> with Gaussian noise <code>ε</code> according to a schedule, and teaches a network to recover what was added:</p>
+      <div class="sf-formula">x_t = √ᾱ_t · x₀ + √(1 − ᾱ_t) · ε
+ᾱ_t = f(t) / f(0),   f(t) = cos²( (t/T + s) / (1 + s) · π/2 )</div>
+      <p>Generation runs the other way: start from pure noise and take tens of steps, each one a full pass of a network with billions of parameters. Wan, the open video model used for the numbers below, is trained with flow matching, which learns a velocity from noise to data rather than the noise itself, but the cost structure is the same: steps, times passes per step, times the cost of one pass. Video models also never denoise pixels. A variational autoencoder first compresses the clip into a latent tensor, and a transformer works on that latent, cut into patches.</p>
+
+      <figure class="sf-fig">
+        <div class="sf-fig-title">Figure 1 · The forward process on a generated image</div>
+        <canvas id="sf-diff" width="640" height="360" role="img" aria-label="A generated landscape, progressively mixed with Gaussian noise as the step increases"></canvas>
+        <div class="sf-controls">
+          <label>Step t of T = 1,000 <input id="sf-diff-t" type="range" min="0" max="1000" value="0"><output id="sf-diff-t-o">0</output></label>
+          <label>Signal kept, √ᾱ_t <output id="sf-diff-sig">1.000</output></label>
+          <label>Noise added, √(1 − ᾱ_t) <output id="sf-diff-noise">0.000</output></label>
+        </div>
+        <div class="sf-btns"><button class="sf-btn" id="sf-diff-play" type="button" aria-pressed="true">Pause</button><button class="sf-btn" id="sf-diff-fwd" type="button">Add noise</button><button class="sf-btn" id="sf-diff-rev" type="button">Remove noise</button></div>
+        <svg id="sf-diff-chart" class="sf-svg" viewBox="0 0 640 124" role="img" aria-label="The cosine schedule: the signal coefficient falls from 1 to 0 while the noise coefficient rises from 0 to 1"><!--static:schedule--><line x1="28" y1="10" x2="28" y2="90" class="grid"></line><line x1="28" y1="90" x2="628" y2="90" class="grid"></line><path d="M28.0,10.0 L34.0,10.0 L40.0,10.1 L46.0,10.1 L52.0,10.2 L58.0,10.3 L64.0,10.4 L70.0,10.6 L76.0,10.7 L82.0,10.9 L88.0,11.1 L94.0,11.3 L100.0,11.6 L106.0,11.8 L112.0,12.1 L118.0,12.4 L124.0,12.7 L130.0,13.1 L136.0,13.4 L142.0,13.8 L148.0,14.2 L154.0,14.6 L160.0,15.0 L166.0,15.4 L172.0,15.9 L178.0,16.4 L184.0,16.9 L190.0,17.4 L196.0,17.9 L202.0,18.5 L208.0,19.0 L214.0,19.6 L220.0,20.2 L226.0,20.8 L232.0,21.5 L238.0,22.1 L244.0,22.8 L250.0,23.5 L256.0,24.2 L262.0,24.9 L268.0,25.6 L274.0,26.4 L280.0,27.1 L286.0,27.9 L292.0,28.7 L298.0,29.5 L304.0,30.3 L310.0,31.2 L316.0,32.0 L322.0,32.9 L328.0,33.8 L334.0,34.7 L340.0,35.6 L346.0,36.5 L352.0,37.4 L358.0,38.4 L364.0,39.3 L370.0,40.3 L376.0,41.3 L382.0,42.3 L388.0,43.3 L394.0,44.3 L400.0,45.3 L406.0,46.4 L412.0,47.4 L418.0,48.5 L424.0,49.6 L430.0,50.6 L436.0,51.7 L442.0,52.8 L448.0,53.9 L454.0,55.1 L460.0,56.2 L466.0,57.3 L472.0,58.5 L478.0,59.6 L484.0,60.8 L490.0,61.9 L496.0,63.1 L502.0,64.3 L508.0,65.5 L514.0,66.7 L520.0,67.9 L526.0,69.1 L532.0,70.3 L538.0,71.5 L544.0,72.7 L550.0,73.9 L556.0,75.1 L562.0,76.4 L568.0,77.6 L574.0,78.8 L580.0,80.1 L586.0,81.3 L592.0,82.5 L598.0,83.8 L604.0,85.0 L610.0,86.3 L616.0,87.5 L622.0,88.8 L628.0,90.0" class="sig"></path><path d="M28.0,90.0 L34.0,88.0 L40.0,86.7 L46.0,85.4 L52.0,84.1 L58.0,82.8 L64.0,81.6 L70.0,80.4 L76.0,79.1 L82.0,77.9 L88.0,76.6 L94.0,75.4 L100.0,74.2 L106.0,73.0 L112.0,71.7 L118.0,70.5 L124.0,69.3 L130.0,68.1 L136.0,66.9 L142.0,65.7 L148.0,64.5 L154.0,63.4 L160.0,62.2 L166.0,61.0 L172.0,59.9 L178.0,58.7 L184.0,57.6 L190.0,56.4 L196.0,55.3 L202.0,54.2 L208.0,53.1 L214.0,52.0 L220.0,50.9 L226.0,49.8 L232.0,48.7 L238.0,47.7 L244.0,46.6 L250.0,45.6 L256.0,44.5 L262.0,43.5 L268.0,42.5 L274.0,41.5 L280.0,40.5 L286.0,39.5 L292.0,38.6 L298.0,37.6 L304.0,36.7 L310.0,35.8 L316.0,34.9 L322.0,34.0 L328.0,33.1 L334.0,32.2 L340.0,31.4 L346.0,30.5 L352.0,29.7 L358.0,28.9 L364.0,28.1 L370.0,27.3 L376.0,26.5 L382.0,25.8 L388.0,25.0 L394.0,24.3 L400.0,23.6 L406.0,22.9 L412.0,22.3 L418.0,21.6 L424.0,21.0 L430.0,20.3 L436.0,19.7 L442.0,19.2 L448.0,18.6 L454.0,18.0 L460.0,17.5 L466.0,17.0 L472.0,16.5 L478.0,16.0 L484.0,15.5 L490.0,15.1 L496.0,14.7 L502.0,14.2 L508.0,13.9 L514.0,13.5 L520.0,13.1 L526.0,12.8 L532.0,12.5 L538.0,12.2 L544.0,11.9 L550.0,11.6 L556.0,11.4 L562.0,11.2 L568.0,11.0 L574.0,10.8 L580.0,10.6 L586.0,10.5 L592.0,10.3 L598.0,10.2 L604.0,10.2 L610.0,10.1 L616.0,10.0 L622.0,10.0 L628.0,10.0" class="noi"></path><line x1="28.0" y1="10" x2="28.0" y2="90" class="cursor"></line><text x="28" y="118" class="m">t = 0</text><text x="630" y="118" class="m" text-anchor="end">t = 1,000</text><text x="40" y="24" class="s-sig">signal √ᾱ</text><text x="40" y="48" class="m">noise √(1 − ᾱ), dashed</text><!--/static:schedule--></svg>
+        <noscript><p class="sf-noscript">The image above is computed by JavaScript in the page; the schedule below it is static.</p></noscript>
+        <figcaption>The cosine schedule of Nichol and Dhariwal (2021), s = 0.008, applied to a drawing generated in this page. The figure plays by itself, image to noise and back; running the schedule backwards is for illustration only. A real model gets back to an image by predicting the noise, or the velocity, at each step: by default 40 to 50 steps for the Wan models, each one a full pass of the network, two with classifier-free guidance.</figcaption>
+      </figure>
+
+      <h2 id="tokens">The token count of one clip</h2>
+      <p>The latent is where the cost is decided. Wan 2.1, whose code and weights are published under Apache 2.0, compresses time by 4 and each side of the frame by 8, then cuts the latent into 1 × 2 × 2 patches. A five-second 720p clip, 81 frames at 16 fps, becomes 21 latent frames of 90 × 160, then 21 × 45 × 80 = 75,600 tokens. Every transformer layer lets each token attend to every other: 5.7 billion pairs, per layer, per step. The same clip at 480p is 32,760 tokens, so going from 480p to 720p multiplies the attention work by 5.3.</p>
+      <figure class="sf-fig">
+        <div class="sf-fig-title">Figure 2 · From frames to tokens</div>
+        <div class="sf-controls">
+          <label>Resolution <select id="sf-tk-res"><option value="832x480">480p, 832 × 480</option><option value="1280x720" selected>720p, 1280 × 720</option><option value="1920x1088">1080p, 1920 × 1088</option><option value="3840x2160">4K, 3840 × 2160</option></select></label>
+          <label>Clip length <input id="sf-tk-sec" type="range" min="1" max="20" value="5"><output id="sf-tk-sec-o">5 s</output></label>
+          <label>VAE compression per frame <select id="sf-tk-sp"><option value="8" selected>8 × 8 (Wan 2.1)</option><option value="16">16 × 16 (Wan 2.2, 5B)</option></select></label>
+        </div>
+        <div class="sf-stats" id="sf-tk-stats"><!--static:tokens--><div class="sf-stat"><div class="k">Frames</div><div class="v ">81</div></div><div class="sf-stat"><div class="k">Latent</div><div class="v ">21 × 90 × 160</div></div><div class="sf-stat"><div class="k">Tokens</div><div class="v ">75,600</div></div><div class="sf-stat"><div class="k">Attention pairs per layer and step</div><div class="v ">5.72 G</div></div><div class="sf-stat"><div class="k">Attention work vs 480p, 5 s</div><div class="v ">× 5.3</div></div><!--/static:tokens--></div>
+        <div class="sf-scroll" id="sf-tk-bar"><!--static:tkbar--><svg class="sf-svg" viewBox="0 0 680 138" role="img" aria-label="Attention work relative to a five-second 480p clip"><text x="0" y="19" class="m">480p, 5 s</text><rect x="110" y="8" width="17.2" height="16" rx="3" class="c-border"></rect><text x="133.2" y="20">× 1.0</text><text x="0" y="45" class="m">720p, 5 s</text><rect x="110" y="34" width="91.5" height="16" rx="3" class="c-border"></rect><text x="207.5" y="46">× 5.3</text><text x="0" y="71" class="m">1080p, 5 s</text><rect x="110" y="60" width="470.0" height="16" rx="3" class="c-border"></rect><text x="586.0" y="72">× 27.4</text><text x="0" y="97" class="m">720p, 10 s</text><rect x="110" y="86" width="348.7" height="16" rx="3" class="c-border"></rect><text x="464.7" y="98">× 20.3</text><text x="0" y="123" class="m">Your setting</text><rect x="110" y="112" width="91.5" height="16" rx="3" class="c-accent"></rect><text x="207.5" y="124">× 5.3</text></svg><!--/static:tkbar--></div>
+        <figcaption>Frames at 16 fps; latent frames = (frames − 1) / 4 + 1; tokens = latent frames × H / (2c) × W / (2c), where c is the VAE compression per side and 2 is the patch. Bars compare the attention work per layer and step with a five-second 480p clip, on a linear scale. The 4K and 20-second settings are far outside what the released models generate in one pass; they show why.</figcaption>
+      </figure>
+
+      <h2 id="stack">The open-weights stack, layer by layer</h2>
+      <p>A film is not one model. The diagram is one reasonable open-weights pipeline for a narrated film with a presenter and generated shots. Each box is a separate model or tool, with its own weights, its own input format and its own way of failing. Select a box for its candidates, memory class and failure modes.</p>
+      <figure class="sf-fig sf-pipe">
+        <div class="sf-fig-title">Figure 3 · One open-weights pipeline for a narrated film</div>
+        <div class="sf-scroll"><svg id="sf-pipe-svg" viewBox="0 0 684 410" role="img" aria-label="Pipeline: a script feeds keyframes, a presenter, a voice and a score; keyframes become shots, then interpolated and upscaled; the voice drives lip-sync and captions; everything converges on compositing, mixing and encoding"><!--static:pipe--><defs><marker id="sf-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6 z" class="arrow"></path></marker><marker id="sf-arrow-hot" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6 z" class="arrow hot"></path></marker></defs><text x="150" y="18" class="lane">picture</text><text x="150" y="182" class="lane">sound</text><path d="M132,210 C140,210 140,50 148,50" class="edge" marker-end="url(#sf-arrow)"></path><path d="M132,210 C140,210 140,130 148,130" class="edge" marker-end="url(#sf-arrow)"></path><path d="M132,210 C140,210 140,210 148,210" class="edge" marker-end="url(#sf-arrow)"></path><path d="M132,210 C140,210 140,290 148,290" class="edge" marker-end="url(#sf-arrow)"></path><path d="M268,50 C275,50 275,50 282,50" class="edge hot" marker-end="url(#sf-arrow-hot)"></path><path d="M402,50 C409,50 409,50 416,50" class="edge hot" marker-end="url(#sf-arrow-hot)"></path><path d="M536,50 C543,50 543,50 550,50" class="edge" marker-end="url(#sf-arrow)"></path><path d="M611,70 L611,128" class="edge" marker-end="url(#sf-arrow)"></path><path d="M268,130 C275,130 275,130 282,130" class="edge" marker-end="url(#sf-arrow)"></path><path d="M268,210 C275,210 275,130 282,130" class="edge" marker-end="url(#sf-arrow)"></path><path d="M402,130 C476,130 476,150 550,150" class="edge" marker-end="url(#sf-arrow)"></path><path d="M268,210 C275,210 275,210 282,210" class="edge" marker-end="url(#sf-arrow)"></path><path d="M402,210 C476,210 476,150 550,150" class="edge" marker-end="url(#sf-arrow)"></path><path d="M268,210 C342,210 342,290 416,290" class="edge" marker-end="url(#sf-arrow)"></path><path d="M268,290 C275,290 275,290 282,290" class="edge" marker-end="url(#sf-arrow)"></path><path d="M402,290 C409,290 409,290 416,290" class="edge" marker-end="url(#sf-arrow)"></path><path d="M611,170 L611,348" class="edge" marker-end="url(#sf-arrow)"></path><path d="M536,290 C543,290 543,370 550,370" class="edge" marker-end="url(#sf-arrow)"></path><g class="node language" data-id="script" tabindex="0" role="button" aria-pressed="false" aria-label="Script &amp; shot list"><rect x="14" y="190" width="118" height="40" rx="8"></rect><text x="23" y="207">Script &amp; shot list</text><text x="23" y="221" class="sub">language model</text></g><g class="node picture" data-id="keyframe" tabindex="0" role="button" aria-pressed="false" aria-label="Keyframes"><rect x="150" y="30" width="118" height="40" rx="8"></rect><text x="159" y="47">Keyframes</text><text x="159" y="61" class="sub">text-to-image</text></g><g class="node picture sel" data-id="shots" tabindex="0" role="button" aria-pressed="true" aria-label="Shot generation"><rect x="284" y="30" width="118" height="40" rx="8"></rect><text x="293" y="47">Shot generation</text><text x="293" y="61" class="sub">image-to-video</text></g><g class="node picture" data-id="interp" tabindex="0" role="button" aria-pressed="false" aria-label="Interpolation"><rect x="418" y="30" width="118" height="40" rx="8"></rect><text x="427" y="47">Interpolation</text><text x="427" y="61" class="sub">frame synthesis</text></g><g class="node picture" data-id="upscale" tabindex="0" role="button" aria-pressed="false" aria-label="Upscaling"><rect x="552" y="30" width="118" height="40" rx="8"></rect><text x="561" y="47">Upscaling</text><text x="561" y="61" class="sub">super-resolution</text></g><g class="node picture" data-id="presenter" tabindex="0" role="button" aria-pressed="false" aria-label="Presenter"><rect x="150" y="110" width="118" height="40" rx="8"></rect><text x="159" y="127">Presenter</text><text x="159" y="141" class="sub">still or plate</text></g><g class="node picture" data-id="lipsync" tabindex="0" role="button" aria-pressed="false" aria-label="Lip-sync"><rect x="284" y="110" width="118" height="40" rx="8"></rect><text x="293" y="127">Lip-sync</text><text x="293" y="141" class="sub">audio-driven face</text></g><g class="node sound" data-id="voice" tabindex="0" role="button" aria-pressed="false" aria-label="Voice"><rect x="150" y="190" width="118" height="40" rx="8"></rect><text x="159" y="207">Voice</text><text x="159" y="221" class="sub">text-to-speech</text></g><g class="node sound" data-id="captions" tabindex="0" role="button" aria-pressed="false" aria-label="Captions"><rect x="284" y="190" width="118" height="40" rx="8"></rect><text x="293" y="207">Captions</text><text x="293" y="221" class="sub">speech recognition</text></g><g class="node sound" data-id="music" tabindex="0" role="button" aria-pressed="false" aria-label="Score"><rect x="150" y="270" width="118" height="40" rx="8"></rect><text x="159" y="287">Score</text><text x="159" y="301" class="sub">text-to-music</text></g><g class="node sound" data-id="stems" tabindex="0" role="button" aria-pressed="false" aria-label="Stems &amp; ducking"><rect x="284" y="270" width="118" height="40" rx="8"></rect><text x="293" y="287">Stems &amp; ducking</text><text x="293" y="301" class="sub">source separation</text></g><g class="node assembly" data-id="comp" tabindex="0" role="button" aria-pressed="false" aria-label="Compositing"><rect x="552" y="130" width="118" height="40" rx="8"></rect><text x="561" y="147">Compositing</text><text x="561" y="161" class="sub">titles, grade</text></g><g class="node assembly" data-id="mix" tabindex="0" role="button" aria-pressed="false" aria-label="Mix &amp; loudness"><rect x="418" y="270" width="118" height="40" rx="8"></rect><text x="427" y="287">Mix &amp; loudness</text><text x="427" y="301" class="sub">one level</text></g><g class="node assembly" data-id="encode" tabindex="0" role="button" aria-pressed="false" aria-label="Encode"><rect x="552" y="350" width="118" height="40" rx="8"></rect><text x="561" y="367">Encode</text><text x="561" y="381" class="sub">delivery</text></g><!--/static:pipe--></svg></div>
+        <div class="sf-panel" id="sf-pipe-panel" aria-live="polite"><!--static:panel--><h3>Shot generation</h3><div>Animates each keyframe into a clip of about five seconds.</div><dl><dt>Candidates</dt><dd>Wan 2.1 and 2.2 (Apache 2.0), LTX-2.5 (free below US$10M revenue) and others: see the licence matrix and the arena results.</dd><dt>Memory</dt><dd>28.6 GB of weights for the 14B model in BF16, before activations: see Figure 4.</dd><dt>Fails on</dt><dd>Continuity between clips, physics, faces at a distance.</dd></dl><!--/static:panel--></div>
+        <figcaption>Solid blue border: picture. Dashed blue: sound. Grey: language. Dark: assembly. The dashes run in the direction of the data. Licences are those of the released weights, which can differ from the licence of the code.</figcaption>
+      </figure>
+
+      <h2 id="compute">Memory and compute per clip</h2>
+      <p>Two walls come first: whether the weights fit in GPU memory, and how long the arithmetic takes once they do. The Wan 2.1 14B transformer ships as 57 GB of FP32 safetensors; inference casts it to BF16, 28.6 GB, already more than a 24 GB card before a single activation. Its text encoder, the encoder half of umT5-XXL, is an 11.4 GB file of its own. Wan 2.2 pushes both ways: its A14B model splits denoising between two experts of 14.3 billion parameters, one for high noise and one for low, so 28.6 billion must be held for 14.3 billion active per step, and the README asks for at least 80 GB of GPU memory to run it on one card; its 5B model takes the other lever, a VAE that compresses each frame 16 × 16, which leaves a quarter of the tokens per latent frame.</p>
+      <p>For a diffusion transformer with <code>P</code> active parameters, <code>L</code> layers of width <code>d</code> and <code>N</code> tokens, one forward pass costs about:</p>
+      <div class="sf-formula">FLOPs per pass ≈ 2·P·N + 4·L·d·N²
+FLOPs per clip ≈ steps × (2 with classifier-free guidance, else 1) × FLOPs per pass
+time per clip  ≈ FLOPs per clip ÷ (dense BF16 FLOP/s × utilisation)</div>
+      <p>The first term is the matrix multiplications, the second is self-attention, and at video token counts the second dominates: for the 14B model at 720p it is more than twice the first. Classifier-free guidance, on by default in the Wan scripts with a scale of 5, runs the network twice per step, once with the prompt and once without.</p>
+      <p>Two published timings anchor the formula. The Wan 2.1 authors report about 4 minutes for a five-second 480p clip from the 1.3B model on an RTX 4090; with the default 50 steps and guidance, the formula gives that time at about 73 % of the card’s dense BF16 peak. For Wan 2.2’s 5B model they report under 9 minutes for five seconds of 720p on “a single consumer-grade GPU” with at least 24 GB, which on an RTX 4090 means at least 61 %. The figure below starts at 60 %. A run made for this article gives the other end: on an NVIDIA L4, an off-the-shelf diffusers pipeline took 12 minutes 3 seconds for the 50 steps of the same 480p clip, 14.4 seconds a step, which is 33 % of the L4’s dense BF16 peak. Set the slider to 33 % to see what that does to a finished minute.</p>
+      <figure class="sf-fig">
+        <div class="sf-fig-title">Figure 4 · Will it fit, and how long will it take</div>
+        <div class="sf-controls">
+          <label>Video model <select id="sf-cp-model"><!--static:models--><option value="wan13">Wan 2.1 T2V 1.3B</option><option value="wan5">Wan 2.2 TI2V 5B, 16 × 16 VAE</option><option value="wan14" selected>Wan 2.1 T2V 14B</option><option value="wan27">Wan 2.2 T2V A14B, two experts</option><!--/static:models--></select></label>
+          <label>Weight precision <select id="sf-cp-prec"><option value="2">BF16, 2 bytes</option><option value="1">FP8, 1 byte</option><option value="0.56">4-bit, about 0.56 byte with scales</option></select></label>
+          <label>GPU <select id="sf-cp-gpu"><!--static:gpus--><option value="l4" selected>NVIDIA L4, 24 GB</option><option value="4090">RTX 4090, 24 GB</option><option value="5090">RTX 5090, 32 GB</option><option value="l40s">NVIDIA L40S, 48 GB</option><option value="a100">A100, 80 GB</option><option value="h100">H100 SXM, 80 GB</option><!--/static:gpus--></select></label>
+          <label>Resolution <select id="sf-cp-res"><option value="832x480">480p</option><option value="1280x720" selected>720p</option></select></label>
+          <label>Sampling steps <input id="sf-cp-steps" type="range" min="4" max="60" value="50"><output id="sf-cp-steps-o">50</output></label>
+          <label>Utilisation of peak <input id="sf-cp-mfu" type="range" min="10" max="90" value="60"><output id="sf-cp-mfu-o">60 %</output></label>
+          <label>Generations per kept clip <input id="sf-cp-retake" type="range" min="1" max="10" value="4"><output id="sf-cp-retake-o">4</output></label>
+          <label class="sf-check"><input id="sf-cp-cfg" type="checkbox" checked> Classifier-free guidance</label>
+          <label class="sf-check"><input id="sf-cp-te" type="checkbox"> Keep the text encoder on the GPU</label>
+        </div>
+        <div class="sf-scroll" id="sf-cp-mem"><!--static:mem--><svg class="sf-svg" viewBox="0 0 680 80" role="img" aria-label="Weights of the transformer, text encoder and VAE compared with GPU memory"><rect x="0.0" y="8" width="589.5" height="22" rx="2" class="c-accent"></rect><rect x="589.5" y="8" width="10.5" height="22" rx="2" class="c-muted"></rect><line x1="495.1" x2="495.1" y1="2" y2="58" class="limit over"></line><text x="489.1" y="72" text-anchor="end">GPU memory 24 GB</text><text x="0" y="54" class="m">weights 29.1 GB</text></svg><!--/static:mem--></div>
+        <div class="sf-stats" id="sf-cp-stats"><!--static:compute--><div class="sf-stat"><div class="k">Tokens per clip</div><div class="v ">75,600</div></div><div class="sf-stat"><div class="k">FLOPs per clip</div><div class="v ">684.24 P</div></div><div class="sf-stat"><div class="k">Weights fit?</div><div class="v bad">No, offloaded</div></div><div class="sf-stat"><div class="k">Added by offloading</div><div class="v ">1.9 min</div></div><div class="sf-stat"><div class="k">Time per 5 s clip</div><div class="v bad">2.6 h</div></div><div class="sf-stat"><div class="k">GPU time per finished minute</div><div class="v bad">127.2 h</div></div><!--/static:compute--></div>
+        <figcaption>Estimates from the formulas above, not measurements. Utilisation is an assumption, set by default to 60 % from the two published timings above; the run made for this article reached 33 % on an L4. Memory counts weights only: activations, attention buffers and the VAE decode come on top. When the weights do not fit, offloading streams them over PCIe at every pass, here at an assumed 25 GB/s. Distilled samplers with 4 to 8 steps and sparse attention cut the time several-fold, each at the price of another component to integrate and validate. A finished minute is 12 kept clips of five seconds; the number of generations per kept clip is your assumption.</figcaption>
+      </figure>
+      <p>The constants behind Figures 4 and 5, with their sources:</p>
+      <div class="sf-table"><table>
+        <thead><tr><th>Item</th><th>Value used</th><th>Source</th></tr></thead>
+        <tbody><!--static:constants--><tr><td>Wan 2.1 T2V 1.3B</td><td>1.419B active, 1.419B held; 30 layers × 1,536; 50 steps by default; 16 fps; VAE 8 × 8 per frame, 0.51 GB file</td><td><a href="https://github.com/Wan-Video/Wan2.1">Wan2.1 configs</a></td></tr><tr><td>Wan 2.2 TI2V 5B, 16 × 16 VAE</td><td>5.000B active, 5.000B held; 30 layers × 3,072; 50 steps by default; 24 fps; VAE 16 × 16 per frame, 2.82 GB file</td><td><a href="https://github.com/Wan-Video/Wan2.2">Wan2.2 configs</a></td></tr><tr><td>Wan 2.1 T2V 14B</td><td>14.288B active, 14.288B held; 40 layers × 5,120; 50 steps by default; 16 fps; VAE 8 × 8 per frame, 0.51 GB file</td><td><a href="https://github.com/Wan-Video/Wan2.1">Wan2.1 configs</a></td></tr><tr><td>Wan 2.2 T2V A14B, two experts</td><td>14.288B active, 28.577B held; 40 layers × 5,120; 40 steps by default; 16 fps; VAE 8 × 8 per frame, 0.51 GB file</td><td><a href="https://github.com/Wan-Video/Wan2.2">Wan2.2 configs</a></td></tr><tr><td>umT5-XXL encoder</td><td>11.36 GB file in BF16, so about 5.68B parameters</td><td><a href="https://huggingface.co/Wan-AI">Wan-AI model files</a></td></tr><tr><td>NVIDIA L4, 24 GB</td><td>121 dense BF16 TFLOPS</td><td><a href="https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf">Ada whitepaper</a></td></tr><tr><td>RTX 4090, 24 GB</td><td>165.2 dense BF16 TFLOPS</td><td><a href="https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf">Ada whitepaper</a></td></tr><tr><td>RTX 5090, 32 GB</td><td>209.5 dense BF16 TFLOPS</td><td><a href="https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf">RTX Blackwell whitepaper</a></td></tr><tr><td>NVIDIA L40S, 48 GB</td><td>362.05 dense BF16 TFLOPS</td><td><a href="https://www.nvidia.com/en-us/data-center/l40s/">L40S page</a></td></tr><tr><td>A100, 80 GB</td><td>312 dense BF16 TFLOPS</td><td><a href="https://www.nvidia.com/en-us/data-center/a100/">A100 page and datasheet</a></td></tr><tr><td>H100 SXM, 80 GB</td><td>989.4 dense BF16 TFLOPS</td><td><a href="https://www.nvidia.com/en-us/data-center/h100/">H100 page, dense = sparse ÷ 2</a></td></tr><tr><td>PCIe offload</td><td>25 GB/s, assumed; PCIe 4.0 × 16 is 32 GB/s each way in theory</td><td>Assumption</td></tr><tr><td>Storage, other stages</td><td>The read speeds of Figure 5, and the sizes and minutes listed in the boxes of Figure 3</td><td>Assumptions</td></tr><!--/static:constants--></tbody>
+      </table></div>
+      <p>Location constrains the hardware too. In the AWS price list of 23 October 2026, the on-demand GPU instances in Paris (eu-west-3) were the g4dn, g5, g6, gr6 and p6-b200 families: no H100 or L40S instances. The single-L4 <code>g6.xlarge</code> cost $1.0216 an hour, and a team that must keep scripts and footage in that region starts from that card.</p>
+
+      <h2 id="swaps">One GPU, many models</h2>
+      <p>The stack in Figure 3 holds more weights than any single GPU has memory. Unless every stage gets its own GPU, models take turns: read from storage, moved to the device, used, evicted. The read alone depends on where the checkpoints live. Batching by stage, all keyframes, then all shots, then every lip-sync pass, pays each load once. Going clip by clip pays it twelve times per minute.</p>
+      <p>Which one matters depends on the rest of the setup. With the defaults of Figure 4, a 14B model on an L4, the video computation takes about 32 hours per finished minute and the reads are noise. Make the computation fast, an H100 with an 8-step distilled sampler, and put the checkpoints on a network disk at 125 MiB/s read clip by clip: the reads then take longer than the computing, about 60 % of the total under the assumptions shown. Every speed-up on the GPU moves the bottleneck somewhere else.</p>
+      <figure class="sf-fig sf-gantt">
+        <div class="sf-fig-title">Figure 5 · Reading weights versus computing, for one finished minute</div>
+        <div class="sf-controls">
+          <label>Checkpoint storage <select id="sf-gt-store"><!--static:storage--><option value="3" selected>Local NVMe, assumed 3 GB/s</option><option value="1">Network disk, assumed 1 GB/s</option><option value="0.131">Network disk, assumed 125 MiB/s</option><!--/static:storage--></select></label>
+          <label>Schedule <select id="sf-gt-mode"><option value="stage">Batched by stage</option><option value="clip">Clip by clip</option></select></label>
+        </div>
+        <div class="sf-scroll"><svg id="sf-gt-svg" class="sf-svg" viewBox="0 0 680 256" role="img" aria-label="Reading and computing time per stage on one GPU, logarithmic axis"><!--static:gantt--><defs><pattern id="sf-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="hatch-bg"></rect><line x1="0" y1="0" x2="0" y2="6" class="hatch-line"></line></pattern></defs><line x1="116.0" x2="116.0" y1="4" y2="236" class="grid"></line><text x="108.0" y="250" class="m">1 s</text><line x1="264.2" x2="264.2" y1="4" y2="236" class="grid"></line><text x="256.2" y="250" class="m">1 min</text><line x1="412.4" x2="412.4" y1="4" y2="236" class="grid"></line><text x="404.4" y="250" class="m">1 h</text><line x1="527.4" x2="527.4" y1="4" y2="236" class="grid"></line><text x="519.4" y="250" class="m">1 day</text><text x="0" y="22">Keyframes</text><rect x="116" y="8" width="75.3" height="9" class="load"></rect><text x="196.3" y="16" class="m">8 s</text><rect x="116" y="19" width="173.3" height="9" class="c-muted"></rect><text x="294.3" y="27" class="m">2.0 min</text><text x="0" y="54">Shot generation</text><rect x="116" y="40" width="81.6" height="9" class="load"></rect><text x="202.6" y="48" class="m">10 s</text><rect x="116" y="51" width="421.6" height="9" class="c-accent"></rect><text x="542.6" y="59" class="m">31.8 h</text><text x="0" y="86">Interpolation</text><rect x="116" y="72" width="1.5" height="9" class="load"></rect><text x="121.0" y="80" class="m">0 s</text><rect x="116" y="83" width="173.3" height="9" class="c-muted"></rect><text x="294.3" y="91" class="m">2.0 min</text><text x="0" y="118">Upscaling</text><rect x="116" y="104" width="1.5" height="9" class="load"></rect><text x="121.0" y="112" class="m">0 s</text><rect x="116" y="115" width="198.4" height="9" class="c-muted"></rect><text x="319.4" y="123" class="m">4.0 min</text><text x="0" y="150">Lip-sync</text><rect x="116" y="136" width="43.6" height="9" class="load"></rect><text x="164.6" y="144" class="m">3 s</text><rect x="116" y="147" width="223.4" height="9" class="c-muted"></rect><text x="344.4" y="155" class="m">8.0 min</text><text x="0" y="182">Voice</text><rect x="116" y="168" width="1.5" height="9" class="load"></rect><text x="121.0" y="176" class="m">1 s</text><rect x="116" y="179" width="187.9" height="9" class="c-muted"></rect><text x="308.9" y="187" class="m">3.0 min</text><text x="0" y="214">Score</text><rect x="116" y="200" width="30.7" height="9" class="load"></rect><text x="151.7" y="208" class="m">2 s</text><rect x="116" y="211" width="187.9" height="9" class="c-muted"></rect><text x="308.9" y="219" class="m">3.0 min</text><!--/static:gantt--></svg></div>
+        <div class="sf-stats" id="sf-gt-stats"><!--static:gtstats--><div class="sf-stat"><div class="k">Total on one GPU</div><div class="v ">32.2 h</div></div><div class="sf-stat"><div class="k">Reading weights</div><div class="v ">24 s</div></div><div class="sf-stat"><div class="k">Share spent reading</div><div class="v ">under 0.1 %</div></div><!--/static:gtstats--></div>
+                <figcaption>For each stage, hatched: reading its weights; solid: computing. The time axis is logarithmic, from one second to about eleven days. The video stage uses the BF16 size and the time per clip from Figure 4 with its current settings, times 12 clips; the keyframe stage uses the BF16 size of a 12B image model. The other sizes and durations are assumptions of the right order, listed in each box of Figure 3. Retakes are not counted.</figcaption>
+      </figure>
+
+      <h2 id="licences">The licence matrix</h2>
+      <p>“Open” says the weights can be downloaded, not what may be done with them. Several of the best-known checkpoints forbid commercial use, cap it by revenue, or exclude whole territories, sometimes including the reader’s own. The table summarises the licence files as read on 25 October 2026. It is not legal advice: read the file of the exact version you deploy.</p>
+      <div class="sf-table"><table>
+        <thead><tr><th>Model</th><th>Role</th><th>Weights licence</th><th>Commercial use</th><th>Point to check</th></tr></thead>
+        <tbody id="sf-lic-body">
+          <tr><td>Wan 2.1, Wan 2.2</td><td>Video, 1.3B to 14B active</td><td>Apache 2.0</td><td class="sf-yes">Yes</td><td>Usage rules in the README; later Wan versions have no published weights.</td></tr>
+          <tr><td>HunyuanVideo, HunyuanVideo 1.5</td><td>Video, 13B and 8.3B</td><td>Tencent Hunyuan Community License</td><td class="sf-no">Not in the EU</td><td>Section 1(l) excludes the European Union, the United Kingdom and South Korea; section 5(c) makes use outside the territory unlicensed.</td></tr>
+          <tr><td>LTX-2, LTX-2.3, LTX-2.5</td><td>Video with audio, 19B to about 22B</td><td>LTX-2 and LTX-2.x Community License</td><td class="sf-cond">Under US$10M</td><td>Entities with US$10M or more in annual revenue need a paid licence.</td></tr>
+          <tr><td>MiniMax H3</td><td>Video with audio, 33B</td><td>MiniMax H3 Community License</td><td class="sf-no">Not in the EU or US</td><td>Section I.5 excludes the EU, the UK, South Korea and the United States; written approval above US$20M revenue; the name must be displayed.</td></tr>
+          <tr><td>Mochi 1, MAGI-1</td><td>Video, 10B; 4.5B and 24B</td><td>Apache 2.0</td><td class="sf-yes">Yes</td><td>About 60 GB of GPU memory for Mochi 1 on one GPU.</td></tr>
+          <tr><td>Step-Video-T2V</td><td>Video, 30B</td><td>MIT</td><td class="sf-yes">Yes</td><td>About 78 GB of peak GPU memory.</td></tr>
+          <tr><td>XTTS-v2</td><td>Speech, voice cloning</td><td>Coqui Public Model License</td><td class="sf-no">No</td><td>Non-commercial only; the company behind it closed in January 2024, and no route to a commercial licence was found.</td></tr>
+          <tr><td>F5-TTS</td><td>Speech, voice cloning</td><td>CC BY-NC 4.0 (the code is MIT)</td><td class="sf-no">No</td><td>Non-commercial because of its training data.</td></tr>
+          <tr><td>Kokoro-82M</td><td>Speech</td><td>Apache 2.0</td><td class="sf-yes">Yes</td><td>Its phonemiser fallback, espeak-ng, is GPL-3.0.</td></tr>
+          <tr><td>StyleTTS 2</td><td>Speech</td><td>MIT, with terms on the pretrained models</td><td class="sf-cond">With disclosure</td><td>Listeners must be told the speech is synthetic unless the voice’s owner agreed.</td></tr>
+          <tr><td>Piper</td><td>Speech</td><td>Code now GPL-3.0; one licence per voice</td><td class="sf-cond">Per voice</td><td>The en_US lessac voice comes from a corpus licensed for research only.</td></tr>
+          <tr><td>Orpheus</td><td>Speech, 3B</td><td>Tagged Apache 2.0</td><td class="sf-cond">Check</td><td>Derived from Llama 3.2, whose licence has its own conditions on derivatives.</td></tr>
+          <tr><td>LatentSync, LivePortrait</td><td>Lip-sync, portrait animation</td><td>LatentSync: OpenRAIL++; LivePortrait: MIT</td><td class="sf-cond">Check dependencies</td><td>Both use InsightFace detection models, licensed for non-commercial research only; LivePortrait’s licence says to replace them for commercial use.</td></tr>
+          <tr><td>Hallo3</td><td>Talking head</td><td>Tagged MIT</td><td class="sf-cond">Check base model</td><td>Derived from CogVideoX-5B, whose licence requires registration and caps commercial use.</td></tr>
+          <tr><td>Whisper</td><td>Speech recognition</td><td>MIT for code and weights</td><td class="sf-yes">Yes</td><td>The model hub tags large-v3 Apache 2.0; the official repository says MIT.</td></tr>
+          <tr><td>Parakeet TDT 0.6B v3</td><td>Speech recognition</td><td>CC BY 4.0</td><td class="sf-yes">Yes, with credit</td><td>Attribution required.</td></tr>
+          <tr><td>MMS forced aligner</td><td>Alignment</td><td>CC BY-NC 4.0</td><td class="sf-no">No</td><td>Non-commercial.</td></tr>
+          <tr><td>FLUX.1 [schnell]</td><td>Image, 12B</td><td>Apache 2.0</td><td class="sf-yes">Yes</td><td>The [dev] variant of the same family is not. The files are gated on the model hub: an account and accepted conditions are needed to download them, and the run for this article got a 401 without one.</td></tr>
+          <tr><td>FLUX.1 [dev]</td><td>Image, 12B</td><td>FLUX.1 [dev] Non-Commercial License v1.1.1</td><td class="sf-no">No</td><td>Section 2(d) allows commercial use of outputs; section 4(a) forbids commercial or production use of data the model produces. A commercial licence is sold separately.</td></tr>
+          <tr><td>FLUX.2 [dev]</td><td>Image, 32B</td><td>FLUX Non-Commercial License v2.1</td><td class="sf-no">No</td><td>Commercial licence from the vendor.</td></tr>
+          <tr><td>FLUX.2 [klein]</td><td>Image, 4B and 9B</td><td>4B: Apache 2.0; 9B: FLUX Non-Commercial License</td><td class="sf-cond">4B only</td><td>Same name, two licences.</td></tr>
+          <tr><td>Stable Diffusion XL</td><td>Image</td><td>CreativeML Open RAIL++-M</td><td class="sf-yes">Yes</td><td>Use restrictions in its Attachment A.</td></tr>
+          <tr><td>Stable Diffusion 3.5</td><td>Image, 2B and 8B</td><td>Stability AI Community License</td><td class="sf-cond">Under US$1M</td><td>Free under US$1M annual revenue; commercial users must register; above that, an enterprise licence.</td></tr>
+          <tr><td>HunyuanImage 3.0</td><td>Image, 80B (13B active)</td><td>Tencent Hunyuan Community License</td><td class="sf-no">Not in the EU</td><td>The licensed territory excludes the European Union, the United Kingdom and South Korea.</td></tr>
+          <tr><td>Qwen-Image</td><td>Image, 20B</td><td>Apache 2.0</td><td class="sf-yes">Yes</td><td>None from the licence.</td></tr>
+          <tr><td>MusicGen</td><td>Music</td><td>CC BY-NC 4.0 (the code is MIT)</td><td class="sf-no">No</td><td>Code and weights have different licences.</td></tr>
+          <tr><td>Stable Audio Open 1.0</td><td>Music, up to 47 s</td><td>Stability AI Community License</td><td class="sf-cond">Under US$1M</td><td>As SD 3.5.</td></tr>
+          <tr><td>YuE</td><td>Songs</td><td>v1: Apache 2.0; YuE2: CC BY-NC 4.0 with a creator permission</td><td class="sf-cond">v1; YuE2 for individuals</td><td>YuE2 lets individuals monetise outputs; companies need a commercial licence.</td></tr>
+          <tr><td>DiffRhythm</td><td>Songs</td><td>Apache 2.0 for code and DiT weights</td><td class="sf-cond">Check the VAE</td><td>Its VAE is fine-tuned from Stable Audio Open and carries the Stability AI Community License.</td></tr>
+          <tr><td>Demucs</td><td>Source separation</td><td>Code MIT; weights stated by the author as for scientific purposes</td><td class="sf-no">Unclear</td><td>The repository is archived; the weights question is open on the model hub.</td></tr>
+          <tr><td>Real-ESRGAN</td><td>Upscaling</td><td>Code BSD 3-Clause; no separate terms for the weights</td><td class="sf-cond">Check</td><td>Weights are release assets without their own licence text.</td></tr>
+          <tr><td>Practical-RIFE</td><td>Interpolation</td><td>MIT, weights included</td><td class="sf-yes">Yes</td><td>None from the licence.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h2 id="gap">How far behind is open</h2>
+      <p>On the Artificial Analysis text-to-video arena, where people vote blind between two clips, the ranking read on 25 October 2026 put a closed model first: Wan 3.0, at 1175 Elo. The best open-weights model, MiniMax H3, was fourth at 1158, inside the margin of error. Its licence excludes the European Union, the United Kingdom, South Korea and the United States. The best open models that a company in the EU may run under their licence, Lightricks’ LTX-2.5, free below US$10 million of annual revenue, stood at 949, in 24th place.</p>
+      <p>The model behind the numbers in this article has followed the same path: Wan published weights up to version 2.2; versions 2.5 to 2.7 are offered through Alibaba Cloud’s API, with no weights on the Wan-AI model hub, and the arena lists 3.0 as closed. So the open way, for a European team, starts from models a clear step behind the services it would compete with.</p>
+
+      <h2 id="samples">Samples made for this article</h2>
+      <p>Estimates are one thing, outputs another. The samples below were generated for this article with open-weights models, from scripts kept with it, with every setting and every time recorded.</p>
+      <figure class="sf-fig">
+        <div class="sf-fig-title">Figure 6 · Voice: Kokoro-82M, Apache 2.0, voice af_heart</div>
+        <p class="sf-sample-text">“Generating a minute of film from open models is a systems problem before it is a creative one.”</p>
+        <audio id="sf-voice-1" controls preload="none" src="/assets/synthetic-film-open-weights-voice-narration.m4a"></audio>
+        <div class="sf-spec" data-audio="sf-voice-1" role="img" aria-label="Log-mel spectrogram of the first line, 0 to 12 kHz over 6.4 seconds"><span class="sf-spec-img" style="--spec: url('/assets/synthetic-film-open-weights-voice-narration-spectrogram.png')"></span><span class="sf-spec-axis">12 kHz</span><span class="sf-spec-axis low">0</span><span class="sf-playhead"></span></div>
+        <p class="sf-sample-text">“Wan 2.1 runs at 16 fps, its VAE compresses each frame eight by eight, and EBU R 128 asks for minus 23 LUFS.”</p>
+        <audio id="sf-voice-2" controls preload="none" src="/assets/synthetic-film-open-weights-voice-acronyms.m4a"></audio>
+        <div class="sf-spec" data-audio="sf-voice-2" role="img" aria-label="Log-mel spectrogram of the second line, 0 to 12 kHz over 11.4 seconds"><span class="sf-spec-img" style="--spec: url('/assets/synthetic-film-open-weights-voice-acronyms-spectrogram.png')"></span><span class="sf-spec-axis">12 kHz</span><span class="sf-spec-axis low">0</span><span class="sf-playhead"></span></div>
+        <div class="sf-formula">fps → ˌɛfpˌiˈɛs     VAE → vˌiˌAˈi     EBU → ˌibˌijˈu
+R 128 → ˈɑɹ wˈʌn hˈʌndɹəd twˈɛnti ˈAt     LUFS → ˌɛljˌuˌɛfˈɛs</div>
+        <figcaption>Both lines generated on 25 October 2026 on the CPU of an Apple M4 Max: 6.4 and 11.4 seconds of speech in 2.0 and 0.9 seconds, after 2.3 seconds of loading. The phonemes are those the model’s English front end produced before any sound: it spells every acronym letter by letter and reads “R 128” as “R one hundred twenty-eight”, where broadcast engineers say “R one-twenty-eight”, and often “luffs”. Each such term needs handling of its own, in each language. Under each line, its log-mel spectrogram: 80 frequency bands up to 12 kHz against time, computed back from the audio, with a line that follows playback. It is the kind of picture the model’s decoder works in: its configuration file describes an ISTFTNet, two upsampling stages of 10 and 6 followed by an inverse short-time Fourier transform with a 20-point window and a 5-sample hop, so 300 samples of 24 kHz audio, 12.5 milliseconds, for each frame the model predicts.</figcaption>
+      </figure>
+      <figure class="sf-fig">
+        <div class="sf-fig-title">Figure 7 · Image and video: SDXL and Wan 2.1 T2V 1.3B on one NVIDIA L4</div>
+        <p class="sf-sample-text">“A moonlit valley at night, layered deep-blue hills, a large pale-gold moon, rivers of luminous ink flowing across the sky in long curved strokes, painterly contemporary digital art.”</p>
+        <a href="/assets/synthetic-film-open-weights-keyframe-large.webp"><img class="sf-media" src="/assets/synthetic-film-open-weights-keyframe-large.webp" srcset="/assets/synthetic-film-open-weights-keyframe-800.webp 800w, /assets/synthetic-film-open-weights-keyframe-large.webp 1344w" sizes="(max-width: 720px) calc(100vw - 2.5rem), 672px" width="1344" height="768" loading="lazy" decoding="async" alt="A painterly night scene in deep blue and pale gold: flowing ink-like strokes under a small full moon, generated by SDXL"></a>
+        <div class="sf-shots">
+          <div class="sf-shot wide"><video class="sf-media" muted loop playsinline controls preload="metadata" poster="/assets/synthetic-film-open-weights-shot-ink-poster.jpg" width="832" height="480"><source src="/assets/synthetic-film-open-weights-shot-ink.mp4" type="video/mp4"></video><p class="sf-shot-label">“Rivers of luminous gold ink swirling and flowing fast across a deep-blue night sky, strokes curling and unfurling…”</p></div>
+          <div class="sf-shot"><video class="sf-media" muted loop playsinline controls preload="metadata" poster="/assets/synthetic-film-open-weights-shot-waves-poster.jpg" width="832" height="480"><source src="/assets/synthetic-film-open-weights-shot-waves.mp4" type="video/mp4"></video><p class="sf-shot-label">“Ocean waves of deep blue and gold paint crashing and rolling toward the viewer under a full moon…”</p></div>
+          <div class="sf-shot"><video class="sf-media" muted loop playsinline controls preload="metadata" poster="/assets/synthetic-film-open-weights-shot-clouds-poster.jpg" width="832" height="480"><source src="/assets/synthetic-film-open-weights-shot-clouds.mp4" type="video/mp4"></video><p class="sf-shot-label">“Clouds racing across a moonlit sky above layered deep-blue hills, time-lapse…”</p></div>
+        </div>
+        <div class="sf-stats">
+          <div class="sf-stat"><div class="k">Keyframe, SDXL, 1344 × 768, 30 steps</div><div class="v">19.1 s</div></div><div class="sf-stat"><div class="k">Denoising, per five-second shot (81 frames, 50 steps)</div><div class="v">12 min 13–23 s</div></div><div class="sf-stat"><div class="k">Decoding, per shot</div><div class="v">about 30 s</div></div><div class="sf-stat"><div class="k">Peak GPU memory</div><div class="v">11.5 GB</div></div><div class="sf-stat"><div class="k">Loading the models, once</div><div class="v">3 min 51 s</div></div>
+        </div>
+        <figcaption>The three shots, each from its own description, were generated on 25 October 2026 on one NVIDIA L4 (an AWS g6.4xlarge spot instance in Frankfurt, 46 minutes for the three, at a spot price near $1 an hour), with each component on the GPU only while it is used. A first shot that asked only for a slow camera push barely moved: its first and last frames were 93 % alike by SSIM, against 38 %, 39 % and 70 % for these three. The keyframe is SDXL because FLUX.1 [schnell], the first choice, is gated on the model hub. Same world, different models, different looks: the continuity problem of the next section. A run that kept every component on the GPU measured 12 minutes 3 seconds of denoising for one shot, then ran out of memory at the decode, with the 11 GB text encoder still resident.</figcaption>
+      </figure>
+
+      <h2 id="quality">The part you cannot download</h2>
+      <p>A pipeline that runs is not a pipeline that produces something you would show. The failure modes are specific, and most of them only a person sees:</p>
+      <ul>
+        <li><strong>Continuity between clips.</strong> Each clip is sampled on its own. Faces, clothing and light drift from one clip to the next. Conditioning every shot on a shared keyframe, or on the last frame of the previous clip, or training an identity adapter, each adds a stage with its own failures.</li>
+        <li><strong>Lip-sync at resolution.</strong> Audio-driven mouth models work on a cropped face at low resolution, which is then pasted back. On a 4K frame the mouth is upscaled from a few hundred pixels, and long sentences drift.</li>
+        <li><strong>Text, hands, brand assets.</strong> Generated frames misspell words and invent logos. Anything that must be exact is composited afterwards.</li>
+        <li><strong>Speech.</strong> Acronyms, numbers, product names and words from another language are where synthesis breaks, and where a listener notices first.</li>
+        <li><strong>Music.</strong> Generated tracks lose structure over long durations, drift in key or tempo, and seam audibly when looped.</li>
+        <li><strong>Levels and colour.</strong> Every stage returns its own loudness and its own grade. A film needs one: for broadcast, −23 LUFS under EBU R 128.</li>
+      </ul>
+      <p>Metrics help but do not decide. Video benchmarks score dimensions such as subject consistency and motion smoothness; intelligibility and loudness can be measured. None of them says whether a shot is good. In practice someone reviews every second, and most generations are thrown away: that is the “generations per kept clip” in Figure 4.</p>
+
+      <h2 id="agent">What a coding agent changes, and what it does not</h2>
+      <p>This article is a small test of the question. An AI coding agent wrote the code of its figures under my direction, and AI agents found and summarised the licence files, datasheets and price lists in the sources, each one linked so that every number can be checked. That is the part of a generative-media project that agents speed up: code and reading.</p>
+      <p>None of that work produced a GPU hour, a model weight, a licence or a reviewed shot, and those are the costs of the pipeline in Figure 3: on the defaults of Figure 4, 127 GPU hours on an L4 for one finished minute, a review of every row of the licence matrix for the exact versions used, and a person watching every generation. A prompt or a skill can describe the process. It does not come with the infrastructure, the models or the review.</p>
+
+      <h2 id="next">The second way</h2>
+      <p>Managed services run comparable stacks on their own fleets and sell the result per second, per character or per seat. The GPUs, the licences of their models and much of the quality work become their problem; the brief, the review and the terms of use of what you generate remain yours. Part two, in preparation, compares them on price and on the same short brief, with what each run actually cost.</p>
+
+      <h2 id="limits">What this part does not establish</h2>
+      <ul>
+        <li>The compute figures are estimates from published configurations and an assumed utilisation, anchored on two published timings; optimised implementations can be several times faster. The models run for this article are listed with their samples.</li>
+        <li>Licences and prices are those published on the dates given in the sources. Both change; check them before a decision.</li>
+        <li>The licence table summarises licence files. It is not legal advice.</li>
+        <li>The pipeline in Figure 3 is one reasonable design among several, not a recommendation.</li>
+      </ul>
+
+      <h2 id="sources">Sources</h2>
+      <ul>
+        <li>Nichol and Dhariwal, <a href="https://arxiv.org/abs/2102.09672">Improved Denoising Diffusion Probabilistic Models</a>, 2021: the cosine schedule.</li>
+        <li>Wan team, <a href="https://arxiv.org/abs/2503.20314">Wan: Open and Advanced Large-Scale Video Generative Models</a>, 2025, and the configurations and generation scripts of <a href="https://github.com/Wan-Video/Wan2.1">Wan2.1</a> and <a href="https://github.com/Wan-Video/Wan2.2">Wan2.2</a>, read on 25 October 2026: dimensions, layers, VAE strides, patch size, default steps and guidance. Checkpoint sizes from the model repositories of <a href="https://huggingface.co/Wan-AI">Wan-AI on Hugging Face</a>.</li>
+        <li>AWS Price List for Amazon EC2, eu-west-3, version of 23 October 2026: instance families and the g6.xlarge price.</li>
+        <li><a href="https://tech.ebu.ch/docs/r/r128.pdf">EBU R 128</a> (2023 edition): the −23 LUFS target.</li>
+        <li>Licence files and model cards read on 25 October 2026: <a href="https://huggingface.co/black-forest-labs/FLUX.1-schnell">FLUX.1 [schnell]</a>, <a href="https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/LICENSE.md">FLUX.1 [dev]</a>, <a href="https://huggingface.co/black-forest-labs/FLUX.2-dev/blob/main/LICENSE.md">FLUX.2 [dev]</a>, <a href="https://huggingface.co/black-forest-labs/FLUX.2-klein-4B">FLUX.2 [klein] 4B</a> and <a href="https://huggingface.co/black-forest-labs/FLUX.2-klein-9B">9B</a>, <a href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/LICENSE.md">SDXL</a>, <a href="https://huggingface.co/stabilityai/stable-diffusion-3.5-large">SD 3.5</a>, <a href="https://stability.ai/license">Stability AI licence</a>, <a href="https://huggingface.co/tencent/HunyuanImage-3.0/blob/main/LICENSE">HunyuanImage 3.0</a>, <a href="https://huggingface.co/Qwen/Qwen-Image">Qwen-Image</a>, <a href="https://github.com/facebookresearch/audiocraft/blob/main/LICENSE_weights">MusicGen weights</a>, <a href="https://huggingface.co/stabilityai/stable-audio-open-1.0">Stable Audio Open</a>, <a href="https://github.com/multimodal-art-projection/YuE">YuE</a>, <a href="https://huggingface.co/ASLP-lab/DiffRhythm-vae">DiffRhythm VAE</a>, <a href="https://github.com/facebookresearch/demucs/issues/327">Demucs weights</a>, <a href="https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE">Real-ESRGAN</a>, <a href="https://github.com/hzwer/Practical-RIFE">Practical-RIFE</a>; for video, <a href="https://raw.githubusercontent.com/Tencent-Hunyuan/HunyuanVideo/main/LICENSE.txt">HunyuanVideo</a> and <a href="https://raw.githubusercontent.com/Tencent-Hunyuan/HunyuanVideo-1.5/main/LICENSE">HunyuanVideo 1.5</a>, <a href="https://raw.githubusercontent.com/Lightricks/LTX-2/main/LICENSE-2_x">LTX-2.x</a>, <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/LICENSE">MiniMax H3</a>, <a href="https://github.com/genmoai/mochi">Mochi 1</a>, <a href="https://github.com/SandAI-org/MAGI-1">MAGI-1</a>, <a href="https://github.com/stepfun-ai/Step-Video-T2V">Step-Video-T2V</a>; for speech, <a href="https://huggingface.co/coqui/XTTS-v2/blob/main/LICENSE.txt">XTTS-v2</a>, <a href="https://github.com/SWivid/F5-TTS">F5-TTS</a>, <a href="https://huggingface.co/hexgrad/Kokoro-82M">Kokoro-82M</a>, <a href="https://github.com/yl4579/StyleTTS2">StyleTTS 2</a>, <a href="https://huggingface.co/rhasspy/piper-voices">Piper voices</a>, <a href="https://huggingface.co/canopylabs/orpheus-3b-0.1-ft">Orpheus</a>; for faces, <a href="https://github.com/bytedance/LatentSync">LatentSync</a>, <a href="https://raw.githubusercontent.com/KwaiVGI/LivePortrait/main/LICENSE">LivePortrait</a>, <a href="https://huggingface.co/fudan-generative-ai/hallo3">Hallo3</a>, <a href="https://github.com/deepinsight/insightface">InsightFace</a>; for recognition, <a href="https://github.com/openai/whisper">Whisper</a>, <a href="https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3">Parakeet TDT 0.6B v3</a>, <a href="https://docs.pytorch.org/audio/stable/generated/torchaudio.pipelines.MMS_FA.html">MMS forced aligner</a>.</li>
+        <li><a href="https://artificialanalysis.ai/video/leaderboard/text-to-video">Artificial Analysis text-to-video leaderboard</a>, board with audio, read on 25 October 2026; the page shows no update date. Wan versions: <a href="https://www.alibabacloud.com/help/en/model-studio/text-to-video-api-reference">Alibaba Cloud Model Studio</a> and the <a href="https://huggingface.co/Wan-AI">Wan-AI organisation</a>.</li>
+        <li>NVIDIA datasheets and architecture whitepapers for L4, L40S, A100, H100, RTX 4090 and RTX 5090: dense tensor throughput and memory.</li>
+      </ul>
+      <p>An AI coding agent wrote the code of the interactive figures under my direction, and AI agents helped locate and read the sources listed above. I am responsible for the analysis and for the claims in this article.</p>
+    </section>
+  </main>
+<script>
+(function () {
+  'use strict';
+  /* pure:start */
+  // Everything between the pure markers runs in the page and in tools/prerender.mjs, which writes the default state
+  // of every figure into the HTML for readers without JavaScript. This block returns strings and never touches the DOM.
+  var fmt = function (x, d) { d = d || 0; return x.toLocaleString('en-US', { maximumFractionDigits: d, minimumFractionDigits: d }); };
+  var si = function (x) { var u = [[1e18, 'E'], [1e15, 'P'], [1e12, 'T'], [1e9, 'G'], [1e6, 'M'], [1e3, 'k']]; for (var i = 0; i < u.length; i++) if (Math.abs(x) >= u[i][0]) return fmt(x / u[i][0], 2) + ' ' + u[i][1]; return fmt(x, 0); };
+  var dur = function (s) { return s < 90 ? fmt(s, 0) + ' s' : s < 5400 ? fmt(s / 60, 1) + ' min' : fmt(s / 3600, 1) + ' h'; };
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+  var statHTML = function (k, v, cls) { return '<div class="sf-stat"><div class="k">' + k + '</div><div class="v ' + (cls || '') + '">' + v + '</div></div>'; };
+  var link = function (href, text) { return '<a href="' + href + '">' + text + '</a>'; };
+
+  var SRC = {
+    wan21: link('https://github.com/Wan-Video/Wan2.1', 'Wan2.1 configs'), wan22: link('https://github.com/Wan-Video/Wan2.2', 'Wan2.2 configs'), hub: link('https://huggingface.co/Wan-AI', 'Wan-AI model files'),
+    ada: link('https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf', 'Ada whitepaper'), bw: link('https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf', 'RTX Blackwell whitepaper'),
+    l40s: link('https://www.nvidia.com/en-us/data-center/l40s/', 'L40S page'), a100: link('https://www.nvidia.com/en-us/data-center/a100/', 'A100 page and datasheet'), h100: link('https://www.nvidia.com/en-us/data-center/h100/', 'H100 page, dense = sparse ÷ 2')
+  };
+  // P: parameters active per pass; W: parameters held in memory; L, d: layers and width; te: umT5-XXL encoder parameters.
+  var MODELS = [
+    { id: 'wan13', name: 'Wan 2.1 T2V 1.3B', P: 1.419e9, W: 1.419e9, L: 30, d: 1536, te: 5.68e9, vaeGB: 0.51, sp: 8, fps: 16, steps: 50, src: SRC.wan21 },
+    { id: 'wan5', name: 'Wan 2.2 TI2V 5B, 16 × 16 VAE', P: 5.0e9, W: 5.0e9, L: 30, d: 3072, te: 5.68e9, vaeGB: 2.82, sp: 16, fps: 24, steps: 50, src: SRC.wan22 },
+    { id: 'wan14', name: 'Wan 2.1 T2V 14B', P: 14.288e9, W: 14.288e9, L: 40, d: 5120, te: 5.68e9, vaeGB: 0.51, sp: 8, fps: 16, steps: 50, src: SRC.wan21 },
+    { id: 'wan27', name: 'Wan 2.2 T2V A14B, two experts', P: 14.288e9, W: 28.577e9, L: 40, d: 5120, te: 5.68e9, vaeGB: 0.51, sp: 8, fps: 16, steps: 40, src: SRC.wan22 }
+  ];
+  // Dense BF16 tensor throughput in TFLOPS, without sparsity; FP32 accumulate on the GeForce cards.
+  var GPUS = [
+    { id: 'l4', name: 'NVIDIA L4, 24 GB', mem: 24, tflops: 121, src: SRC.ada },
+    { id: '4090', name: 'RTX 4090, 24 GB', mem: 24, tflops: 165.2, src: SRC.ada },
+    { id: '5090', name: 'RTX 5090, 32 GB', mem: 32, tflops: 209.5, src: SRC.bw },
+    { id: 'l40s', name: 'NVIDIA L40S, 48 GB', mem: 48, tflops: 362.05, src: SRC.l40s },
+    { id: 'a100', name: 'A100, 80 GB', mem: 80, tflops: 312, src: SRC.a100 },
+    { id: 'h100', name: 'H100 SXM, 80 GB', mem: 80, tflops: 989.4, src: SRC.h100 }
+  ];
+  var PCIE_GBS = 25, CLIP_SECONDS = 5, CLIPS_PER_MINUTE = 12;
+  var STORAGE = [[3, 'Local NVMe, assumed 3 GB/s'], [1, 'Network disk, assumed 1 GB/s'], [0.131, 'Network disk, assumed 125 MiB/s']];
+  var DEFAULTS = { model: 'wan14', prec: 2, gpu: 'l4', res: '1280x720', steps: 50, mfu: 0.6, retake: 4, cfg: true, keepTE: false, store: 3, mode: 'stage' };
+
+  function tokens(w, h, sec, fps, sp) {
+    sp = sp || 8;
+    var frames = 4 * Math.round(sec * fps / 4) + 1, lf = (frames - 1) / 4 + 1;
+    return { frames: frames, lf: lf, latH: Math.floor(h / sp), latW: Math.floor(w / sp), n: lf * Math.floor(h / (2 * sp)) * Math.floor(w / (2 * sp)) };
+  }
+  function tokenStats(w, h, sec, sp) {
+    var base = tokens(832, 480, 5, 16, 8).n, t = tokens(w, h, sec, 16, sp), ratio = Math.pow(t.n / base, 2);
+    return { t: t, ratio: ratio, html: statHTML('Frames', fmt(t.frames)) + statHTML('Latent', t.lf + ' × ' + fmt(t.latH) + ' × ' + fmt(t.latW))
+      + statHTML('Tokens', fmt(t.n)) + statHTML('Attention pairs per layer and step', si(t.n * t.n)) + statHTML('Attention work vs 480p, 5 s', '× ' + fmt(ratio, 1)) };
+  }
+  function tokenBarSVG(st) {
+    var rows = [['480p, 5 s', 832, 480, 5], ['720p, 5 s', 1280, 720, 5], ['1080p, 5 s', 1920, 1088, 5], ['720p, 10 s', 1280, 720, 10]].map(function (p) { return [p[0], tokenStats(p[1], p[2], p[3], 8).ratio]; });
+    rows.push(['Your setting', st.ratio]);
+    var max = Math.max.apply(null, rows.map(function (r) { return r[1]; })), out = '';
+    rows.forEach(function (r, i) { var y = 6 + i * 26, w = Math.max(2, 470 * r[1] / max);
+      out += '<text x="0" y="' + (y + 13) + '" class="m">' + r[0] + '</text><rect x="110" y="' + (y + 2) + '" width="' + w.toFixed(1) + '" height="16" rx="3" class="' + (i === rows.length - 1 ? 'c-accent' : 'c-border') + '"></rect>'
+        + '<text x="' + (116 + w).toFixed(1) + '" y="' + (y + 14) + '">× ' + fmt(r[1], 1) + '</text>'; });
+    return '<svg class="sf-svg" viewBox="0 0 680 ' + (rows.length * 26 + 8) + '" role="img" aria-label="Attention work relative to a five-second 480p clip">' + out + '</svg>';
+  }
+  function scheduleSVG(t) {
+    var T = 1000, S = 0.008, f = function (u) { return Math.pow(Math.cos(((u / T + S) / (1 + S)) * Math.PI / 2), 2); };
+    var X = function (u) { return 28 + 600 * u / T; }, Y = function (v) { return 10 + 80 * (1 - v); }, sig = '', noi = '';
+    for (var u = 0; u <= T; u += 10) { var ab = f(u) / f(0); sig += (u ? ' L' : 'M') + X(u).toFixed(1) + ',' + Y(Math.sqrt(ab)).toFixed(1); noi += (u ? ' L' : 'M') + X(u).toFixed(1) + ',' + Y(Math.sqrt(1 - ab)).toFixed(1); }
+    return '<line x1="28" y1="10" x2="28" y2="90" class="grid"></line><line x1="28" y1="90" x2="628" y2="90" class="grid"></line>'
+      + '<path d="' + sig + '" class="sig"></path><path d="' + noi + '" class="noi"></path>'
+      + '<line x1="' + X(t).toFixed(1) + '" y1="10" x2="' + X(t).toFixed(1) + '" y2="90" class="cursor"></line>'
+      + '<text x="28" y="118" class="m">t = 0</text><text x="630" y="118" class="m" text-anchor="end">t = 1,000</text><text x="40" y="24" class="s-sig">signal √ᾱ</text><text x="40" y="48" class="m">noise √(1 − ᾱ), dashed</text>';
+  }
+  function estimate(o) {
+    var m = MODELS.filter(function (v) { return v.id === o.model; })[0], g = GPUS.filter(function (v) { return v.id === o.gpu; })[0];
+    var wh = o.res.split('x').map(Number), n = tokens(wh[0], wh[1], CLIP_SECONDS, m.fps, m.sp).n, passes = o.steps * (o.cfg ? 2 : 1);
+    var ditGB = m.W * o.prec / 1e9, teGB = o.keepTE ? m.te * 2 / 1e9 : 0, total = ditGB + teGB + m.vaeGB, fits = total <= g.mem;
+    var linear = 2 * m.P * n, attention = 4 * m.L * m.d * n * n, flopsClip = passes * (linear + attention);
+    var offload = fits ? 0 : passes * ditGB / PCIE_GBS, secClip = flopsClip / (g.tflops * 1e12 * o.mfu) + offload;
+    var gpuHoursMin = secClip * CLIPS_PER_MINUTE * o.retake / 3600;
+    var html = statHTML('Tokens per clip', fmt(n)) + statHTML('FLOPs per clip', si(flopsClip)) + statHTML('Weights fit?', fits ? 'Yes' : 'No, offloaded', fits ? '' : 'bad')
+      + (offload ? statHTML('Added by offloading', dur(offload)) : '') + statHTML('Time per 5 s clip', dur(secClip), secClip > 3600 ? 'bad' : '')
+      + statHTML('GPU time per finished minute', dur(gpuHoursMin * 3600), gpuHoursMin > 24 ? 'bad' : '');
+    return { m: m, g: g, n: n, ditGB: ditGB, teGB: teGB, total: total, fits: fits, linear: linear, attention: attention, flopsClip: flopsClip, offload: offload, secClip: secClip, gpuHoursMin: gpuHoursMin, html: html };
+  }
+  function memSVG(e) {
+    var scale = 600 / Math.max(e.g.mem, e.total), x = 0, out = '';
+    [[e.ditGB, 'c-accent'], [e.teGB, 'c-sound'], [e.m.vaeGB, 'c-muted']].forEach(function (p) { if (!p[0]) return;
+      out += '<rect x="' + x.toFixed(1) + '" y="8" width="' + Math.max(1, p[0] * scale).toFixed(1) + '" height="22" rx="2" class="' + p[1] + '"></rect>'; x += p[0] * scale; });
+    var gx = (e.g.mem * scale).toFixed(1);
+    out += '<line x1="' + gx + '" x2="' + gx + '" y1="2" y2="58" class="limit' + (e.fits ? '' : ' over') + '"></line>'
+      + '<text x="' + (e.g.mem * scale < 400 ? e.g.mem * scale + 6 : e.g.mem * scale - 6).toFixed(1) + '" y="72" text-anchor="' + (e.g.mem * scale < 400 ? 'start' : 'end') + '">GPU memory ' + e.g.mem + ' GB</text>'
+      + '<text x="0" y="54" class="m">weights ' + fmt(e.total, 1) + ' GB</text>';
+    return '<svg class="sf-svg" viewBox="0 0 680 80" role="img" aria-label="Weights of the transformer, text encoder and VAE compared with GPU memory">' + out + '</svg>';
+  }
+  function options(list, selected) { return list.map(function (v) { var id = v.id || v[0], name = v.name || v[1]; return '<option value="' + id + '"' + (String(id) === String(selected) ? ' selected' : '') + '>' + esc(name) + '</option>'; }).join(''); }
+
+  var NODE_W = 118, NODE_H = 40;
+  var NODES = [
+    { id: 'script', x: 14, y: 190, t: 'Script & shot list', s: 'language model', lane: 'language',
+      what: 'Turns a brief into narration, a shot list and one prompt per model and per shot.', cand: 'Open-weights language models such as the Llama, Qwen or Mistral families.', mem: 'About 16 GB for an 8B model in BF16, more for larger ones.', fail: 'Shot prompts the video model cannot follow; narration whose length does not match the shots.' },
+    { id: 'keyframe', x: 150, y: 30, t: 'Keyframes', s: 'text-to-image', lane: 'picture',
+      what: 'One still per shot, so that shots share a look before they move.', cand: 'FLUX.1 [schnell], FLUX.2 [klein] 4B, Qwen-Image, SDXL: see the licence matrix, the variants differ.', mem: 'About 24 GB for a 12B image model in BF16.', fail: 'Text in the image, hands, anything that must match a real product.', gb: 24, mins: 2, perClip: true },
+    { id: 'shots', x: 284, y: 30, t: 'Shot generation', s: 'image-to-video', lane: 'picture',
+      what: 'Animates each keyframe into a clip of about five seconds.', cand: 'Wan 2.1 and 2.2 (Apache 2.0), LTX-2.5 (free below US$10M revenue) and others: see the licence matrix and the arena results.', mem: '28.6 GB of weights for the 14B model in BF16, before activations: see Figure 4.', fail: 'Continuity between clips, physics, faces at a distance.', video: true, perClip: true },
+    { id: 'interp', x: 418, y: 30, t: 'Interpolation', s: 'frame synthesis', lane: 'picture',
+      what: 'Raises the native frame rate, 16 fps for Wan 2.1, to 24, 25 or 30 fps.', cand: 'Practical-RIFE (MIT).', mem: 'Assumed 0.1 GB here.', fail: 'Ghosting on fast motion and occlusions.', gb: 0.1, mins: 2, perClip: true },
+    { id: 'upscale', x: 552, y: 30, t: 'Upscaling', s: 'super-resolution', lane: 'picture',
+      what: 'From 480p or 720p to 1080p or 4K.', cand: 'Real-ESRGAN and video-specific upscalers.', mem: 'Assumed 0.1 GB here.', fail: 'Flicker: a frame-by-frame upscaler invents texture independently on each frame.', gb: 0.1, mins: 4, perClip: true },
+    { id: 'presenter', x: 150, y: 110, t: 'Presenter', s: 'still or plate', lane: 'picture',
+      what: 'A generated presenter, or footage of a real person who consented.', cand: 'The keyframe model, or a camera.', mem: 'As the keyframe model.', fail: 'The same face from one shot to the next.' },
+    { id: 'lipsync', x: 284, y: 110, t: 'Lip-sync', s: 'audio-driven face', lane: 'picture',
+      what: 'Drives the mouth of the presenter from the narration audio.', cand: 'LatentSync, MuseTalk, LivePortrait, Hallo. Several call face-detection weights licensed for non-commercial research only.', mem: 'Assumed 10 GB here; from a few GB to over 20 GB depending on the model.', fail: 'Drift on long sentences, profile views, teeth at high resolution.', gb: 10, mins: 8, perClip: true },
+    { id: 'voice', x: 150, y: 190, t: 'Voice', s: 'text-to-speech', lane: 'sound',
+      what: 'Reads the narration. Cloning a real voice needs that person’s written consent.', cand: 'Kokoro-82M (Apache 2.0), StyleTTS 2 (MIT). The XTTS-v2 and F5-TTS weights are non-commercial.', mem: 'Assumed 2 GB here; from well under 1 GB to a few GB.', fail: 'Acronyms, numbers, product names, words from another language, the join between sentences.', gb: 2, mins: 3 },
+    { id: 'captions', x: 284, y: 190, t: 'Captions', s: 'speech recognition', lane: 'sound',
+      what: 'Subtitles from the narration audio.', cand: 'Whisper (MIT), NVIDIA Parakeet TDT 0.6B v3 (CC BY 4.0, 25 European languages).', mem: 'A few GB for the large models.', fail: 'Proper nouns, line breaks that split a phrase.' },
+    { id: 'music', x: 150, y: 270, t: 'Score', s: 'text-to-music', lane: 'sound',
+      what: 'A music bed from a description and a duration.', cand: 'Stable Audio Open (up to 47 s), YuE, DiffRhythm, MusicGen: see the licence matrix.', mem: 'Assumed 7 GB here.', fail: 'Structure over long durations, drift in key or tempo, loop seams.', gb: 7, mins: 3 },
+    { id: 'stems', x: 284, y: 270, t: 'Stems & ducking', s: 'source separation', lane: 'sound',
+      what: 'Separates instruments and lowers the score under the voice.', cand: 'Demucs, whose weights carry a research-only statement.', mem: 'A few GB.', fail: 'Pumping when the level follows the voice too closely.' },
+    { id: 'comp', x: 552, y: 130, t: 'Compositing', s: 'titles, grade', lane: 'assembly',
+      what: 'Assembles the shots, adds titles and exact brand assets, matches the colour of every clip.', cand: 'Blender, Natron.', mem: 'CPU and GPU.', fail: 'Each generated clip arrives with its own grade.' },
+    { id: 'mix', x: 418, y: 270, t: 'Mix & loudness', s: 'one level', lane: 'assembly',
+      what: 'Voice, score and effects at one loudness target, for example −23 LUFS (EBU R 128) for broadcast.', cand: 'Standard audio tools.', mem: 'CPU.', fail: 'Levels that jump between scenes.' },
+    { id: 'encode', x: 552, y: 350, t: 'Encode', s: 'delivery', lane: 'assembly',
+      what: 'Encodes video and audio, attaches captions, tags the colour space.', cand: 'FFmpeg, GStreamer.', mem: 'CPU, or the GPU’s hardware encoder.', fail: 'Wrong colour range; audio drift when frame rates are mixed.' }
+  ];
+  var EDGES = [['script', 'keyframe'], ['script', 'presenter'], ['script', 'voice'], ['script', 'music'], ['keyframe', 'shots'], ['shots', 'interp'], ['interp', 'upscale'], ['upscale', 'comp'],
+    ['presenter', 'lipsync'], ['voice', 'lipsync'], ['lipsync', 'comp'], ['voice', 'captions'], ['captions', 'comp'], ['voice', 'mix'], ['music', 'stems'], ['stems', 'mix'], ['comp', 'encode'], ['mix', 'encode']];
+  function nodeById(id) { return NODES.filter(function (n) { return n.id === id; })[0]; }
+  function edgePath(a, b) {
+    var A = nodeById(a), B = nodeById(b), W = NODE_W, H = NODE_H;
+    if (Math.abs(A.x - B.x) < 5) return 'M' + (A.x + W / 2) + ',' + (A.y + H) + ' L' + (B.x + W / 2) + ',' + (B.y - 2);
+    var x1 = A.x + W, y1 = A.y + H / 2, x2 = B.x - 2, y2 = B.y + H / 2, mx = (x1 + x2) / 2;
+    return 'M' + x1 + ',' + y1 + ' C' + mx + ',' + y1 + ' ' + mx + ',' + y2 + ' ' + x2 + ',' + y2;
+  }
+  function pipelineSVG(sel) {
+    var out = '<defs><marker id="sf-arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6 z" class="arrow"></path></marker>'
+      + '<marker id="sf-arrow-hot" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L6,3 L0,6 z" class="arrow hot"></path></marker></defs>'
+      + '<text x="150" y="18" class="lane">picture</text><text x="150" y="182" class="lane">sound</text>';
+    EDGES.forEach(function (e) { var hot = sel && (e[0] === sel || e[1] === sel);
+      out += '<path d="' + edgePath(e[0], e[1]) + '" class="edge' + (hot ? ' hot' : '') + '" marker-end="url(#sf-arrow' + (hot ? '-hot' : '') + ')"></path>'; });
+    NODES.forEach(function (n) {
+      out += '<g class="node ' + n.lane + (n.id === sel ? ' sel' : '') + '" data-id="' + n.id + '" tabindex="0" role="button" aria-pressed="' + (n.id === sel) + '" aria-label="' + esc(n.t) + '">'
+        + '<rect x="' + n.x + '" y="' + n.y + '" width="' + NODE_W + '" height="' + NODE_H + '" rx="8"></rect>'
+        + '<text x="' + (n.x + 9) + '" y="' + (n.y + 17) + '">' + esc(n.t) + '</text><text x="' + (n.x + 9) + '" y="' + (n.y + 31) + '" class="sub">' + esc(n.s) + '</text></g>';
+    });
+    return out;
+  }
+  function panelHTML(n) {
+    return '<h3>' + esc(n.t) + '</h3><div>' + n.what + '</div><dl><dt>Candidates</dt><dd>' + n.cand + '</dd><dt>Memory</dt><dd>' + n.mem + '</dd><dt>Fails on</dt><dd>' + n.fail + '</dd>'
+      + (n.mins ? '<dt>In Figure 5</dt><dd>assumed ' + n.mins + ' min of compute per finished minute</dd>' : '') + '</dl>';
+  }
+  function gantt(e, bw, mode) {
+    var rows = NODES.filter(function (n) { return n.video || n.mins; }).map(function (n) {
+      var gb = n.video ? e.ditGB : n.gb, comp = n.video ? e.secClip * CLIPS_PER_MINUTE : n.mins * 60, loads = mode === 'clip' && n.perClip ? CLIPS_PER_MINUTE : 1;
+      return { name: n.t, load: loads * gb / bw, comp: comp, video: !!n.video }; });
+    var total = 0, loadT = 0; rows.forEach(function (r) { total += r.load + r.comp; loadT += r.load; });
+    var X0 = 116, Wd = 500, HI = 6, X = function (sec) { return X0 + Wd * Math.min(HI, Math.max(0, Math.log10(Math.max(sec, 1)))) / HI; };
+    var out = '<defs><pattern id="sf-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="hatch-bg"></rect><line x1="0" y1="0" x2="0" y2="6" class="hatch-line"></line></pattern></defs>';
+    [[1, '1 s'], [60, '1 min'], [3600, '1 h'], [86400, '1 day']].forEach(function (tk) { var x = X(tk[0]).toFixed(1); out += '<line x1="' + x + '" x2="' + x + '" y1="4" y2="236" class="grid"></line><text x="' + (X(tk[0]) - 8).toFixed(1) + '" y="250" class="m">' + tk[1] + '</text>'; });
+    rows.forEach(function (r, i) { var y = 8 + i * 32;
+      out += '<text x="0" y="' + (y + 14) + '">' + esc(r.name) + '</text>'
+        + '<rect x="' + X0 + '" y="' + y + '" width="' + Math.max(1.5, X(r.load) - X0).toFixed(1) + '" height="9" class="load"></rect><text x="' + (X(r.load) + 5).toFixed(1) + '" y="' + (y + 8) + '" class="m">' + dur(r.load) + '</text>'
+        + '<rect x="' + X0 + '" y="' + (y + 11) + '" width="' + Math.max(1.5, X(r.comp) - X0).toFixed(1) + '" height="9" class="' + (r.video ? 'c-accent' : 'c-muted') + '"></rect><text x="' + (X(r.comp) + 5).toFixed(1) + '" y="' + (y + 19) + '" class="m">' + dur(r.comp) + '</text>'; });
+    var share = loadT / total, heavy = share > 0.1 ? 'bad' : '';
+    return { svg: out, stats: statHTML('Total on one GPU', dur(total)) + statHTML('Reading weights', dur(loadT), heavy) + statHTML('Share spent reading', share < 0.001 ? 'under 0.1 %' : fmt(100 * share, 1) + ' %', heavy), share: share };
+  }
+  function constantsHTML() {
+    var rows = MODELS.map(function (m) { return '<tr><td>' + esc(m.name) + '</td><td>' + fmt(m.P / 1e9, 3) + 'B active, ' + fmt(m.W / 1e9, 3) + 'B held; ' + m.L + ' layers × ' + fmt(m.d) + '; ' + m.steps + ' steps by default; ' + m.fps + ' fps; VAE ' + m.sp + ' × ' + m.sp + ' per frame, ' + m.vaeGB + ' GB file</td><td>' + m.src + '</td></tr>'; });
+    rows.push('<tr><td>umT5-XXL encoder</td><td>11.36 GB file in BF16, so about 5.68B parameters</td><td>' + SRC.hub + '</td></tr>');
+    GPUS.forEach(function (g) { rows.push('<tr><td>' + esc(g.name) + '</td><td>' + g.tflops.toLocaleString('en-US', { maximumFractionDigits: 2 }) + ' dense BF16 TFLOPS</td><td>' + g.src + '</td></tr>'); });
+    rows.push('<tr><td>PCIe offload</td><td>25 GB/s, assumed; PCIe 4.0 × 16 is 32 GB/s each way in theory</td><td>Assumption</td></tr>');
+    rows.push('<tr><td>Storage, other stages</td><td>The read speeds of Figure 5, and the sizes and minutes listed in the boxes of Figure 3</td><td>Assumptions</td></tr>');
+    return rows.join('');
+  }
+  // The default state of every figure, for readers without JavaScript, and the numbers quoted in the prose.
+  function prerender() {
+    var D = DEFAULTS, st = tokenStats(1280, 720, 5, 8), est = estimate(D), gt = gantt(est, D.store, D.mode);
+    return { schedule: scheduleSVG(0), tokens: st.html, tkbar: tokenBarSVG(st), pipe: pipelineSVG('shots'), panel: panelHTML(nodeById('shots')),
+      models: options(MODELS, D.model), gpus: options(GPUS, D.gpu), compute: est.html, mem: memSVG(est), storage: options(STORAGE, D.store),
+      gantt: gt.svg, gtstats: gt.stats, constants: constantsHTML() };
+  }
+  function report() {
+    var util = function (model, res, gpu, seconds) { var m = MODELS.filter(function (v) { return v.id === model; })[0], g = GPUS.filter(function (v) { return v.id === gpu; })[0];
+      var e = estimate({ model: model, prec: 2, gpu: gpu, res: res, steps: m.steps, mfu: 1, retake: 1, cfg: true, keepTE: false }); return (100 * e.flopsClip / (g.tflops * 1e12 * seconds)).toFixed(1) + ' %'; };
+    var t480 = tokens(832, 480, 5, 16, 8).n, t720 = tokens(1280, 720, 5, 16, 8).n, d = estimate(DEFAULTS);
+    var fast = estimate({ model: 'wan14', prec: 2, gpu: 'h100', res: '1280x720', steps: 8, mfu: 0.6, retake: 4, cfg: true, keepTE: false });
+    return { tokens480p: t480, tokens720p: t720, attentionRatio720vs480: +Math.pow(t720 / t480, 2).toFixed(2), attentionPairs720p: t720 * t720, attentionOverLinear720p: +(d.attention / d.linear).toFixed(2),
+      utilisation_wan13_480p_4090_240s: util('wan13', '832x480', '4090', 240), utilisation_wan5_720p_4090_540s: util('wan5', '1280x720', '4090', 540),
+      default_hoursPerClip: +(d.secClip / 3600).toFixed(2), default_videoHoursPerFinishedMinute: +(d.secClip * CLIPS_PER_MINUTE / 3600).toFixed(1), default_gpuHoursPerFinishedMinute: +d.gpuHoursMin.toFixed(1),
+      fastSetup_readShare_clipByClip_125MiB: +(100 * gantt(fast, 0.131, 'clip').share).toFixed(1) };
+  }
+  /* pure:end */
+
+  var $ = function (id) { return document.getElementById(id); };
+  var root = document.documentElement;
+  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var css = function (name) { return getComputedStyle(root).getPropertyValue(name).trim(); };
+  var onTheme = [];
+  new MutationObserver(function () { onTheme.forEach(function (f) { f(); }); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+
+  // Seeded random numbers and value noise: every drawing is the same on every visit.
+  function rng(seed) { var s = seed >>> 0; return function () { s = (s + 0x6D2B79F5) >>> 0; var t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function gauss(r) { var u = 0, v = 0; while (u === 0) u = r(); while (v === 0) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+  var field = (function () { var r = rng(7), g = new Float32Array(65536); for (var i = 0; i < g.length; i++) g[i] = r();
+    var at = function (x, y) { return g[((y & 255) << 8) | (x & 255)]; }, sm = function (t) { return t * t * (3 - 2 * t); };
+    return function (x, y) { var xi = Math.floor(x), yi = Math.floor(y), xf = sm(x - xi), yf = sm(y - yi), a = at(xi, yi), b = at(xi + 1, yi), c = at(xi, yi + 1), d = at(xi + 1, yi + 1);
+      return a + (b - a) * xf + (c - a) * yf + (a - b - c + d) * xf * yf; }; })();
+  function angle(x, y, t) { t = t || 0; return (field(x * 0.0035 + t * 0.02, y * 0.0035) * 2 + field(x * 0.009, y * 0.009 + t * 0.01) * 0.6) * Math.PI * 2; }
+
+  // Opening drawing: strokes following a slowly changing flow field, in the theme's colours. It stays still when the
+  // reader asks for reduced motion, and pauses when it is off-screen.
+  (function () {
+    var c = $('sf-hero'); if (!c) return; c.closest('figure').hidden = false;
+    var x = c.getContext('2d'), W = c.width, H = c.height, r = rng(11), t = 0, parts = [];
+    for (var i = 0; i < 900; i++) parts.push({ x: r() * W, y: r() * H, life: r() * 200 });
+    function frame() {
+      x.globalAlpha = 0.045; x.fillStyle = css('--bg'); x.fillRect(0, 0, W, H);
+      var c1 = css('--accent'), c2 = css('--muted'); x.lineWidth = 1.1;
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i], a = angle(p.x, p.y, t), nx = p.x + Math.cos(a) * 1.6, ny = p.y + Math.sin(a) * 1.6;
+        x.strokeStyle = i % 3 ? c1 : c2; x.globalAlpha = 0.5; x.beginPath(); x.moveTo(p.x, p.y); x.lineTo(nx, ny); x.stroke();
+        p.x = nx; p.y = ny; p.life--;
+        if (p.life < 0 || nx < 0 || ny < 0 || nx > W || ny > H) { p.x = r() * W; p.y = r() * H; p.life = 120 + r() * 200; }
+      }
+      x.globalAlpha = 1; t += 0.5;
+    }
+    function still() { x.globalAlpha = 1; x.fillStyle = css('--bg'); x.fillRect(0, 0, W, H); for (var k = 0; k < 260; k++) frame(); }
+    still(); onTheme.push(still);
+    if (reduced || !window.IntersectionObserver) return;
+    var visible = true; new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(c);
+    (function loop() { if (visible) frame(); requestAnimationFrame(loop); })();
+  })();
+
+  // Figure 1: the forward process, computed per pixel.
+  (function () {
+    var c = $('sf-diff'); if (!c) return; var x = c.getContext('2d'), W = 320, H = 180;
+    var off = document.createElement('canvas'); off.width = W; off.height = H; var ox = off.getContext('2d');
+    // The clean image is an artwork with its own palette, the same in both themes.
+    var g = ox.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0b1a3a'); g.addColorStop(1, '#123e6b'); ox.fillStyle = g; ox.fillRect(0, 0, W, H);
+    ox.fillStyle = '#f3c76b'; ox.beginPath(); ox.arc(232, 62, 26, 0, Math.PI * 2); ox.fill();
+    var r = rng(5); ox.lineWidth = 0.8;
+    for (var i = 0; i < 1400; i++) { var px = r() * W, py = r() * H; ox.strokeStyle = i % 4 ? 'rgba(125,190,255,0.55)' : 'rgba(45,212,191,0.6)'; ox.beginPath(); ox.moveTo(px, py);
+      for (var s = 0; s < 18; s++) { var a = angle(px * 4.5, py * 4.5); px += Math.cos(a) * 1.2; py += Math.sin(a) * 1.2; ox.lineTo(px, py); } ox.stroke(); }
+    for (var k = 0; k < 3; k++) { ox.fillStyle = ['#0a2440', '#0c3157', '#0e3d6c'][k]; ox.beginPath(); ox.moveTo(0, H);
+      for (var j = 0; j <= W; j += 4) ox.lineTo(j, H - 30 - k * 18 - 18 * field(j * 0.02 + k * 9, k * 3)); ox.lineTo(W, H); ox.fill(); }
+    var x0 = ox.getImageData(0, 0, W, H), eps = new Float32Array(W * H * 3), rr = rng(42);
+    for (var q = 0; q < eps.length; q++) eps[q] = gauss(rr);
+    var out = ox.createImageData(W, H), T = 1000, S = 0.008, f = function (t) { return Math.pow(Math.cos(((t / T + S) / (1 + S)) * Math.PI / 2), 2); }, sl = $('sf-diff-t'), anim = 0;
+    function render(t) {
+      var ab = f(t) / f(0), a = Math.sqrt(ab), b = Math.sqrt(1 - ab), d = x0.data, o = out.data;
+      for (var p = 0, e = 0; p < d.length; p += 4, e += 3) { for (var ch = 0; ch < 3; ch++) { var v = (d[p + ch] / 127.5 - 1) * a + eps[e + ch] * b; o[p + ch] = Math.max(0, Math.min(255, (v + 1) * 127.5)); } o[p + 3] = 255; }
+      ox.putImageData(out, 0, 0); x.drawImage(off, 0, 0, c.width, c.height);
+      $('sf-diff-t-o').textContent = fmt(t); $('sf-diff-sig').textContent = a.toFixed(3); $('sf-diff-noise').textContent = b.toFixed(3); $('sf-diff-chart').innerHTML = scheduleSVG(t);
+    }
+    function go(to) { cancelAnimationFrame(anim); if (reduced) { sl.value = to; render(to); return; }
+      var from = +sl.value, t0 = performance.now();
+      (function step(now) { var u = Math.min(1, (now - t0) / 2400), v = Math.round(from + (to - from) * u); sl.value = v; render(v); if (u < 1) anim = requestAnimationFrame(step); })(t0); }
+    // It plays by itself, image to noise and back, while it is on screen; the reader's own controls take over.
+    var auto = !reduced, visible = false, dir = 1, last = 0, tAuto = 0;
+    function loop(now) {
+      if (auto && visible) {
+        var dt = Math.min(64, now - (last || now)); tAuto += dir * dt / 3.2;
+        if (tAuto >= 1000) { tAuto = 1000; dir = -1; } else if (tAuto <= 0) { tAuto = 0; dir = 1; }
+        sl.value = Math.round(tAuto); render(Math.round(tAuto));
+      }
+      last = now; requestAnimationFrame(loop);
+    }
+    function stopAuto() { auto = false; $('sf-diff-play').textContent = 'Play'; $('sf-diff-play').setAttribute('aria-pressed', 'false'); }
+    sl.addEventListener('input', function () { stopAuto(); render(+sl.value); });
+    $('sf-diff-fwd').addEventListener('click', function () { stopAuto(); go(1000); }); $('sf-diff-rev').addEventListener('click', function () { stopAuto(); go(0); });
+    $('sf-diff-play').addEventListener('click', function () { auto = !auto; tAuto = +sl.value; this.textContent = auto ? 'Pause' : 'Play'; this.setAttribute('aria-pressed', String(auto)); });
+    if (!reduced && window.IntersectionObserver) { new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(c); requestAnimationFrame(loop); }
+    else stopAuto();
+    render(+sl.value);
+  })();
+
+  // Figure 7: the shot loops by itself, except for readers who asked for reduced motion.
+  Array.prototype.forEach.call(document.querySelectorAll('video.sf-media'), function (v) {
+    if (!reduced) { v.autoplay = true; v.play().catch(function () {}); }
+  });
+
+  // Figure 6: a line that follows each voice sample over its spectrogram; a click on the spectrogram seeks.
+  Array.prototype.forEach.call(document.querySelectorAll('.sf-spec'), function (box) {
+    var audio = $(box.getAttribute('data-audio')), head = box.querySelector('.sf-playhead'), raf = 0;
+    if (!audio) return;
+    function place() { if (audio.duration) { head.style.left = (100 * audio.currentTime / audio.duration) + '%'; head.style.opacity = 1; } }
+    function tick() { place(); if (!audio.paused) raf = requestAnimationFrame(tick); }
+    audio.addEventListener('play', function () { cancelAnimationFrame(raf); tick(); });
+    ['pause', 'seeked', 'timeupdate', 'ended'].forEach(function (ev) { audio.addEventListener(ev, place); });
+    box.addEventListener('click', function (e) { var r = box.getBoundingClientRect(), f = (e.clientX - r.left) / r.width;
+      function seek() { audio.currentTime = f * audio.duration; place(); }
+      if (audio.duration) seek(); else { audio.preload = 'metadata'; audio.addEventListener('loadedmetadata', seek, { once: true }); audio.load(); } });
+  });
+
+  // Figure 2: tokens per clip.
+  function tokenFig() {
+    var wh = $('sf-tk-res').value.split('x').map(Number), sec = +$('sf-tk-sec').value, st = tokenStats(wh[0], wh[1], sec, +$('sf-tk-sp').value);
+    $('sf-tk-sec-o').textContent = sec + ' s'; $('sf-tk-stats').innerHTML = st.html; $('sf-tk-bar').innerHTML = tokenBarSVG(st);
+  }
+  ['sf-tk-res', 'sf-tk-sec', 'sf-tk-sp'].forEach(function (id) { $(id).addEventListener('input', tokenFig); });
+
+  // Figure 3: the pipeline.
+  (function () {
+    var svg = $('sf-pipe-svg');
+    function select(id) { svg.innerHTML = pipelineSVG(id); $('sf-pipe-panel').innerHTML = panelHTML(nodeById(id)); var n = svg.querySelector('[data-id="' + id + '"]'); if (n) n.focus(); }
+    svg.addEventListener('click', function (e) { var g = e.target.closest('.node'); if (g) select(g.getAttribute('data-id')); });
+    svg.addEventListener('keydown', function (e) { var g = e.target.closest('.node'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); select(g.getAttribute('data-id')); } });
+  })();
+
+  // Figures 4 and 5: memory, compute, and where one GPU spends its time.
+  function computeFig() {
+    var o = { model: $('sf-cp-model').value, prec: +$('sf-cp-prec').value, gpu: $('sf-cp-gpu').value, res: $('sf-cp-res').value, steps: +$('sf-cp-steps').value,
+      mfu: +$('sf-cp-mfu').value / 100, retake: +$('sf-cp-retake').value, cfg: $('sf-cp-cfg').checked, keepTE: $('sf-cp-te').checked };
+    $('sf-cp-steps-o').textContent = o.steps; $('sf-cp-mfu-o').textContent = Math.round(o.mfu * 100) + ' %'; $('sf-cp-retake-o').textContent = o.retake;
+    var e = estimate(o); $('sf-cp-stats').innerHTML = e.html; $('sf-cp-mem').innerHTML = memSVG(e);
+    var gt = gantt(e, +$('sf-gt-store').value, $('sf-gt-mode').value); $('sf-gt-svg').innerHTML = gt.svg; $('sf-gt-stats').innerHTML = gt.stats;
+  }
+  $('sf-cp-model').addEventListener('input', function () { var m = MODELS.filter(function (v) { return v.id === $('sf-cp-model').value; })[0]; $('sf-cp-steps').value = m.steps; });
+  ['sf-cp-model', 'sf-cp-prec', 'sf-cp-gpu', 'sf-cp-res', 'sf-cp-steps', 'sf-cp-mfu', 'sf-cp-retake', 'sf-cp-cfg', 'sf-cp-te', 'sf-gt-store', 'sf-gt-mode'].forEach(function (id) { $(id).addEventListener('input', computeFig); });
+  // A browser that restores form values on reload gets figures that match them.
+  tokenFig(); computeFig();
+})();
+</script>

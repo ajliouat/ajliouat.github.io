@@ -161,6 +161,11 @@
       "title": "Quand la connexion tombe en pleine réservation : la reprise de session sur Gemini Live, mesurée",
       "summary": "Un appel d’outil en attente survit à une reprise qui réussit sur Gemini 3.8 Live, mais après une perte silencieuse, chaque reprise a été refusée pendant 15 minutes. Un repli côté client, mesuré : méthode, chiffres et limites.",
       "topic": "Calcul et inférence"
+    },
+    "synthetic-film-open-weights": {
+      "title": "Film de synthèse à partir de modèles ouverts : mémoire, calcul et licences, étape par étape",
+      "summary": "Générer un film avec des modèles ouverts, étape par étape : tokens par plan, mémoire GPU, temps de calcul et licences, avec des calculateurs interactifs.",
+      "topic": "Calcul et inférence"
     }
   }
 }
