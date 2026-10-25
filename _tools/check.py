@@ -5,6 +5,7 @@ from urllib.parse import urlsplit, unquote, urljoin
 from datetime import datetime
 import hashlib
 import json
+import re
 import subprocess
 import xml.etree.ElementTree as ET
 
@@ -42,6 +43,30 @@ class Page(HTMLParser):
             self.schema += data
     def tags(self, tag):
         return [attrs for name, attrs in self.elements if name == tag]
+
+class Prose(HTMLParser):
+    """Words a reader reads: text outside styles, scripts, inline SVG and Mermaid sources."""
+    SKIPPED = {'style', 'script', 'svg'}
+    def __init__(self, text):
+        super().__init__(convert_charrefs=True)
+        self.skip = []
+        self.chunks = []
+        self.feed(text)
+        self.close()
+    def handle_starttag(self, tag, attributes):
+        if self.skip:
+            if tag == self.skip[0]:
+                self.skip.append(tag)
+        elif tag in self.SKIPPED or (tag == 'div' and dict(attributes).get('class') == 'mermaid'):
+            self.skip.append(tag)
+    def handle_endtag(self, tag):
+        if self.skip and tag == self.skip[0]:
+            self.skip.pop()
+    def handle_data(self, data):
+        if not self.skip:
+            self.chunks.append(data)
+    def minutes(self):
+        return max(1, -(-len(' '.join(self.chunks).split()) // 220))
 
 expected = {}
 for item in config['pages']:
@@ -88,6 +113,10 @@ for relative, (lang, canonical, item) in expected.items():
         require(not alternates and not any(a.get('class') == 'lang-toggle' for a in page.tags('a')), relative + ': offers missing translation')
     for img in page.tags('img'):
         require(bool(img.get('alt')) and 'width' in img and 'height' in img, relative + ': image accessibility/dimensions')
+    if item.get('article'):
+        source = (ROOT / '_site_source/pages' / item['path']).read_text()
+        shown = re.search(r'<div class="post-meta">[\s\S]*?(\d+) min (?:read|de lecture)</div>', text)
+        require(bool(shown) and int(shown[1]) == Prose(source).minutes(), relative + ': reading time does not match the prose')
 
 for file, page in scanned.items():
     current = SITE + '/' + str(file.relative_to(ROOT))

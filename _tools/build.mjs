@@ -31,11 +31,15 @@ for (const lang of ['en', 'fr']) {
 const articles = pages.filter(p => p.article)
 const bilingual = new Set(pages.filter(p => p.fr).map(p => route(p.path)))
 const stem = p => path.basename(p.path, '.html')
+// Reading time counts the prose only: styles, scripts, inline SVG and Mermaid sources are not read.
+const readingMinutes = source => {
+  const prose = source.replace(/<(style|script|svg)\b[^>]*>[\s\S]*?<\/\1>/g, ' ').replace(/<div class="mermaid">[\s\S]*?<\/div>/g, ' ')
+  return Math.max(1, Math.ceil(plain(prose).split(/\s+/).length / 220))
+}
 for (const p of pages) {
   p.source = read(`_site_source/pages/${p.path}`)
   if (p.article) {
-    const text = p.source.replace(/<style>[\s\S]*?<\/style>/g, '').replace(/<div class="mermaid">[\s\S]*?<\/div>/g, '')
-    p.minutes = Math.max(1, Math.ceil(plain(text).split(/\s+/).length / 220))
+    p.minutes = readingMinutes(p.source)
     p.topic = editorial.articles[stem(p)]?.topic || 'Calcul et inférence'
   }
 }
