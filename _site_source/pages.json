@@ -234,7 +234,12 @@
       "article": true,
       "headline": "Synthetic film from open weights: memory, compute and licences, stage by stage",
       "updated": "2026-10-25T22:51:49+01:00",
-      "year": "2026"
+      "year": "2026",
+      "fr": {
+        "title": "Film de synthèse à partir de modèles ouverts : mémoire, calcul et licences, étape par étape | Abdeljalil Jliouat",
+        "description": "Générer un film avec des modèles ouverts, étape par étape : tokens par plan, mémoire GPU, temps de calcul et licences, avec des calculateurs interactifs.",
+        "headline": "Film de synthèse à partir de modèles ouverts : mémoire, calcul et licences, étape par étape"
+      }
     }
   ]
 }

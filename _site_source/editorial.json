@@ -55,7 +55,7 @@
     "home.quantum_line": "Planification électrique sur données synthétiques : QUBO, QAOA, VQE et solveurs classiques.",
     "projects.title": "Quatre projets, du code et des questions ouvertes",
     "projects.subtitle": "Inférence GPU, robotique, EEG et optimisation énergétique : les implémentations, les preuves disponibles et les prochaines validations.",
-    "blog.subtitle": "Des notes sur les systèmes que je construis : expériences, compromis techniques et liens vers le code. Les articles sont actuellement disponibles en anglais.",
+    "blog.subtitle": "Des notes sur les systèmes que je construis : expériences, compromis techniques et liens vers le code. La plupart des articles sont en anglais.",
     "home.flash_body": "Kernels CUDA et Triton pour l’attention, la fusion d’activations et le cache. Implémentation, limites de validité et protocole de vérification sur GPU.",
     "home.robo_body": "Un prototype MuJoCo évalué sur une cible fixe et un maintien d’une seconde : contrôles de collision, traces complètes et comparaisons reproductibles.",
     "home.neuro_body": "Un prototype de transformeur EEG pour la reconstruction masquée et l’imagerie motrice. Priorités actuelles : séparation des données et évaluation.",
@@ -163,8 +163,6 @@
       "topic": "Calcul et inférence"
     },
     "synthetic-film-open-weights": {
-      "title": "Film de synthèse à partir de modèles ouverts : mémoire, calcul et licences, étape par étape",
-      "summary": "Générer un film avec des modèles ouverts, étape par étape : tokens par plan, mémoire GPU, temps de calcul et licences, avec des calculateurs interactifs.",
       "topic": "Calcul et inférence"
     }
   }
