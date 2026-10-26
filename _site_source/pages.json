@@ -1,6 +1,6 @@
 {
   "site": "https://ajliouat.com",
-  "feedUpdated": "2026-10-25T22:51:49+01:00",
+  "feedUpdated": "2026-10-26T16:10:13+01:00",
   "pages": [
     {
       "path": "index.html",
@@ -239,6 +239,21 @@
         "title": "Film de synthèse à partir de modèles ouverts : mémoire, calcul et licences, étape par étape | Abdeljalil Jliouat",
         "description": "Générer un film avec des modèles ouverts, étape par étape : tokens par plan, mémoire GPU, temps de calcul et licences, avec des calculateurs interactifs.",
         "headline": "Film de synthèse à partir de modèles ouverts : mémoire, calcul et licences, étape par étape"
+      }
+    },
+    {
+      "path": "blog/synthetic-film-managed-services.html",
+      "section": "blog",
+      "title": "Synthetic film from managed services: prices, terms and how to choose | Abdeljalil Jliouat",
+      "description": "Managed services for voice, presenters, generated shots, music and editing: public prices and terms, a month of cost, and how to choose.",
+      "article": true,
+      "headline": "Synthetic film from managed services: prices, terms and how to choose",
+      "updated": "2026-10-26T16:10:13+01:00",
+      "year": "2026",
+      "fr": {
+        "title": "Film de synthèse avec les services du marché : prix, conditions et comment choisir | Abdeljalil Jliouat",
+        "description": "Les services du marché pour la voix, les présentateurs, les plans générés, la musique et le montage : prix publics, conditions, coût d’un mois et choix.",
+        "headline": "Film de synthèse avec les services du marché : prix, conditions et comment choisir"
       }
     }
   ]
